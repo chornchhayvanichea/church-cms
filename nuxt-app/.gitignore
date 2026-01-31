@@ -1,0 +1,28 @@
+# Nuxt dev/build outputs
+.output
+.nuxt
+.nitro
+.cache
+dist
+
+# Node
+node_modules
+*.log*
+.pnpm-debug.log*
+
+# OS
+.DS_Store
+.fleet
+.idea
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Local development
+*.local
+
+# Nuxt generate
+.vercel
+.netlify

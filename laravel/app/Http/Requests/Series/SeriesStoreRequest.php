@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Requests\Series;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class SeriesRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'name' => ['string', 'required', 'max:255'],
+            'description' => ['string', 'nullable'],
+            'thumbnail' => ['file', 'nullable', 'mimes:jpg,png,jpeg,gif,webp', 'max:5128'],
+            'start_date' => ['date', 'nullable'],
+            'end_date' => ['date', 'nullable'],
+        ];
+    }
+}
