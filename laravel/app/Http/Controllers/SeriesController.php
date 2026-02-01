@@ -44,4 +44,13 @@ class SeriesController extends Controller
 
         return new SeriesResource($series);
     }
+
+    public function destroy(Series $series)
+    {
+        $series->delete();
+
+        return response()->json([
+            'message' => 'series has been deleted',
+        ]);
+    }
 }
