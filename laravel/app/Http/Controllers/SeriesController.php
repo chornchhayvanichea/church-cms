@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Series\SeriesRequest;
+use App\Http\Requests\Series\SeriesStoreRequest;
+use App\Http\Requests\Series\SeriesUpdateRequest;
 use App\Http\Resources\SeriesResource;
 use App\Models\Series;
 use App\Services\FileHandling;
@@ -10,7 +11,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class SeriesController extends Controller
 {
-    private const THUMBNAIL_DIR = 'Series/thumbnails';
+    private const SERIES_DIR = 'Series/';
 
     public function index(): AnonymousResourceCollection
     {
@@ -24,11 +25,11 @@ class SeriesController extends Controller
         return new SeriesResource($series);
     }
 
-    public function store(SeriesRequest $seriesRequest, FileHandling $fileService): SeriesResource
+    public function store(SeriesStoreRequest $request, FileHandling $fileService): SeriesResource
     {
-        $validated = $seriesRequest->validated();
+        $validated = $request->validated();
 
-        $thumbnailPath = $fileService->uploadFile($seriesRequest->file('thumbnail'), self::THUMBNAIL_DIR);
+        $thumbnailPath = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR.'/{$series->id}');
         if ($thumbnailPath) {
             $validated['thumbnail'] = $thumbnailPath;
         }
@@ -38,10 +39,10 @@ class SeriesController extends Controller
         return new SeriesResource($series);
     }
 
-    public function update(SeriesRequest $seriesRequest, FileHandling $fileService, Series $series): SeriesResource
+    public function update(SeriesUpdateRequest $request, FileHandling $fileService, Series $series): SeriesResource
     {
-        $validated = $seriesRequest->validated();
-        $thumbnailPath = $fileService->uploadFile($seriesRequest->file('thumbnail'), self::THUMBNAIL_DIR);
+        $validated = $request->validated();
+        $thumbnailPath = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR.'/{$series->id}');
         if ($thumbnailPath) {
             $validated['thumbnail'] = $thumbnailPath;
         }
