@@ -19,6 +19,11 @@ class SeriesController extends Controller
         return SeriesResource::collection($series);
     }
 
+    public function show(Series $series): SeriesResource
+    {
+        return new SeriesResource($series);
+    }
+
     public function store(SeriesRequest $seriesRequest, FileHandling $fileService): SeriesResource
     {
         $validated = $seriesRequest->validated();
