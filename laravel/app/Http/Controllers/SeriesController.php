@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class SeriesController extends Controller
 {
-    private const SERIES_DIR = 'Series/';
+    private const SERIES_DIR = 'Series/thumbnails';
 
     public function index(): AnonymousResourceCollection
     {
@@ -29,7 +29,7 @@ class SeriesController extends Controller
     {
         $validated = $request->validated();
 
-        $thumbnailPath = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR.'/{$series->id}');
+        $thumbnailPath = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
         if ($thumbnailPath) {
             $validated['thumbnail'] = $thumbnailPath;
         }
@@ -42,8 +42,9 @@ class SeriesController extends Controller
     public function update(SeriesUpdateRequest $request, FileHandling $fileService, Series $series): SeriesResource
     {
         $validated = $request->validated();
-        $thumbnailPath = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR.'/{$series->id}');
+        $thumbnailPath = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
         if ($thumbnailPath) {
+            $fileService->deleteFile($series->thumbnail);
             $validated['thumbnail'] = $thumbnailPath;
         }
         $series->update($validated);

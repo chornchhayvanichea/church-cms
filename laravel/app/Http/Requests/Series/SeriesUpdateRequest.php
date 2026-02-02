@@ -4,7 +4,7 @@ namespace App\Http\Requests\Series;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SeriesRequest extends FormRequest
+class SeriesUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

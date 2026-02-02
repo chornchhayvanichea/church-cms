@@ -4,7 +4,7 @@ namespace App\Http\Requests\Sermon;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SermonStoreRequest extends FormRequest
+class SermonUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,10 +21,11 @@ class SermonStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            'title' => ['string', 'required', 'max:255'],
-            'speaker' => ['string', 'required', 'max:255'],
-            'sermon_date' => ['date', 'required'],
+            'title' => ['string', 'sometimes', 'max:255'],
+            'speaker' => ['string', 'sometimes', 'max:255'],
+            'sermon_date' => ['date', 'sometimes'],
             'description' => ['string', 'nullable'],
             'notes' => ['string', 'nullable'],
             'scripture_reference' => ['string', 'nullable'],

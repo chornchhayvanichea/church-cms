@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
-use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Sermon extends Model
 {
-    use HasSlug;
+    use HasSlug,SoftDeletes;
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('slug');
+    }
 
     protected $fillable = [
         'title',

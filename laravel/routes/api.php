@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\SermonController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +15,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
     Route::apiResource('series', SeriesController::class);
+    Route::apiResource('sermons', SermonController::class);
 });
