@@ -10,10 +10,12 @@ Route::post('logintoken', [AuthController::class, 'login']);
 Route::post('registertoken', [AuthController::class, 'register']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', function (Request $request) {
         return $request->user();
     });
+
     Route::apiResource('series', SeriesController::class);
     Route::apiResource('sermons', SermonController::class);
 });

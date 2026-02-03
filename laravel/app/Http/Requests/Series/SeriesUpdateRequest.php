@@ -23,10 +23,10 @@ class SeriesUpdateRequest extends FormRequest
     {
         return [
             'name' => ['string', 'sometimes', 'max:255'],
-            'description' => ['string', 'nullable'],
-            'thumbnail' => ['file', 'nullable', 'mimes:jpg,png,jpeg,gif,webp', 'max:5128'],
-            'start_date' => ['date', 'nullable'],
-            'end_date' => ['date', 'nullable'],
+            'description' => ['sometimes', 'string', 'nullable'],
+            'thumbnail' => ['sometimes', 'file', 'nullable', 'mimes:jpg,png,jpeg,gif,webp', 'max:5128'],
+            'start_date' => ['sometimes', 'date', 'nullable'],
+            'end_date' => ['sometimes', 'date', 'nullable'],
         ];
     }
 }

@@ -26,7 +26,6 @@ class Sermon extends Model
         'scripture_reference',
         'video_url',
         'pdf_url',
-        'audio_url',
         'thumbnail',
         'status',
         'view_count',

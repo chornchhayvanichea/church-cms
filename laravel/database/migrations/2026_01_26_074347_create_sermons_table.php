@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('scripture_reference')->nullable();
 
             $table->string('video_url')->nullable();
-            $table->string('audio_url')->nullable();
             $table->string('pdf_url')->nullable();
             $table->string('thumbnail')->nullable();
 

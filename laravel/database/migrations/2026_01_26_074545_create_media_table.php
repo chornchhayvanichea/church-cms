@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('filename');
             $table->string('original_filename');
             $table->string('file_path');
-            $table->enum('file_type', ['image', 'video', 'audio', 'document']);
+            $table->enum('file_type', ['image', 'video', 'document']);
             $table->integer('file_size');
             $table->string('mimes_type');
             $table->string('alt_text')->nullable();

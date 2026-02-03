@@ -8,11 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('catgories', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->enum('type', ['sermon_topic', 'event_topic', 'etc.'])->default('sermon_topic');
+            $table->enum('type', ['sermon_topic', 'event_topic'])->default('sermon_topic');
 
             $table->timestamps();
         });
@@ -20,6 +20,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('catgories');
+        Schema::dropIfExists('categories');
     }
 };
