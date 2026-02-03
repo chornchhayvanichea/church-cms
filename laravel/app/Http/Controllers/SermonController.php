@@ -9,6 +9,7 @@ use App\Models\Sermon;
 use App\Services\FileHandling;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class SermonController extends Controller
 {
@@ -29,25 +30,36 @@ class SermonController extends Controller
     public function store(SermonStoreRequest $request, FileHandling $fileHandling): SermonResource
     {
         $validated = $request->validated();
-        $thumbnailPath = $fileHandling->uploadFile($request->file('thumbnail'), self::SERMON_DIR);
-        if ($thumbnailPath) {
-            $validated['thumbnail'] = $thumbnailPath;
+
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $fileHandling->uploadFile($request->file('thumbnail'), self::SERMON_DIR);
         }
-        $sermon = Sermon::create($validated);
-        $sermon->load(['series', 'users']);
+
+        $sermon = Sermon::create([
+            ...$validated,
+            'created_by' => Auth::id(),
+        ]);
+        $sermon->load(['series', 'creator']);
 
         return new SermonResource($sermon);
     }
 
     public function update(SermonUpdateRequest $request, Sermon $sermon, FileHandling $fileHandling): SermonResource
     {
-
         $validated = $request->validated();
-        $thumbnailPath = $fileHandling->uploadFile($request->file('thumbnail'), self::SERMON_DIR);
-        if ($thumbnailPath) {
-            $fileHandling->deleteFile($sermon->thumbnail);
-            $validated['thumbnail'] = $thumbnailPath;
+
+        if ($request->hasFile('thumbnail')) {
+            if ($sermon->thumbnail) {
+                $fileHandling->deleteFile($sermon->thumbnail);
+            }
+            $validated['thumbnail'] = $fileHandling->uploadFile($request->file('thumbnail'), self::SERMON_DIR);
+        } elseif ($request->boolean('remove_thumbnail')) {
+            if ($sermon->thumbnail) {
+                $fileHandling->deleteFile($sermon->thumbnail);
+            }
+            $validated['thumbnail'] = null;
         }
+
         $sermon->update($validated);
 
         return new SermonResource($sermon);

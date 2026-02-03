@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\SermonController;
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('series', SeriesController::class);
     Route::apiResource('sermons', SermonController::class);
+    Route::apiResource('announcements', Announcement::class);
 });

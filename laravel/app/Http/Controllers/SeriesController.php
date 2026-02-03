@@ -29,9 +29,8 @@ class SeriesController extends Controller
     {
         $validated = $request->validated();
 
-        $thumbnailPath = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
-        if ($thumbnailPath) {
-            $validated['thumbnail'] = $thumbnailPath;
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
         }
 
         $series = Series::create($validated);
@@ -42,10 +41,17 @@ class SeriesController extends Controller
     public function update(SeriesUpdateRequest $request, FileHandling $fileService, Series $series): SeriesResource
     {
         $validated = $request->validated();
-        $thumbnailPath = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
-        if ($thumbnailPath) {
-            $fileService->deleteFile($series->thumbnail);
-            $validated['thumbnail'] = $thumbnailPath;
+
+        if ($request->hasFile('thumbnail')) {
+            if ($series->thumbnail) {
+                $fileService->deleteFile($series->thumbnail);
+            }
+            $validated['thumbnail'] = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
+        } elseif ($request->boolean('remove_thumbnail')) {
+            if ($series->thumbnail) {
+                $fileService->deleteFile($series->thumbnail);
+            }
+            $validated['thumbnail'] = null;
         }
         $series->update($validated);
 
