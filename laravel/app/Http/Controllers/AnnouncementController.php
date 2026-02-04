@@ -30,6 +30,8 @@ class AnnouncementController extends Controller
             'created_by' => Auth::id(),
         ]);
 
+        $announcement->load('creator');
+
         return new AnnouncementResource($announcement);
     }
 
@@ -37,6 +39,7 @@ class AnnouncementController extends Controller
     {
         $validated = $request->validated();
         $announcement->update($validated);
+        $announcement->load('creator');
 
         return new AnnouncementResource($announcement);
     }

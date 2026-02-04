@@ -22,7 +22,7 @@ class SeriesController extends Controller
 
     public function show(Series $series): SeriesResource
     {
-        return new SeriesResource($series);
+        return new SeriesResource($series->load('creator'));
     }
 
     public function store(SeriesStoreRequest $request, FileHandling $fileHandling): SeriesResource
@@ -34,6 +34,7 @@ class SeriesController extends Controller
         }
 
         $series = Series::create($validated);
+        $series->load('creator');
 
         return new SeriesResource($series);
     }
@@ -54,6 +55,7 @@ class SeriesController extends Controller
             $validated['thumbnail'] = null;
         }
         $series->update($validated);
+        $series->load('creator');
 
         return new SeriesResource($series);
     }

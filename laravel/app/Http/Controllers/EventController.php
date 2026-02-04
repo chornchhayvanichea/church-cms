@@ -17,7 +17,7 @@ class EventController extends Controller
 
     public function show(Event $event): EventResource
     {
-        return new EventResource($event);
+        return new EventResource($event->load('creator'));
     }
 
     public function index(): AnonymousResourceCollection
@@ -38,6 +38,7 @@ class EventController extends Controller
             ...$validated,
             'created_by' => Auth::id(),
         ]);
+        $event->load('creator');
 
         return new EventResource($event);
     }
@@ -58,6 +59,7 @@ class EventController extends Controller
             $validated['image'] = null;
         }
         $event->update($validated);
+        $event->load('creator');
 
         return new EventResource($event);
     }

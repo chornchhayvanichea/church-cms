@@ -17,7 +17,7 @@ class SermonController extends Controller
 
     public function show(Sermon $sermon): SermonResource
     {
-        return new SermonResource($sermon);
+        return new SermonResource($sermon->load(['series', 'creator']));
     }
 
     public function index(): AnonymousResourceCollection
@@ -61,6 +61,7 @@ class SermonController extends Controller
         }
 
         $sermon->update($validated);
+        $sermon->load(['series', 'creator']);
 
         return new SermonResource($sermon);
     }
