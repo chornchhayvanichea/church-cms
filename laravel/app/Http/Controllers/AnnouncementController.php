@@ -43,7 +43,6 @@ class AnnouncementController extends Controller
 
     public function destroy(Announcement $announcement): JsonResponse
     {
-
         $announcement->delete();
 
         return response()->json([

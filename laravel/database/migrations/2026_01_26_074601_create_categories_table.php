@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->enum('type', ['sermon_topic', 'event_topic'])->default('sermon_topic');
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

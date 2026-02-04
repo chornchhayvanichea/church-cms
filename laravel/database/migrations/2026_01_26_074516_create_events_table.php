@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('resgister_link')->nullable();
             $table->enum('status', ['upcoming', 'past', 'cancelled'])->default('upcoming');
 
+            $table->softDeletes();
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });

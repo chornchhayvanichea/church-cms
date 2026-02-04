@@ -39,6 +39,7 @@ return new class extends Migration
                 ->constrained('series')
                 ->cascadeOnDelete();
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

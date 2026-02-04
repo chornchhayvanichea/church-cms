@@ -25,12 +25,12 @@ class SeriesController extends Controller
         return new SeriesResource($series);
     }
 
-    public function store(SeriesStoreRequest $request, FileHandling $fileService): SeriesResource
+    public function store(SeriesStoreRequest $request, FileHandling $fileHandling): SeriesResource
     {
         $validated = $request->validated();
 
         if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
+            $validated['thumbnail'] = $fileHandling->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
         }
 
         $series = Series::create($validated);
@@ -38,18 +38,18 @@ class SeriesController extends Controller
         return new SeriesResource($series);
     }
 
-    public function update(SeriesUpdateRequest $request, FileHandling $fileService, Series $series): SeriesResource
+    public function update(SeriesUpdateRequest $request, FileHandling $fileHandling, Series $series): SeriesResource
     {
         $validated = $request->validated();
 
         if ($request->hasFile('thumbnail')) {
             if ($series->thumbnail) {
-                $fileService->deleteFile($series->thumbnail);
+                $fileHandling->deleteFile($series->thumbnail);
             }
-            $validated['thumbnail'] = $fileService->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
+            $validated['thumbnail'] = $fileHandling->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
         } elseif ($request->boolean('remove_thumbnail')) {
             if ($series->thumbnail) {
-                $fileService->deleteFile($series->thumbnail);
+                $fileHandling->deleteFile($series->thumbnail);
             }
             $validated['thumbnail'] = null;
         }
@@ -58,8 +58,11 @@ class SeriesController extends Controller
         return new SeriesResource($series);
     }
 
-    public function destroy(Series $series)
+    public function destroy(Series $series, FileHandling $fileHandling)
     {
+        if ($series->thumbnail) {
+            $fileHandling->deleteFile($series->thumbnail);
+        }
         $series->delete();
 
         return response()->json([

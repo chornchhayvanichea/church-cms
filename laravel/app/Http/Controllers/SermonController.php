@@ -65,8 +65,11 @@ class SermonController extends Controller
         return new SermonResource($sermon);
     }
 
-    public function destroy(Sermon $sermon): JsonResponse
+    public function destroy(Sermon $sermon, FileHandling $fileHandling): JsonResponse
     {
+        if ($sermon->thumbnail) {
+            $fileHandling->deleteFile($sermon->thumbnail);
+        }
         $sermon->delete();
 
         return response()->json([
