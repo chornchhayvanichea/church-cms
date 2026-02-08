@@ -18,6 +18,8 @@ interface _GlobalComponents {
   'AuthSignupComponent': typeof import("../../app/components/auth/SignupComponent.vue").default
   'DashboardNavbar': typeof import("../../app/components/dashboard/DashboardNavbar.vue").default
   'DashboardSidebar': typeof import("../../app/components/dashboard/DashboardSidebar.vue").default
+  'PublicSiteAppFooter': typeof import("../../app/components/publicSite/AppFooter.vue").default
+  'PublicSiteAppHeader': typeof import("../../app/components/publicSite/AppHeader.vue").default
   'UColorModeAvatar': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeAvatar.vue").default
   'UColorModeButton': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue").default
   'UColorModeImage': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeImage.vue").default
@@ -168,6 +170,8 @@ interface _GlobalComponents {
   'LazyAuthSignupComponent': LazyComponent<typeof import("../../app/components/auth/SignupComponent.vue").default>
   'LazyDashboardNavbar': LazyComponent<typeof import("../../app/components/dashboard/DashboardNavbar.vue").default>
   'LazyDashboardSidebar': LazyComponent<typeof import("../../app/components/dashboard/DashboardSidebar.vue").default>
+  'LazyPublicSiteAppFooter': LazyComponent<typeof import("../../app/components/publicSite/AppFooter.vue").default>
+  'LazyPublicSiteAppHeader': LazyComponent<typeof import("../../app/components/publicSite/AppHeader.vue").default>
   'LazyUColorModeAvatar': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeAvatar.vue").default>
   'LazyUColorModeButton': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue").default>
   'LazyUColorModeImage': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeImage.vue").default>

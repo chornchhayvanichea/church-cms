@@ -1,5 +1,5 @@
 <template>
-  <UContainer> hi</UContainer>
+  <UContainer> this is donate page </UContainer>
 </template>
 
 <script setup lang="ts"></script>

@@ -18,6 +18,8 @@ export const AuthLoginComponent: typeof import("../app/components/auth/LoginComp
 export const AuthSignupComponent: typeof import("../app/components/auth/SignupComponent.vue").default
 export const DashboardNavbar: typeof import("../app/components/dashboard/DashboardNavbar.vue").default
 export const DashboardSidebar: typeof import("../app/components/dashboard/DashboardSidebar.vue").default
+export const PublicSiteAppFooter: typeof import("../app/components/publicSite/AppFooter.vue").default
+export const PublicSiteAppHeader: typeof import("../app/components/publicSite/AppHeader.vue").default
 export const UColorModeAvatar: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeAvatar.vue").default
 export const UColorModeButton: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue").default
 export const UColorModeImage: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeImage.vue").default
@@ -168,6 +170,8 @@ export const LazyAuthLoginComponent: LazyComponent<typeof import("../app/compone
 export const LazyAuthSignupComponent: LazyComponent<typeof import("../app/components/auth/SignupComponent.vue").default>
 export const LazyDashboardNavbar: LazyComponent<typeof import("../app/components/dashboard/DashboardNavbar.vue").default>
 export const LazyDashboardSidebar: LazyComponent<typeof import("../app/components/dashboard/DashboardSidebar.vue").default>
+export const LazyPublicSiteAppFooter: LazyComponent<typeof import("../app/components/publicSite/AppFooter.vue").default>
+export const LazyPublicSiteAppHeader: LazyComponent<typeof import("../app/components/publicSite/AppHeader.vue").default>
 export const LazyUColorModeAvatar: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeAvatar.vue").default>
 export const LazyUColorModeButton: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue").default>
 export const LazyUColorModeImage: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeImage.vue").default>

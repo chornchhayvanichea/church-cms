@@ -4,8 +4,8 @@ import DashboardSidebar from "~/components/dashboard/DashboardSidebar.vue";
 
 <template>
   <UDashboardGroup>
-    <UDashboardSidebarToggle variant="subtle" />
     <DashboardSidebar />
+    <UDashboardSidebarToggle variant="subtle" />
     <slot />
   </UDashboardGroup>
 </template>

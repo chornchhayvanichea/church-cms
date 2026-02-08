@@ -1,5 +1,5 @@
 <template>
-  <UContainer> hi</UContainer>
+  <div>this is page page</div>
 </template>
 
 <script setup lang="ts"></script>
