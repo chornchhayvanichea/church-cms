@@ -3,7 +3,7 @@ import type { FooterColumn } from "@nuxt/ui";
 
 const columns: FooterColumn[] = [
   {
-    label: "Jesus saves You",
+    label: "Recent Posts",
     children: [
       {
         label: "idk bro",
@@ -11,15 +11,7 @@ const columns: FooterColumn[] = [
     ],
   },
   {
-    label: "Jesus saves You",
-    children: [
-      {
-        label: "idk bro",
-      },
-    ],
-  },
-  {
-    label: "Community",
+    label: "Contact Us",
     children: [
       {
         label: "Nuxters",
@@ -39,7 +31,7 @@ const columns: FooterColumn[] = [
     ],
   },
   {
-    label: "Solutions",
+    label: "Useful links",
     children: [
       {
         label: "Nuxt Content",
@@ -66,10 +58,19 @@ const columns: FooterColumn[] = [
 ];
 </script>
 <template>
-  <UFooter>
+  <UFooter class="bg-amber-950">
     <template #top>
       <UContainer>
-        <UFooterColumns :columns="columns" />
+        <UFooterColumns :columns="columns">
+          <template #left>
+            <h1 class="font-bold">Jesus saves you</h1>
+            <p class="text-xs w-full">
+              Semper vulputate quis, praesent, aenean lacus lorem sed ridiculus
+              porta non massa. Imperdiet diam, non, nulla ultricies ac lectus
+              arcu in fusce cras suspendisse. Aliquam.
+            </p>
+          </template>
+        </UFooterColumns>
       </UContainer>
     </template>
     <p class="text-muted text-[10px]">

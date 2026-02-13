@@ -583,7 +583,8 @@ const appConfig0 = defineAppConfig({
   ui: {
     footerColumns: {
       slots: {
-        root: "xl:grid xl:grid-cols-1 xl:gap-8 "
+        root: "xl:grid xl:grid-cols-3 xl:gap-8",
+        left: "mb-10 xl:mb-0 max-w-md [&_p]:text-gray-500"
       }
     }
   }
@@ -2337,6 +2338,23 @@ async function errorHandler(error, event) {
   // H3 will handle fallback
 }
 
+const script$1 = `
+if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
+  Object.defineProperty(window, '__NUXT_DEVTOOLS_TIME_METRIC__', {
+    value: {},
+    enumerable: false,
+    configurable: true,
+  })
+}
+window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
+`;
+
+const _hEsUM9r6GInge4T4VLOD8VutMp8StkWPFb2ym6imqw = (function(nitro) {
+  nitro.hooks.hook("render:html", (htmlContext) => {
+    htmlContext.head.push(`<script>${script$1}<\/script>`);
+  });
+});
+
 const rootDir = "/home/chea/personal-project/church-cms/nuxt-app";
 
 const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[],"style":[],"script":[],"noscript":[]};
@@ -2448,26 +2466,12 @@ const _PICiZKDjWIz51XyYAdScqeq7LEgaQWP72CrEX37qAY = (function(nitro) {
 });
 
 const plugins = [
-  _JySfkN_GljeL65dYtyNcY36R5pswg9IEnC57i5Q2mEA,
+  _hEsUM9r6GInge4T4VLOD8VutMp8StkWPFb2ym6imqw,
+_JySfkN_GljeL65dYtyNcY36R5pswg9IEnC57i5Q2mEA,
 _PICiZKDjWIz51XyYAdScqeq7LEgaQWP72CrEX37qAY
 ];
 
-const assets = {
-  "/index.mjs": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1cdc3-50UlW1NHg5FfnVgbxdgEsBiXDS4\"",
-    "mtime": "2026-02-08T16:40:03.196Z",
-    "size": 118211,
-    "path": "index.mjs"
-  },
-  "/index.mjs.map": {
-    "type": "application/json",
-    "etag": "\"6e23d-3mHvxlnCU3b+J/fnnTp20V/OBmI\"",
-    "mtime": "2026-02-08T16:40:03.196Z",
-    "size": 451133,
-    "path": "index.mjs.map"
-  }
-};
+const assets = {};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));

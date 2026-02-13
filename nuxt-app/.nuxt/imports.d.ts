@@ -47,3 +47,5 @@ export { formOptionsInjectionKey, formBusInjectionKey, formStateInjectionKey, fo
 export { localeContextInjectionKey, useLocale } from '../node_modules/@nuxt/ui/dist/runtime/composables/useLocale';
 export { portalTargetInjectionKey, usePortal } from '../node_modules/@nuxt/ui/dist/runtime/composables/usePortal';
 export { useColorMode } from '../node_modules/@nuxtjs/color-mode/dist/runtime/composables';
+export { useMusicFlow } from '../node_modules/nuxt-music-flow/dist/runtime/composables/useMusicFlow';
+export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';

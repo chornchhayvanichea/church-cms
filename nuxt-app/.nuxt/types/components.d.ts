@@ -20,6 +20,7 @@ interface _GlobalComponents {
   'DashboardSidebar': typeof import("../../app/components/dashboard/DashboardSidebar.vue").default
   'PublicSiteAppFooter': typeof import("../../app/components/publicSite/AppFooter.vue").default
   'PublicSiteAppHeader': typeof import("../../app/components/publicSite/AppHeader.vue").default
+  'PublicSiteAudioComponent': typeof import("../../app/components/publicSite/audioComponent.vue").default
   'UColorModeAvatar': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeAvatar.vue").default
   'UColorModeButton': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue").default
   'UColorModeImage': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeImage.vue").default
@@ -141,6 +142,7 @@ interface _GlobalComponents {
   'UTree': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/Tree.vue").default
   'UUser': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/User.vue").default
   'ULocaleSelect': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/locale/LocaleSelect.vue").default
+  'MusicFlow': typeof import("../../node_modules/nuxt-music-flow/dist/runtime/components/MusicFlow.vue").default
   'NuxtWelcome': typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue").default
   'NuxtLayout': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout").default
   'NuxtErrorBoundary': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default
@@ -172,6 +174,7 @@ interface _GlobalComponents {
   'LazyDashboardSidebar': LazyComponent<typeof import("../../app/components/dashboard/DashboardSidebar.vue").default>
   'LazyPublicSiteAppFooter': LazyComponent<typeof import("../../app/components/publicSite/AppFooter.vue").default>
   'LazyPublicSiteAppHeader': LazyComponent<typeof import("../../app/components/publicSite/AppHeader.vue").default>
+  'LazyPublicSiteAudioComponent': LazyComponent<typeof import("../../app/components/publicSite/audioComponent.vue").default>
   'LazyUColorModeAvatar': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeAvatar.vue").default>
   'LazyUColorModeButton': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue").default>
   'LazyUColorModeImage': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeImage.vue").default>
@@ -293,6 +296,7 @@ interface _GlobalComponents {
   'LazyUTree': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/Tree.vue").default>
   'LazyUUser': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/User.vue").default>
   'LazyULocaleSelect': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/locale/LocaleSelect.vue").default>
+  'LazyMusicFlow': LazyComponent<typeof import("../../node_modules/nuxt-music-flow/dist/runtime/components/MusicFlow.vue").default>
   'LazyNuxtWelcome': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue").default>
   'LazyNuxtLayout': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout").default>
   'LazyNuxtErrorBoundary': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default>

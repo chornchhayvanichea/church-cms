@@ -20,6 +20,7 @@ export const DashboardNavbar: typeof import("../app/components/dashboard/Dashboa
 export const DashboardSidebar: typeof import("../app/components/dashboard/DashboardSidebar.vue").default
 export const PublicSiteAppFooter: typeof import("../app/components/publicSite/AppFooter.vue").default
 export const PublicSiteAppHeader: typeof import("../app/components/publicSite/AppHeader.vue").default
+export const PublicSiteAudioComponent: typeof import("../app/components/publicSite/audioComponent.vue").default
 export const UColorModeAvatar: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeAvatar.vue").default
 export const UColorModeButton: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue").default
 export const UColorModeImage: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeImage.vue").default
@@ -141,6 +142,7 @@ export const UTooltip: typeof import("../node_modules/@nuxt/ui/dist/runtime/comp
 export const UTree: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/Tree.vue").default
 export const UUser: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/User.vue").default
 export const ULocaleSelect: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/locale/LocaleSelect.vue").default
+export const MusicFlow: typeof import("../node_modules/nuxt-music-flow/dist/runtime/components/MusicFlow.vue").default
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue").default
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout").default
 export const NuxtErrorBoundary: typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default
@@ -172,6 +174,7 @@ export const LazyDashboardNavbar: LazyComponent<typeof import("../app/components
 export const LazyDashboardSidebar: LazyComponent<typeof import("../app/components/dashboard/DashboardSidebar.vue").default>
 export const LazyPublicSiteAppFooter: LazyComponent<typeof import("../app/components/publicSite/AppFooter.vue").default>
 export const LazyPublicSiteAppHeader: LazyComponent<typeof import("../app/components/publicSite/AppHeader.vue").default>
+export const LazyPublicSiteAudioComponent: LazyComponent<typeof import("../app/components/publicSite/audioComponent.vue").default>
 export const LazyUColorModeAvatar: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeAvatar.vue").default>
 export const LazyUColorModeButton: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue").default>
 export const LazyUColorModeImage: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeImage.vue").default>
@@ -293,6 +296,7 @@ export const LazyUTooltip: LazyComponent<typeof import("../node_modules/@nuxt/ui
 export const LazyUTree: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/Tree.vue").default>
 export const LazyUUser: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/User.vue").default>
 export const LazyULocaleSelect: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/locale/LocaleSelect.vue").default>
+export const LazyMusicFlow: LazyComponent<typeof import("../node_modules/nuxt-music-flow/dist/runtime/components/MusicFlow.vue").default>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue").default>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout").default>
 export const LazyNuxtErrorBoundary: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default>

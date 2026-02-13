@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\FileHandling;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -18,24 +19,29 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): Response
+    private const USER_IMAGE_DIR = 'User/images';
+
+    public function store(Request $request, FileHandling $fileHandling): UserResource
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'image' => ['nullable', 'mimes:png,jpeg,jpg,gif,webp', 'max:5126'],
         ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $fileHandling->uploadFile($request->file('image'), self::USER_IMAGE_DIR);
+        }
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->string('password')),
+            ...$validated,
+            'password' => Hash::make($validated['password']),
         ]);
-
         event(new Registered($user));
 
         Auth::login($user);
 
-        return response()->noContent();
+        return new UserResource($user);
     }
 }
