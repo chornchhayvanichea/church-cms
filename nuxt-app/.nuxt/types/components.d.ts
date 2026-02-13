@@ -142,7 +142,6 @@ interface _GlobalComponents {
   'UTree': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/Tree.vue").default
   'UUser': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/User.vue").default
   'ULocaleSelect': typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/locale/LocaleSelect.vue").default
-  'MusicFlow': typeof import("../../node_modules/nuxt-music-flow/dist/runtime/components/MusicFlow.vue").default
   'NuxtWelcome': typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue").default
   'NuxtLayout': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout").default
   'NuxtErrorBoundary': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default
@@ -296,7 +295,6 @@ interface _GlobalComponents {
   'LazyUTree': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/Tree.vue").default>
   'LazyUUser': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/User.vue").default>
   'LazyULocaleSelect': LazyComponent<typeof import("../../node_modules/@nuxt/ui/dist/runtime/components/locale/LocaleSelect.vue").default>
-  'LazyMusicFlow': LazyComponent<typeof import("../../node_modules/nuxt-music-flow/dist/runtime/components/MusicFlow.vue").default>
   'LazyNuxtWelcome': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue").default>
   'LazyNuxtLayout': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout").default>
   'LazyNuxtErrorBoundary': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default>

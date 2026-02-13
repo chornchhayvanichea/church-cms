@@ -139,7 +139,6 @@ declare global {
   const useLoadingIndicator: typeof import('../../node_modules/nuxt/dist/app/composables/loading-indicator').useLoadingIndicator
   const useLocale: typeof import('../../node_modules/@nuxt/ui/dist/runtime/composables/useLocale').useLocale
   const useModel: typeof import('vue').useModel
-  const useMusicFlow: typeof import('../../node_modules/nuxt-music-flow/dist/runtime/composables/useMusicFlow').useMusicFlow
   const useNuxtApp: typeof import('../../node_modules/nuxt/dist/app/nuxt').useNuxtApp
   const useNuxtData: typeof import('../../node_modules/nuxt/dist/app/composables/asyncData').useNuxtData
   const useNuxtDevTools: typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools').useNuxtDevTools
@@ -358,7 +357,6 @@ declare module 'vue' {
     readonly useLoadingIndicator: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/loading-indicator')['useLoadingIndicator']>
     readonly useLocale: UnwrapRef<typeof import('../../node_modules/@nuxt/ui/dist/runtime/composables/useLocale')['useLocale']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
-    readonly useMusicFlow: UnwrapRef<typeof import('../../node_modules/nuxt-music-flow/dist/runtime/composables/useMusicFlow')['useMusicFlow']>
     readonly useNuxtApp: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/nuxt')['useNuxtApp']>
     readonly useNuxtData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useNuxtData']>
     readonly useNuxtDevTools: UnwrapRef<typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools')['useNuxtDevTools']>

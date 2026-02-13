@@ -142,7 +142,6 @@ export const UTooltip: typeof import("../node_modules/@nuxt/ui/dist/runtime/comp
 export const UTree: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/Tree.vue").default
 export const UUser: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/User.vue").default
 export const ULocaleSelect: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/locale/LocaleSelect.vue").default
-export const MusicFlow: typeof import("../node_modules/nuxt-music-flow/dist/runtime/components/MusicFlow.vue").default
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue").default
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout").default
 export const NuxtErrorBoundary: typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default
@@ -296,7 +295,6 @@ export const LazyUTooltip: LazyComponent<typeof import("../node_modules/@nuxt/ui
 export const LazyUTree: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/Tree.vue").default>
 export const LazyUUser: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/User.vue").default>
 export const LazyULocaleSelect: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/locale/LocaleSelect.vue").default>
-export const LazyMusicFlow: LazyComponent<typeof import("../node_modules/nuxt-music-flow/dist/runtime/components/MusicFlow.vue").default>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue").default>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout").default>
 export const LazyNuxtErrorBoundary: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default>
