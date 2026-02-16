@@ -1,5 +1,12 @@
 export default defineAppConfig({
   ui: {
+    pageHero: {
+      slots: {
+        title:
+          "text-5xl sm:text-7xl text-pretty tracking-tight font-bold text-highlighted text-white",
+        description: "text-lg sm:text-xl/8 text-muted text-gray-300",
+      },
+    },
     input: {
       variants: {
         size: {

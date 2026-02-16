@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { ButtonProps } from "@nuxt/ui";
 import churchBuilding from "../assets/images/crosswheat.jpg";
 
 // Page metadata
@@ -50,66 +49,18 @@ const serviceTimes = [
     services: [{ time: "7:00 PM", type: "Bible Study & Prayer" }],
   },
 ];
-
-// Form state
-const formData = ref({
-  name: "",
-  email: "",
-  phone: "",
-  message: "",
-});
-
-const handleSubmit = () => {
-  // Handle form submission logic here
-  console.log("Form submitted:", formData.value);
-  // You can add actual form submission logic later
-};
 </script>
 
 <template>
   <div class="overflow-hidden">
     <!-- HERO SECTION -->
     <UPageHero
-      title="Get In Touch"
-      description="We'd love to hear from you. Whether you have questions, prayer requests, or just want to say hello, reach out to us."
-      :style="{ backgroundImage: `url(${churchBuilding})` }"
-      class="bg-cover bg-center"
-      orientation="horizontal"
+      title="Contact"
+      class="bg-cover bg-center bg-fixed min-h-[50%]"
+      :style="{
+        backgroundImage: `linear-gradient(rgba(255,255 , 255, 0.2), rgba(0, 0, 0, 0.5)), url(${churchBuilding})`,
+      }"
     />
-
-    <!-- CONTACT INFORMATION SECTION -->
-    <UPageSection
-      title="Contact Information"
-      headline="Reach Out"
-      description="Feel free to contact us using any of the methods below. We're here to help and answer any questions you may have."
-    >
-      <div class="grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
-        <div
-          v-for="info in contactInfo"
-          :key="info.label"
-          class="bg-white p-6 rounded-lg shadow-sm text-center"
-        >
-          <div class="flex justify-center mb-4">
-            <div
-              class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center"
-            >
-              <UIcon :name="info.icon" class="w-6 h-6 text-amber-600" />
-            </div>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">
-            {{ info.label }}
-          </h3>
-          <a
-            v-if="info.link"
-            :href="info.link"
-            class="text-gray-600 hover:text-amber-600 transition-colors"
-          >
-            {{ info.value }}
-          </a>
-          <p v-else class="text-gray-600">{{ info.value }}</p>
-        </div>
-      </div>
-    </UPageSection>
 
     <!-- CONTACT FORM & MAP SECTION -->
     <UPageSection
@@ -122,13 +73,13 @@ const handleSubmit = () => {
         <!-- Contact Form -->
         <div class="space-y-4">
           <UFormField>
-            <UInput placeholder="Enter your email" size="big" />
+            <UInput placeholder="Name" size="big" />
           </UFormField>
           <UFormField>
-            <UInput placeholder="Enter your name" size="big" />
+            <UInput placeholder="Email" size="big" />
           </UFormField>
           <UFormField>
-            <UInput placeholder="Enter your Subject" size="big" />
+            <UInput placeholder="Subject" size="big" />
           </UFormField>
           <UFormField>
             <UTextarea placeholder="Enter your message" :cols="43" :rows="7" />
@@ -155,41 +106,5 @@ const handleSubmit = () => {
         </div>
       </div>
     </UPageSection>
-
-    <!-- SERVICE TIMES SECTION -->
-    <UPageSection
-      title="Service Times"
-      headline="Join Us"
-      description="All are welcome to join us for worship and fellowship. We look forward to seeing you!"
-    >
-      <div class="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
-        <div
-          v-for="schedule in serviceTimes"
-          :key="schedule.day"
-          class="bg-white p-8 rounded-lg shadow-sm"
-        >
-          <div class="flex items-center gap-3 mb-4">
-            <UIcon name="i-lucide-calendar" class="w-6 h-6 text-amber-600" />
-            <h3 class="text-xl font-bold text-gray-900">{{ schedule.day }}</h3>
-          </div>
-          <div class="space-y-2">
-            <div
-              v-for="service in schedule.services"
-              :key="service.time"
-              class="text-gray-600"
-            >
-              <span class="font-semibold">{{ service.time }}</span> -
-              {{ service.type }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </UPageSection>
-
-    <!-- CTA SECTION -->
-    <UPageCTA
-      title="New Here?"
-      description="We'd love to welcome you this Sunday! No matter where you are in your faith journey, you belong here."
-    />
   </div>
 </template>

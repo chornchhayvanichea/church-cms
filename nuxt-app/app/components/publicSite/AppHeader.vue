@@ -52,7 +52,6 @@ const items = computed<NavigationMenuItem[]>(() => [
         <Icon name="lucide:search" />
       </UButton>
 
-      <UColorModeButton />
       <UModal v-model:open="openSearchModal">
         <template #content>
           <UCommandPalette class="h-48 m-4" />

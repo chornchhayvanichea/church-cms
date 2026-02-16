@@ -62,12 +62,13 @@ const ctaLinks = ref<ButtonProps[]>([
 <template>
   <div class="overflow-hidden">
     <!-- HERO SECTION -->
+    <!--      description="We are a faith community dedicated to knowing God, growing in Christ, and serving others with love and compassion." -->
     <UPageHero
-      title="About Our Church"
-      description="We are a faith community dedicated to knowing God, growing in Christ, and serving others with love and compassion."
-      :style="{ backgroundImage: `url(${churchBuilding})` }"
-      class="bg-cover bg-center"
-      orientation="horizontal"
+      title="About Us"
+      class="bg-cover bg-center bg-fixed min-h-[50%]"
+      :style="{
+        backgroundImage: `linear-gradient(rgba(255,255 , 255, 0.2), rgba(0, 0, 0, 0.5)), url(${churchBuilding})`,
+      }"
     />
 
     <!-- OUR MISSION SECTION -->
@@ -143,43 +144,12 @@ const ctaLinks = ref<ButtonProps[]>([
       </div>
     </UPageSection>
 
-    <!-- SERVICE TIMES SECTION -->
-    <UPageSection
-      title="Service Times"
-      headline="Join Us"
-      description="We'd love to see you this Sunday! All are welcome to experience authentic worship and fellowship."
-      class="bg-gray-100"
-    >
-      <div class="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
-        <div class="bg-white p-8 rounded-lg shadow-sm">
-          <div class="flex items-center gap-3 mb-4">
-            <UIcon name="i-lucide-church" class="w-6 h-6 text-amber-600" />
-            <h3 class="text-xl font-bold text-gray-900">Sunday Worship</h3>
-          </div>
-          <p class="text-gray-600 text-lg">
-            <span class="font-semibold">9:00 AM</span> - Traditional Service
-          </p>
-          <p class="text-gray-600 text-lg">
-            <span class="font-semibold">11:00 AM</span> - Contemporary Service
-          </p>
-        </div>
-        <div class="bg-white p-8 rounded-lg shadow-sm">
-          <div class="flex items-center gap-3 mb-4">
-            <UIcon name="i-lucide-book-open" class="w-6 h-6 text-amber-600" />
-            <h3 class="text-xl font-bold text-gray-900">Wednesday Evening</h3>
-          </div>
-          <p class="text-gray-600 text-lg">
-            <span class="font-semibold">7:00 PM</span> - Bible Study & Prayer
-          </p>
-        </div>
-      </div>
-    </UPageSection>
-
     <!-- CTA FINAL SECTION -->
     <UPageCTA
       title="Ready to Join Our Community?"
       description="We'd love to meet you! Experience authentic worship, spiritual growth, and meaningful fellowship with us."
       :links="ctaLinks"
+      class="bg-gray-100"
     />
   </div>
 </template>

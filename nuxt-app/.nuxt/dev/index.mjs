@@ -581,6 +581,12 @@ const defineAppConfig = (config) => config;
 
 const appConfig0 = defineAppConfig({
   ui: {
+    pageHero: {
+      slots: {
+        title: "text-5xl sm:text-7xl text-pretty tracking-tight font-bold text-highlighted text-white",
+        description: "text-lg sm:text-xl/8 text-muted text-gray-300"
+      }
+    },
     input: {
       variants: {
         size: {
@@ -2488,16 +2494,16 @@ _PICiZKDjWIz51XyYAdScqeq7LEgaQWP72CrEX37qAY
 const assets = {
   "/index.mjs": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"1ce5c-9VFNS3psPshLCnBQAhsRLRFkxsk\"",
-    "mtime": "2026-02-16T09:23:32.552Z",
-    "size": 118364,
+    "etag": "\"1cf37-9FwKUJW9tiqZOlO9eiKmJlXI/Tc\"",
+    "mtime": "2026-02-16T13:55:59.025Z",
+    "size": 118583,
     "path": "index.mjs"
   },
   "/index.mjs.map": {
     "type": "application/json",
-    "etag": "\"6dfef-CXYJX17SZQ8AosjzE1+rvQ8CIMA\"",
-    "mtime": "2026-02-16T09:23:32.553Z",
-    "size": 450543,
+    "etag": "\"6e3aa-hpe6KsDANcqHst/jlr+7XI3dAb0\"",
+    "mtime": "2026-02-16T13:55:59.026Z",
+    "size": 451498,
     "path": "index.mjs.map"
   }
 };

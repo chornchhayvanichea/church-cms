@@ -113,11 +113,13 @@ const ctaLinks = ref<ButtonProps[]>([
   <div class="overflow-hidden">
     <!-- HERO SECTION -->
     <UPageHero
-      title="Jesus Saves You"
-      description="Penatibus pretium id, eros convallis tempor id nunc vel eu, finibus pharetra. Nullam libero nibh diam, tristique, arcu gravida quam diam lorem varius urna. Tempor."
+      title="jesus saves you"
+      description="penatibus pretium id, eros convallis tempor id nunc vel eu, finibus pharetra. nullam libero nibh diam, tristique, arcu gravida quam diam lorem varius urna. tempor."
       :links="links"
-      :style="{ backgroundImage: `url(${crosswheat})` }"
-      class="bg-cover bg-center"
+      class="bg-cover bg-center bg-fixed min-h-[90%]"
+      :style="{
+        backgroundImage: `linear-gradient(rgba(255,255 , 255, 0.2), rgba(0, 0, 0, 0.4)), url(${crosswheat})`,
+      }"
       orientation="horizontal"
     />
     <!-- MINISTRIES SECTION -->
@@ -190,14 +192,17 @@ const ctaLinks = ref<ButtonProps[]>([
     </UPageSection>
     <!-- LATEST SERMON SECTION -->
     <UPageSection
-      :style="{ backgroundImage: `url(${sermon})` }"
+      class="bg-cover bg-center bg-fixed min-h-[50%]"
+      :style="{
+        backgroundImage: `linear-gradient(rgba(255,255 , 255, 0.2), rgba(0, 0, 0, 0.4)), url(${sermon})`,
+      }"
       title="Latest Sermon"
       orientation="horizontal"
       headline="This week sermon"
       description="Eu, pellentesque ligula dui sed, velit consequat ac bibendum eleifend praesent erat. Odio nibh maximus ligula faucibus, nunc tincidunt leo tortor facilisis vitae ut. Velit pellentesque tortor a, eleifend, nec."
       :links="links"
       :ui="{
-        description: 'text-gray-300',
+        description: 'text-white',
         title: 'text-gray-100',
       }"
     />
