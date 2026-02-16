@@ -581,6 +581,20 @@ const defineAppConfig = (config) => config;
 
 const appConfig0 = defineAppConfig({
   ui: {
+    input: {
+      variants: {
+        size: {
+          big: {
+            base: "px-6 py-2 w-sm text-base gap-2",
+            leading: "ps-3",
+            trailing: "pe-3",
+            leadingIcon: "size-6",
+            leadingAvatarSize: "xs",
+            trailingIcon: "size-6"
+          }
+        }
+      }
+    },
     footerColumns: {
       slots: {
         root: "xl:grid xl:grid-cols-3 xl:gap-8",
@@ -2471,7 +2485,22 @@ _JySfkN_GljeL65dYtyNcY36R5pswg9IEnC57i5Q2mEA,
 _PICiZKDjWIz51XyYAdScqeq7LEgaQWP72CrEX37qAY
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1ce5c-9VFNS3psPshLCnBQAhsRLRFkxsk\"",
+    "mtime": "2026-02-16T09:23:32.552Z",
+    "size": 118364,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"6dfef-CXYJX17SZQ8AosjzE1+rvQ8CIMA\"",
+    "mtime": "2026-02-16T09:23:32.553Z",
+    "size": 450543,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
