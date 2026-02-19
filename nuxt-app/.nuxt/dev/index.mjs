@@ -591,7 +591,7 @@ const appConfig0 = defineAppConfig({
       variants: {
         size: {
           big: {
-            base: "px-6 py-2 w-sm text-base gap-2",
+            base: "px-6 py-2 w-full sm:w-sm text-base gap-2",
             leading: "ps-3",
             trailing: "pe-3",
             leadingIcon: "size-6",
@@ -2494,16 +2494,16 @@ _PICiZKDjWIz51XyYAdScqeq7LEgaQWP72CrEX37qAY
 const assets = {
   "/index.mjs": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"1cf37-9FwKUJW9tiqZOlO9eiKmJlXI/Tc\"",
-    "mtime": "2026-02-16T13:55:59.025Z",
-    "size": 118583,
+    "etag": "\"1cf41-03tNiUT1qw6qwaR50Fzbk/R1Ifc\"",
+    "mtime": "2026-02-19T12:12:53.219Z",
+    "size": 118593,
     "path": "index.mjs"
   },
   "/index.mjs.map": {
     "type": "application/json",
-    "etag": "\"6e3aa-hpe6KsDANcqHst/jlr+7XI3dAb0\"",
-    "mtime": "2026-02-16T13:55:59.026Z",
-    "size": 451498,
+    "etag": "\"6e3dc-kC3+4a1M3JhB9TXCP2kg54Of6bo\"",
+    "mtime": "2026-02-19T12:12:53.219Z",
+    "size": 451548,
     "path": "index.mjs.map"
   }
 };

@@ -11,7 +11,7 @@ export default defineAppConfig({
       variants: {
         size: {
           big: {
-            base: "px-6 py-2 w-sm text-base gap-2",
+            base: "px-6 py-2 w-full sm:w-sm text-base gap-2",
             leading: "ps-3",
             trailing: "pe-3",
             leadingIcon: "size-6",
