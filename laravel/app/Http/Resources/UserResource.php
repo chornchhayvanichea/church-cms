@@ -7,6 +7,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
+    protected string $type;
+
+    public function __construct($resource, string $type = 'full')
+    {
+        return parent::__construct($resource);
+        $this->type = $type;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -14,9 +22,18 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        if ($this->type = 'brief') {
+            return [
+                'id' => $this->name,
+                'image' => $this->image,
+                'name' => $this->name,
+            ];
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'email' => $this->email,
             'image' => $this->image,
             'role' => $this->role,
         ];

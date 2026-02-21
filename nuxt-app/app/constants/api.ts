@@ -3,10 +3,10 @@ const API = "/api";
 export const END_POINTS = {
   USER: `${API}/user`,
   AUTH: {
-    LOGIN: `${API}/login`,
+    LOGIN: "/login",
     LOGOUT: `${API}/logout`,
   },
   SANCTUM: {
-    CSRF: "/cookies-csrf",
+    CSRF: "/sanctum/csrf-cookie",
   },
 };

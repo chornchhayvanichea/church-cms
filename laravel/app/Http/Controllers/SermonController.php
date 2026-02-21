@@ -39,7 +39,7 @@ class SermonController extends Controller
             ...$validated,
             'created_by' => Auth::id(),
         ]);
-        $sermon->load(['series', 'creator']);
+        $sermon->load('creator');
 
         return new SermonResource($sermon);
     }

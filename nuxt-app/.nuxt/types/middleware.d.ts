@@ -1,5 +1,5 @@
 import type { NavigationGuard } from 'vue-router'
-export type MiddlewareKey = "dashboard"
+export type MiddlewareKey = "auth" | "dashboard"
 declare module 'nuxt/app' {
   interface PageMeta {
     middleware?: MiddlewareKey | NavigationGuard | Array<MiddlewareKey | NavigationGuard>
