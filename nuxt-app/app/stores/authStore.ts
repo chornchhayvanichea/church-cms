@@ -34,6 +34,7 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       await getCSRFCookie();
       await loginApi(data);
+      await getUser();
     } catch (e) {
       console.error(e);
     } finally {

@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import type { FormSubmitEvent, AuthFormField } from "@nuxt/ui";
 import z from "zod";
+
 const schema = z.object({
   email: z.email("Invalid email"),
   password: z
@@ -26,9 +27,16 @@ const schema = z.object({
 });
 type Schema = z.output<typeof schema>;
 
-function onSubmit(payload: FormSubmitEvent<Schema>) {
+const store = useAuthStore();
+
+async function onSubmit(payload: FormSubmitEvent<Schema>) {
+  await store.login(payload.data);
   console.log("Submitted", payload);
+  if (store.user) {
+    await navigateTo("/dashboard");
+  }
 }
+
 const fields: AuthFormField[] = [
   {
     name: "email",
