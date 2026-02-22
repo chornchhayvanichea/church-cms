@@ -5,21 +5,21 @@ export interface Sermon {
   title: string;
   slug: string;
   speaker: string;
-  sermonDate: string;
-  seriesId?: number;
+  sermon_date: string;
+  series_id?: number;
   description?: string;
   notes?: string;
-  scriptureReference?: string;
-  videoUrl?: string;
-  audioUrl?: string;
-  pdfUrl?: string;
+  scripture_reference?: string;
+  video_url?: string;
+  audio_url?: string;
+  pdf_url?: string;
   thumbnail?: string;
   status: Status;
-  viewCount: number;
-  createdBy: User;
-  publishedAt?: string;
-  createdAt: string;
-  updatedAt: string;
+  view_count: number;
+  created_by: User;
+  published_at?: string;
+  created_at: string;
+  updated_at: string;
 }
 enum Status {
   draft = "draft",

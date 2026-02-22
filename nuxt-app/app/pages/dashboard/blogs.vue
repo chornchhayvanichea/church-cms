@@ -1,5 +1,5 @@
 <template>
-  <div>this is users page</div>
+  <div>this is blog page</div>
 </template>
 
 <script setup lang="ts">
@@ -8,5 +8,3 @@ definePageMeta({
   middleware: "dashboard",
 });
 </script>
-
-<style scoped></style>

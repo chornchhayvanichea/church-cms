@@ -8,7 +8,7 @@ export const getCSRFCookie = () => {
   return api.get(END_POINTS.SANCTUM.CSRF);
 };
 export const getUserApi = () => {
-  return api.get<ApiResponse<User>>(END_POINTS.USER);
+  return api.get<ApiResponse<User>>(END_POINTS.USER.GET);
 };
 
 export const loginApi = async (data: LoginData) => {

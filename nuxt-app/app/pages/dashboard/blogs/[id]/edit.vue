@@ -1,5 +1,5 @@
 <template>
-  <div>this is users page</div>
+  <div>this is edit blog</div>
 </template>
 
 <script setup lang="ts">

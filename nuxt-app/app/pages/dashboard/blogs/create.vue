@@ -1,5 +1,5 @@
 <template>
-  <div>this is users page</div>
+  <div>this is ccreate blog</div>
 </template>
 
 <script setup lang="ts">

@@ -113,13 +113,14 @@ const items: NavigationMenuItem[][] = [
     <template #footer="{ collapsed }">
       <UButton
         :avatar="{
-          src: 'https://github.com/benjamincanac.png',
+          src: authStore.user?.image ?? 'https://github.com/benjamincanac.png',
         }"
-        :label="collapsed ? undefined : 'Benjamin'"
+        :label="collapsed ? undefined : authStore.user?.name"
         color="neutral"
         variant="ghost"
         class="w-full"
         :block="collapsed"
+        to="/dashboard/profile"
       />
     </template>
   </UDashboardSidebar>

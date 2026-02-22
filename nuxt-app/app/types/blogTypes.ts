@@ -1,4 +1,6 @@
-export interface Blogs {
+import type { User } from "./userTypes";
+
+export interface Blog {
   id: number;
   title: string;
   slug: string;
@@ -6,8 +8,9 @@ export interface Blogs {
   excerpt?: string;
   thumbnail?: string;
   status: Status;
-  authorId: number;
-  publishedAt: string;
+  author_id: number;
+  author: User;
+  published_at: string;
   createdAt: string;
   updatedAt: string;
 }
