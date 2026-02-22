@@ -3,7 +3,7 @@ const API = "/api";
 export const END_POINTS = {
   USER: `${API}/user`,
   AUTH: {
-    LOGIN: "/login",
+    LOGIN: `${API}/login`,
     LOGOUT: `${API}/logout`,
   },
   SANCTUM: {

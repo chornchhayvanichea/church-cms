@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+const authStore = useAuthStore();
+const handleLogout = async () => {
+  await authStore.logout();
+  if (authStore.user) {
+    await navigateTo("/dashboard");
+  }
+};
 const items: NavigationMenuItem[][] = [
   [
     {
@@ -9,39 +16,30 @@ const items: NavigationMenuItem[][] = [
       to: "/dashboard/",
     },
     {
-      label: "Announcements",
-      icon: "i-lucide-megaphone", // broadcast message
-      to: "/dashboard/announcements",
-    },
-    {
-      label: "Categories",
-      icon: "i-lucide-tags", // tagging / classification
-      to: "/dashboard/categories",
-    },
-    {
       label: "Events",
-      icon: "i-lucide-calendar-days", // schedule / dates
+      icon: "i-lucide-calendar-days",
       to: "/dashboard/events",
     },
     {
       label: "Sermons",
-      icon: "i-lucide-mic", // preaching / speaking
+      icon: "i-lucide-mic",
       //    badge: "4",
       to: "/dashboard/sermons",
     },
     {
-      label: "Pages",
-      icon: "i-lucide-note",
-      to: "/dashboard/pages",
+      label: "Blogs",
+      icon: "i-lucide-book",
+      to: "/dashboard/sermons",
     },
+
     {
       label: "Series",
-      icon: "i-lucide-layers", // grouped content / collection
+      icon: "i-lucide-layers",
       to: "/dashboard/series",
     },
     {
       label: "Users",
-      icon: "i-lucide-users", // people
+      icon: "i-lucide-users",
       to: "/dashboard/users",
     },
     {
@@ -56,6 +54,11 @@ const items: NavigationMenuItem[][] = [
           label: "Aboutpage settings",
         },
       ],
+    },
+    {
+      label: "Logout",
+      icon: "i-lucide-button",
+      onSelect: handleLogout,
     },
   ],
 ];

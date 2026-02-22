@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function authenticate(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->validated();
         if (! Auth::attempt($credentials)) {
@@ -29,7 +29,7 @@ class AuthController extends Controller
 
     public function user(Request $request): UserResource
     {
-        return new UserResource($request->user());
+        return new UserResource($request->user(), 'full');
     }
 
     public function logout(): JsonResponse

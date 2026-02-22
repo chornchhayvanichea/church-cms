@@ -1,4 +1,4 @@
-export type MiddlewareKey = "auth" | "dashboard"
+export type MiddlewareKey = "dashboard"
 declare module 'nitropack/types' {
   interface NitroRouteConfig {
     appMiddleware?: MiddlewareKey | MiddlewareKey[] | Record<MiddlewareKey, boolean>

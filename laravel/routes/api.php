@@ -6,7 +6,7 @@ use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\SermonController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('login', [AuthController::class, 'authenicate']);
+Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 

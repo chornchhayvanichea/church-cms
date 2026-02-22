@@ -11,7 +11,7 @@ class UserResource extends JsonResource
 
     public function __construct($resource, string $type = 'full')
     {
-        return parent::__construct($resource);
+        parent::__construct($resource);
         $this->type = $type;
     }
 
@@ -22,9 +22,9 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        if ($this->type = 'brief') {
+        if ($this->type === 'brief') {
             return [
-                'id' => $this->name,
+                'id' => $this->id,
                 'image' => $this->image,
                 'name' => $this->name,
             ];

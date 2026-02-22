@@ -12,6 +12,7 @@ export const getUserApi = () => {
 };
 
 export const loginApi = async (data: LoginData) => {
+  await getCSRFCookie();
   return api.post<ApiResponse<User>>(END_POINTS.AUTH.LOGIN, data);
 };
 export const logoutApi = () => {

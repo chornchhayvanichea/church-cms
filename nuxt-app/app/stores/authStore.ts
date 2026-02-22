@@ -21,7 +21,7 @@ export const useAuthStore = defineStore("auth", () => {
     loading.value = true;
     try {
       const response = await getUserApi();
-      user.value = response.data;
+      user.value = response.data.data;
       console.log(user.value);
     } catch (e) {
       console.error(e);
@@ -44,6 +44,7 @@ export const useAuthStore = defineStore("auth", () => {
   const logout = async () => {
     await logoutApi();
     user.value = null;
+    await navigateTo("/auth/login");
   };
   const values = {
     user,
