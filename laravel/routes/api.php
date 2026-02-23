@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\SermonController;
@@ -13,6 +14,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('series', SeriesController::class);
     Route::apiResource('sermons', SermonController::class);
     Route::apiResource('events', EventController::class);
+    Route::apiResource('blogs', BlogController::class);
 
     Route::get('user', [AuthController::class, 'user']);
 

@@ -24,19 +24,4 @@ class Blog extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    // Table blogs {
-    //  id bigint [pk, increment]
-    //  title varchar [not null]
-    //  slug varchar [unique, not null]
-    //  content longtext [not null, note: 'HTML content']
-    //  excerpt text
-    //  thumbnail varchar
-    //  status varchar [default: 'draft', note: 'draft, published, archived']
-    //  author_id bigint [not null]
-    //  published_at timestamp
-    //  created_at timestamp
-    //  updated_at timestamp
-    // }
-
 }
