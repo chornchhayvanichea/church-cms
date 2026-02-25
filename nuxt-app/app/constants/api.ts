@@ -7,9 +7,9 @@ export const END_POINTS = {
   BLOG: {
     STORE: `${API}/blogs`,
     INDEX: `${API}/blogs`,
-    SHOW: (id: number) => `${API}/blogs/${id}`,
-    UPDATE: (id: number) => `${API}/blogs/${id}`,
-    DESTROY: (id: number) => `${API}/blogs/${id}`,
+    SHOW: (id: number | string) => `${API}/blogs/${id}`,
+    UPDATE: (id: number | string) => `${API}/blogs/${id}`,
+    DESTROY: (id: number | string) => `${API}/blogs/${id}`,
   },
   AUTH: {
     LOGIN: `${API}/login`,

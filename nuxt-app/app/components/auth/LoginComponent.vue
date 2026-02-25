@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import type { FormSubmitEvent, AuthFormField } from "@nuxt/ui";
 import z from "zod";
+import { DASHBOARD_ROUTES } from "~/constants/routes";
 
 const schema = z.object({
   email: z.email("Invalid email"),
@@ -33,7 +34,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
   await store.login(payload.data);
   console.log("Submitted", payload);
   if (store.user) {
-    await navigateTo("/dashboard");
+    await navigateTo(DASHBOARD_ROUTES.ROOT);
   }
 }
 

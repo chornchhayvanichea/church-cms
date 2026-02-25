@@ -1,5 +1,5 @@
 <template>
-  <div>this is sermon page</div>
+  <div>this is main sermon page</div>
 </template>
 
 <script setup lang="ts">

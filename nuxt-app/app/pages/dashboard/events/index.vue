@@ -1,5 +1,5 @@
 <template>
-  <div>this is series page</div>
+  <div>this is main event page</div>
 </template>
 
 <script setup lang="ts">

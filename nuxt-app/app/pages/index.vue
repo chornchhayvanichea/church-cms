@@ -206,7 +206,7 @@ const ctaLinks = ref<ButtonProps[]>([
         title: 'text-gray-100',
       }"
     />
-    <!-- SERMON CAROUSEL -->
+    <!-- Latest Blogs-->
     <UPageSection
       headline="spiritual Growth"
       title="Latest News"

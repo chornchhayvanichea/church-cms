@@ -1,6 +1,6 @@
 /// <reference types="@nuxt/eslint" />
-/// <reference types="@nuxt/icon" />
 /// <reference types="@nuxt/ui" />
+/// <reference types="@nuxt/icon" />
 /// <reference types="@nuxtjs/color-mode" />
 /// <reference types="@pinia/nuxt" />
 /// <reference types="@nuxt/devtools" />

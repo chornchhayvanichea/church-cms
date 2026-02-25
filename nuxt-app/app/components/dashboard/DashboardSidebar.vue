@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from "@nuxt/ui";
+import { DASHBOARD_ROUTES } from "~/constants/routes";
 
 const authStore = useAuthStore();
 const handleLogout = async () => {
@@ -13,34 +14,36 @@ const items: NavigationMenuItem[][] = [
     {
       label: "Home",
       icon: "i-lucide-house",
-      to: "/dashboard/",
+      to: DASHBOARD_ROUTES.ROOT,
     },
     {
       label: "Events",
       icon: "i-lucide-calendar-days",
-      to: "/dashboard/events",
+      to: DASHBOARD_ROUTES.EVENTS,
     },
     {
       label: "Sermons",
       icon: "i-lucide-mic",
       //    badge: "4",
-      to: "/dashboard/sermons",
+
+      to: DASHBOARD_ROUTES.SERMONS,
     },
     {
       label: "Blogs",
       icon: "i-lucide-book",
-      to: "/dashboard/sermons",
+      to: DASHBOARD_ROUTES.BLOGS,
     },
 
     {
       label: "Series",
       icon: "i-lucide-layers",
-      to: "/dashboard/series",
+
+      to: DASHBOARD_ROUTES.SERIES,
     },
     {
       label: "Users",
       icon: "i-lucide-users",
-      to: "/dashboard/users",
+      to: DASHBOARD_ROUTES.USERS,
     },
     {
       label: "Settings",
@@ -80,6 +83,7 @@ const items: NavigationMenuItem[][] = [
     </template>
 
     <template #default="{ collapsed }">
+      <!--
       <UButton
         :label="collapsed ? undefined : 'Search...'"
         icon="i-lucide-search"
@@ -95,7 +99,7 @@ const items: NavigationMenuItem[][] = [
           </div>
         </template>
       </UButton>
-
+      -->
       <UNavigationMenu
         :collapsed="collapsed"
         :items="items[0]"
@@ -110,18 +114,8 @@ const items: NavigationMenuItem[][] = [
       />
     </template>
 
-    <template #footer="{ collapsed }">
-      <UButton
-        :avatar="{
-          src: authStore.user?.image ?? 'https://github.com/benjamincanac.png',
-        }"
-        :label="collapsed ? undefined : authStore.user?.name"
-        color="neutral"
-        variant="ghost"
-        class="w-full"
-        :block="collapsed"
-        to="/dashboard/profile"
-      />
+    <template #footer>
+      <UColorModeSwitch />
     </template>
   </UDashboardSidebar>
 </template>
