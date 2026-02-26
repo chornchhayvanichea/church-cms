@@ -13,4 +13,15 @@ export default defineNuxtConfig({
   colorMode: {
     preference: "light", // Sets the default theme to light mode
   },
+  vite: {
+    optimizeDeps: {
+      include: [
+        "@nuxt/ui > prosemirror-state",
+        "@nuxt/ui > prosemirror-transform",
+        "@nuxt/ui > prosemirror-model",
+        "@nuxt/ui > prosemirror-view",
+        "@nuxt/ui > prosemirror-gapcursor",
+      ],
+    },
+  },
 });

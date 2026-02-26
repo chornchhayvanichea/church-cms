@@ -14,6 +14,7 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 interface _GlobalComponents {
+  'EditorImageUploadNode': typeof import("../../app/components/EditorImageUploadNode.vue").default
   'AuthLoginComponent': typeof import("../../app/components/auth/LoginComponent.vue").default
   'AuthSignupComponent': typeof import("../../app/components/auth/SignupComponent.vue").default
   'DashboardNavbar': typeof import("../../app/components/dashboard/DashboardNavbar.vue").default
@@ -167,6 +168,7 @@ interface _GlobalComponents {
   'Html': typeof import("../../node_modules/nuxt/dist/head/runtime/components").Html
   'Body': typeof import("../../node_modules/nuxt/dist/head/runtime/components").Body
   'NuxtIsland': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island").default
+  'LazyEditorImageUploadNode': LazyComponent<typeof import("../../app/components/EditorImageUploadNode.vue").default>
   'LazyAuthLoginComponent': LazyComponent<typeof import("../../app/components/auth/LoginComponent.vue").default>
   'LazyAuthSignupComponent': LazyComponent<typeof import("../../app/components/auth/SignupComponent.vue").default>
   'LazyDashboardNavbar': LazyComponent<typeof import("../../app/components/dashboard/DashboardNavbar.vue").default>

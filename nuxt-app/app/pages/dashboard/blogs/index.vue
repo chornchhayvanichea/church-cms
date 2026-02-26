@@ -27,7 +27,7 @@
         </div>
         <div class="space-x-5 p-2">
           <UDashboardSearchButton collapsed size="md" />
-          <UButton to="/dashboard/blogs/new" class="w-full sm:w-auto">
+          <UButton :to="DASHBOARD_ROUTES.BLOGS_CREATE" class="w-full sm:w-auto">
             <UIcon name="i-heroicons-plus" />
             New
           </UButton>
@@ -37,7 +37,9 @@
     <!-- Empty State -->
     <div v-if="filteredPosts.length === 0" class="text-center py-12">
       <p class="text-gray-500 mb-4">No blog posts found</p>
-      <UButton to="/dashboard/blogs/new">Create your first blog post</UButton>
+      <UButton :to="DASHBOARD_ROUTES.BLOGS_CREATE"
+        >Create your first blog post</UButton
+      >
     </div>
 
     <!-- Blog Posts Grid -->
@@ -87,6 +89,8 @@
 </template>
 
 <script setup lang="ts">
+import { DASHBOARD_ROUTES } from "~/constants/routes";
+
 definePageMeta({
   layout: "dashboard",
   middleware: "dashboard",
