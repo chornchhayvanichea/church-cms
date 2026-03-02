@@ -45,6 +45,3 @@ laravel/vendor
 laravel/Homestead.json
 laravel/Homestead.yaml
 laravel/Thumbs.db
-
-laravel/.env
-laravel/.env.*
