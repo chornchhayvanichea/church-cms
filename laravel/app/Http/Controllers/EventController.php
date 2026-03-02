@@ -6,6 +6,7 @@ use App\Http\Requests\Event\EventStoreRequest;
 use App\Http\Requests\Event\EventUpdateRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
+use App\Services\FileHandling;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +17,7 @@ class EventController extends Controller
 
     public function show(Event $event): EventResource
     {
-        $event->load('creator');
-
-        return new EventResource($event);
+        return new EventResource($event->load('creator'));
     }
 
     public function index(): AnonymousResourceCollection
@@ -29,35 +28,35 @@ class EventController extends Controller
         return EventResource::collection($events);
     }
 
-    public function store(EventStoreRequest $request): EventResource
+    public function store(EventStoreRequest $request, FileHandling $fileHandling): EventResource
     {
         $validated = $request->validated();
-
+        if ($request->hasFile('image')) {
+            $validated['image'] = $fileHandling->uploadFile($request->file('image'), self::EVENT_IMAGE_DIR);
+        }
         $event = Event::create([
             ...$validated,
             'created_by' => Auth::id(),
         ]);
-        if ($request->hasFile('image')) {
-            $event->addMediaFromRequest('image');
-            $event->toMediaCollection(self::EVENT_IMAGE_DIR);
-        }
         $event->load('creator');
 
         return new EventResource($event);
     }
 
-    public function update(EventUpdateRequest $request, Event $event): EventResource
+    public function update(EventUpdateRequest $request, FileHandling $fileHandling, Event $event): EventResource
     {
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
-            $event->clearMediaCollection(self::EVENT_IMAGE_DIR);
-            $event->addMediaFromRequest('image');
-            $event->toMediaCollection(self::EVENT_IMAGE_DIR);
-        }
-
-        if ($request->boolean('remove_file')) {
-            $event->clearMediaCollection(self::EVENT_IMAGE_DIR);
+            if ($event->image) {
+                $fileHandling->deleteFile($event->image);
+            }
+            $validated['image'] = $fileHandling->uploadFile($request->file('image'), self::EVENT_IMAGE_DIR);
+        } elseif ($request->boolean('remove_file')) {
+            if ($event->image) {
+                $fileHandling->deleteFile($event->image);
+            }
+            $validated['image'] = null;
         }
         $event->update($validated);
         $event->load('creator');
@@ -65,9 +64,11 @@ class EventController extends Controller
         return new EventResource($event);
     }
 
-    public function destroy(Event $event): JsonResponse
+    public function destroy(Event $event, FileHandling $fileHandling): JsonResponse
     {
-        $event->clearMediaCollection(self::EVENT_IMAGE_DIR);
+        if ($event->image) {
+            $fileHandling->deleteFile($event->image);
+        }
         $event->delete();
 
         return response()->json([

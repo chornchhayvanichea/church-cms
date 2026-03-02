@@ -4,21 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Image\Enums\Fit;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Sermon extends Model implements HasMedia
+class Sermon extends Model
 {
-    use HasSlug,InteractsWithMedia,SoftDeletes;
-
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $this->addMediaConversion('preview')->fit(Fit::Contain, 300, 300)->nonQueued();
-    }
+    use HasSlug,SoftDeletes;
 
     public function getSlugOptions(): SlugOptions
     {

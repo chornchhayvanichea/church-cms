@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Announcement;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SignupRequest extends FormRequest
+class AnnouncementStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class SignupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['string', 'required', 'max:255'],
+            'content' => ['string', 'required'],
+            'start_date' => ['date', 'required'],
+            'end_date' => ['date', 'required'],
+            'priority' => ['nullable'],
         ];
     }
 }

@@ -6,12 +6,12 @@ use App\Http\Requests\Series\SeriesStoreRequest;
 use App\Http\Requests\Series\SeriesUpdateRequest;
 use App\Http\Resources\SeriesResource;
 use App\Models\Series;
-use Illuminate\Http\JsonResponse;
+use App\Services\FileHandling;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class SeriesController extends Controller
 {
-    private const SERIES_THUMBNAIL = 'Series/thumbnails';
+    private const SERIES_DIR = 'Series/thumbnails';
 
     public function index(): AnonymousResourceCollection
     {
@@ -25,32 +25,34 @@ class SeriesController extends Controller
         return new SeriesResource($series->load('creator'));
     }
 
-    public function store(SeriesStoreRequest $request): SeriesResource
+    public function store(SeriesStoreRequest $request, FileHandling $fileHandling): SeriesResource
     {
         $validated = $request->validated();
+
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $fileHandling->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
+        }
 
         $series = Series::create($validated);
         $series->load('creator');
 
-        if ($request->hasFile('thumbnail')) {
-            $series->addMediaFromRequest('thumbnail');
-            $series->toMediaCollection(self::SERIES_THUMBNAIL);
-        }
-
         return new SeriesResource($series);
     }
 
-    public function update(SeriesUpdateRequest $request, Series $series): SeriesResource
+    public function update(SeriesUpdateRequest $request, FileHandling $fileHandling, Series $series): SeriesResource
     {
         $validated = $request->validated();
 
         if ($request->hasFile('thumbnail')) {
-            $series->clearMediaCollection(self::SERIES_THUMBNAIL);
-            $series->addMediaFromRequest('thumbnail');
-            $series->toMediaCollection(self::SERIES_THUMBNAIL);
-        }
-        if ($request->boolean('remove_thumbnail')) {
-            $series->clearMediaCollection(self::SERIES_THUMBNAIL);
+            if ($series->thumbnail) {
+                $fileHandling->deleteFile($series->thumbnail);
+            }
+            $validated['thumbnail'] = $fileHandling->uploadFile($request->file('thumbnail'), self::SERIES_DIR);
+        } elseif ($request->boolean('remove_thumbnail')) {
+            if ($series->thumbnail) {
+                $fileHandling->deleteFile($series->thumbnail);
+            }
+            $validated['thumbnail'] = null;
         }
         $series->update($validated);
         $series->load('creator');
@@ -58,10 +60,11 @@ class SeriesController extends Controller
         return new SeriesResource($series);
     }
 
-    public function destroy(Series $series): JsonResponse
+    public function destroy(Series $series, FileHandling $fileHandling)
     {
-        $series->clearMediaCollection(self::SERIES_THUMBNAIL);
-
+        if ($series->thumbnail) {
+            $fileHandling->deleteFile($series->thumbnail);
+        }
         $series->delete();
 
         return response()->json([

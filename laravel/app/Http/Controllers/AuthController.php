@@ -3,19 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\SignupRequest;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    private const USER_AVATAR = 'User/avatar';
-
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->validated();
@@ -30,19 +25,6 @@ class AuthController extends Controller
             'message' => 'user has logged in successfully!',
             'success' => true,
         ]);
-    }
-
-    public function signup(SignupRequest $request)
-    {
-        $validated = $request->validated();
-        $user = User::create([
-            ...$validated,
-            'passowrd' => Hash::make($validated['passowrd']),
-        ]);
-        if ($user->hasFile('avatar')) {
-            $user->addMediaFormRequest('avatar');
-            $user->toMediaCollection(self::USER_AVATAR);
-        }
     }
 
     public function user(Request $request): UserResource
