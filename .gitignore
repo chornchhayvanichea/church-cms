@@ -1,0 +1,47 @@
+
+# Nuxt dev/build outputs
+nuxt-app/.output
+nuxt-app/.nuxt
+nuxt-app/.nitro
+nuxt-app/.cache
+nuxt-app/dist
+
+# Node
+nuxt-app/node_modules
+nuxt-app/*.log*
+nuxt-app/.pnpm-debug.log*
+
+# OS
+nuxt-app/.DS_Store
+nuxt-app/.fleet
+nuxt-app/.idea
+
+# Env files
+nuxt-app/.env
+nuxt-app/.env.*
+nuxt-app/!.env.example
+
+# Local development
+nuxt-app/*.local
+
+# Nuxt Generate
+nuxt-app/.vercel
+nuxt-app/.netlify
+
+laravel/.fleet
+laravel/.idea
+laravel/.nova
+laravel/.phpunit.cache
+laravel/.vscode
+laravel/.zed
+laravel/auth.json
+laravel/node_modules
+laravel/public/build
+laravel/public/hot
+laravel/public/storage
+laravel/storage/*.key
+laravel/storage/pail
+laravel/vendor
+laravel/Homestead.json
+laravel/Homestead.yaml
+laravel/Thumbs.db

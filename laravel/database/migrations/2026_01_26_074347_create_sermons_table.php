@@ -17,13 +17,9 @@ return new class extends Migration
             $table->dateTime('sermon_date');
 
             $table->text('description')->nullable();
-            $table->longText('note')->nullable();
+            $table->longText('notes')->nullable();
 
             $table->string('scripture_reference')->nullable();
-
-            $table->string('video_url')->nullable();
-            $table->string('pdf_url')->nullable();
-            $table->string('thumbnail')->nullable();
 
             $table->enum('status', ['draft', 'publish', 'archive'])->default('draft');
             $table->unsignedInteger('views_count')->default(0);

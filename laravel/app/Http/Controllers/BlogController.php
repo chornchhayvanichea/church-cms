@@ -6,17 +6,19 @@ use App\Http\Requests\Blog\BlogStoreRequest;
 use App\Http\Requests\Blog\BlogUpdateRequest;
 use App\Http\Resources\BlogResource;
 use App\Models\Blog;
-use App\Services\FileHandling;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
-    private const SERMON_THUMBNAIL = 'Sermon/thumbnail';
+    private const BLOG_THUMBNAIL = 'Blog/thumbnail';
 
     public function show(Blog $blog): BlogResource
     {
-        return new BlogResource($blog->with('author'));
+        $blog->load('author');
+
+        return new BlogResource($blog);
     }
 
     public function index(): AnonymousResourceCollection
@@ -24,36 +26,35 @@ class BlogController extends Controller
         return BlogResource::collection(Blog::with('author')->paginate(15));
     }
 
-    public function store(BlogStoreRequest $request, FileHandling $fileHandling): BlogResource
+    public function store(BlogStoreRequest $request): BlogResource
     {
         $validated = $request->validated();
 
-        if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $fileHandling->uploadFile($request->file('thumbnail'), self::SERMON_THUMBNAIL);
-        }
         $blog = Blog::create([
             ...$validated,
             'author_id' => Auth::id(),
         ]);
+        if ($request->hasFile('thumbnail')) {
+            $blog->addMediaFromRequest('thumbnail');
+            $blog->toMediaCollection(self::BLOG_THUMBNAIL);
+        }
+
         $blog->load('author');
 
         return new BlogResource($blog);
     }
 
-    public function updaet(BlogUpdateRequest $request, FileHandling $fileHandling, Blog $blog): BlogResource
+    public function update(BlogUpdateRequest $request, Blog $blog): BlogResource
     {
         $validated = $request->validated();
-
         if ($request->hasFile('thumbnail')) {
-            if ($blog->thumbnail) {
-                $fileHandling->deleteFile($blog->thumbnail);
-            }
-            $validated['thumbnail'] = $fileHandling->uploadFile($request->file('thumbnail'), self::SERMON_THUMBNAIL);
-        } elseif ($request->boolean('remove_file')) {
-            if ($blog->thumbnail) {
-                $fileHandling->deleteFile($blog->thumbnail);
-            }
-            $validated['thumbnail'] = null;
+
+            $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
+            $blog->addMediaFromRequest('thumbnail');
+            $blog->toMediaCollection(self::BLOG_THUMBNAIL);
+        }
+        if ($request->boolean('remove_file')) {
+            $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
         }
 
         $blog->update($validated);
@@ -62,11 +63,9 @@ class BlogController extends Controller
         return new BlogResource($blog);
     }
 
-    public function destroy(Blog $blog, FileHandling $fileHandling)
+    public function destroy(Blog $blog): JsonResponse
     {
-        if ($blog->thumbnail) {
-            $fileHandling->deleteFile($blog->thumbnail);
-        }
+        $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
         $blog->delete();
 
         return response()->json([
