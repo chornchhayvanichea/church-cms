@@ -8,7 +8,7 @@ use App\Http\Controllers\SermonController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
-
+Route::post('signup', [AuthController::class, 'signup']);
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('series', SeriesController::class);

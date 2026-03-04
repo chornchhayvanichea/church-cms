@@ -3,8 +3,9 @@ import {
   getUserApi,
   loginApi,
   logoutApi,
+  signupApi,
 } from "~/services/auth";
-import type { LoginData } from "~/types/authTypes";
+import type { LoginData, SignupData } from "~/types/authTypes";
 import type { User } from "~/types/userTypes";
 
 export const useAuthStore = defineStore("auth", () => {
@@ -17,6 +18,17 @@ export const useAuthStore = defineStore("auth", () => {
     return user.value != null;
   });
 
+  const signup = async (data: SignupData) => {
+    loading.value = true;
+    try {
+      const response = await signupApi(data);
+      console.log("success", response);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loading.value = false;
+    }
+  };
   const getUser = async () => {
     loading.value = true;
     try {
@@ -53,6 +65,7 @@ export const useAuthStore = defineStore("auth", () => {
     message,
     isLoggedIn,
     getUser,
+    signup,
     login,
     logout,
   };

@@ -14,6 +14,7 @@ export const END_POINTS = {
   AUTH: {
     LOGIN: `${API}/login`,
     LOGOUT: `${API}/logout`,
+    SIGNUP: `${API}/signup`,
   },
   SANCTUM: {
     CSRF: "/sanctum/csrf-cookie",
