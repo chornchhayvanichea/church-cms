@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('slug');
             $table->longText('content');
             $table->string('excerpt')->nullable();
-            $table->string('thumbnail')->nullable();
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
             $table->timestamp('published_at')->nullable();

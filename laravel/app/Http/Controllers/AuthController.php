@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -34,7 +35,19 @@ class AuthController extends Controller
     public function signup(SignupRequest $request)
     {
         $validated = $request->validated();
-        $user = User::create($validated);
+
+        $user = User::create([
+            ...$validated,
+            'password' => Hash::make($validated['password']),
+        ]);
+        if ($request->hasFile('avatar')) {
+            $user->addMediaFromRequest('avatar');
+            $user->toMediaCollection(self::USER_AVATAR);
+        }
+
+        return response()->json([
+            'message' => 'signup successfully',
+        ]);
     }
 
     public function user(Request $request): UserResource

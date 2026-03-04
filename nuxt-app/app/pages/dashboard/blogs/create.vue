@@ -13,7 +13,12 @@
       :ui="{ base: 'p-8 sm:px-16' }"
       class="w-full min-h-21"
     >
-      <UEditorToolbar :editor="editor" :items="items" layout="bubble" />
+      <UEditorToolbar
+        :editor="editor"
+        :items="items"
+        layout="bubble"
+        :should-show="({ editor }) => !editor.isActive('image')"
+      />
       <UEditorToolbar :editor="editor" :items="toolBarItems" />
       <UEditorDragHandle :editor="editor" />
       <UEditorMentionMenu
@@ -451,5 +456,3 @@ definePageMeta({
   middleware: "dashboard",
 });
 </script>
-
-<style scoped></style>

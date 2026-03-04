@@ -20,7 +20,6 @@ return new class extends Migration
             $table->time('end_time')->nullable();
 
             $table->string('location')->nullable();
-            $table->string('image')->nullable();
             $table->string('resgister_link')->nullable();
             $table->enum('status', ['upcoming', 'past', 'cancelled'])->default('upcoming');
 

@@ -6,14 +6,15 @@ use App\Http\Requests\Sermon\SermonStoreRequest;
 use App\Http\Requests\Sermon\SermonUpdateRequest;
 use App\Http\Resources\SermonResource;
 use App\Models\Sermon;
-use App\Services\FileHandling;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
 class SermonController extends Controller
 {
-    private const SERMON_DIR = 'Sermon/thumbnail';
+    private const SERMON_THUMBNAIL = 'Sermon/thumbnail';
+
+    private const SERMON_AUDIO = 'Sermon/audio';
 
     public function show(Sermon $sermon): SermonResource
     {
@@ -27,50 +28,45 @@ class SermonController extends Controller
         return SermonResource::collection($sermons);
     }
 
-    public function store(SermonStoreRequest $request, FileHandling $fileHandling): SermonResource
+    public function store(SermonStoreRequest $request): SermonResource
     {
         $validated = $request->validated();
-
-        if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $fileHandling->uploadFile($request->file('thumbnail'), self::SERMON_DIR);
-        }
 
         $sermon = Sermon::create([
             ...$validated,
             'created_by' => Auth::id(),
         ]);
+        if ($request->hasFile('thumbnail')) {
+            $sermon->addMediaFromRequest('thumbnail');
+            $sermon->toMediaCollection(self::SERMON_THUMBNAIL);
+        }
         $sermon->load('creator');
 
         return new SermonResource($sermon);
     }
 
-    public function update(SermonUpdateRequest $request, Sermon $sermon, FileHandling $fileHandling): SermonResource
+    public function update(SermonUpdateRequest $request, Sermon $sermon): SermonResource
     {
         $validated = $request->validated();
 
         if ($request->hasFile('thumbnail')) {
-            if ($sermon->thumbnail) {
-                $fileHandling->deleteFile($sermon->thumbnail);
-            }
-            $validated['thumbnail'] = $fileHandling->uploadFile($request->file('thumbnail'), self::SERMON_DIR);
-        } elseif ($request->boolean('remove_thumbnail')) {
-            if ($sermon->thumbnail) {
-                $fileHandling->deleteFile($sermon->thumbnail);
-            }
-            $validated['thumbnail'] = null;
+            $sermon->clearMediaCollection(self::SERMON_THUMBNAIL);
+            $sermon->addMediaFromRequest('thumbnail');
+            $sermon->toMediaCollection(self::SERMON_THUMBNAIL);
         }
-
+        if ($request->boolean('remove_thumbnail')) {
+            $sermon->clearMediaCollection(self::SERMON_THUMBNAIL);
+        }
         $sermon->update($validated);
         $sermon->load(['series', 'creator']);
 
         return new SermonResource($sermon);
     }
 
-    public function destroy(Sermon $sermon, FileHandling $fileHandling): JsonResponse
+    public function destroy(Sermon $sermon): JsonResponse
     {
-        if ($sermon->thumbnail) {
-            $fileHandling->deleteFile($sermon->thumbnail);
-        }
+
+        $sermon->clearMediaCollection(self::SERMON_THUMBNAIL);
         $sermon->delete();
 
         return response()->json([
