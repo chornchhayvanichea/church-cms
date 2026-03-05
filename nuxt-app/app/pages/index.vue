@@ -133,9 +133,7 @@ const ctaLinks = ref<ButtonProps[]>([
       class="bg-gray-100"
     />
     <!-- QUICK STATS SECTION -->
-    <section
-      class="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16"
-    >
+    <section class="bg-linear-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
       <UContainer>
         <div class="grid grid-cols-3 gap-4 sm:gap-8">
           <div v-for="stat in stats" :key="stat.label" class="text-center">

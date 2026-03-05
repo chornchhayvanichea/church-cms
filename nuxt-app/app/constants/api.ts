@@ -10,6 +10,7 @@ export const END_POINTS = {
     SHOW: (id: number | string) => `${API}/blogs/${id}`,
     UPDATE: (id: number | string) => `${API}/blogs/${id}`,
     DESTROY: (id: number | string) => `${API}/blogs/${id}`,
+    EDITOR_UPLOAD_IMAGE: `${API}/blogs/upload-editor-image`,
   },
   AUTH: {
     LOGIN: `${API}/login`,

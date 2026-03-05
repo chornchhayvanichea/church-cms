@@ -7,6 +7,7 @@ use App\Http\Requests\Blog\BlogUpdateRequest;
 use App\Http\Resources\BlogResource;
 use App\Models\Blog;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,22 +40,44 @@ class BlogController extends Controller
             $blog->toMediaCollection(self::BLOG_THUMBNAIL);
         }
 
+        auth()->user()->getMedia('editor-temp')->each(function ($media) use ($blog) {
+            $media->copy($blog, 'editor-images');
+        });
+
         $blog->load('author');
 
         return new BlogResource($blog);
     }
 
-    public function update(BlogUpdateRequest $request, Blog $blog): BlogResource
+    public function uploadEditorImage(Request $request): JsonResponse
+    {
+        $request->validate(['image' => 'required|image|max:2048']);
+        $media = auth()->user()->addMediaFromRequest('image')->toMediaCollection('editor-temp');
+
+        return response()->json([
+            'url' => $media->getUrl(),
+            'media_id' => $media->id,
+        ]);
+    }
+
+    public function update(blogupdaterequest $request, blog $blog): blogresource
     {
         $validated = $request->validated();
-        if ($request->hasFile('thumbnail')) {
+        if ($request->hasfile('thumbnail')) {
 
-            $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
-            $blog->addMediaFromRequest('thumbnail');
+            $blog->clearmediacollection(self::BLOG_THUMBNAIL);
+            $blog->addmediafromrequest('thumbnail');
             $blog->toMediaCollection(self::BLOG_THUMBNAIL);
         }
         if ($request->boolean('remove_file')) {
             $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
+        }
+
+        $oldMedia = $blog->getMedia('editor-images');
+        foreach ($oldMedia as $media) {
+            if (! str_contains($blog->content, $media->getUrl())) {
+                $media->delete();
+            }
         }
 
         $blog->update($validated);
@@ -66,6 +89,7 @@ class BlogController extends Controller
     public function destroy(Blog $blog): JsonResponse
     {
         $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
+        $blog->clearMediaCollection('editor-images');
         $blog->delete();
 
         return response()->json([

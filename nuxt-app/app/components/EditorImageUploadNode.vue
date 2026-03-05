@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { editorUploadImage } from "~/services/blogs";
 import type { NodeViewProps } from "@tiptap/vue-3";
 import { NodeViewWrapper } from "@tiptap/vue-3";
 
@@ -12,33 +13,28 @@ watch(file, async (newFile) => {
 
   loading.value = true;
 
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const dataUrl = e.target?.result as string;
-    if (!dataUrl) {
-      loading.value = false;
-      return;
-    }
+  try {
+    const response = await editorUploadImage(newFile);
 
-    // Simulate upload delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log(response.data);
+    const imageUrl = response.data.url;
 
     const pos = props.getPos();
     if (typeof pos !== "number") {
       loading.value = false;
       return;
     }
-
     props.editor
       .chain()
       .focus()
       .deleteRange({ from: pos, to: pos + 1 })
-      .setImage({ src: dataUrl })
+      .setImage({ src: imageUrl })
       .run();
-
+  } catch (e) {
+    console.error(e);
+  } finally {
     loading.value = false;
-  };
-  reader.readAsDataURL(newFile);
+  }
 });
 </script>
 

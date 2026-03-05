@@ -9,12 +9,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('signup', [AuthController::class, 'signup']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('series', SeriesController::class);
     Route::apiResource('sermons', SermonController::class);
     Route::apiResource('events', EventController::class);
     Route::apiResource('blogs', BlogController::class);
+
+    Route::post('blogs/upload-editor-image', [BlogController::class, 'uploadEditorImage']);
 
     Route::get('user', [AuthController::class, 'user']);
 

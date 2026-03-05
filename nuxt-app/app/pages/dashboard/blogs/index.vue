@@ -2,7 +2,7 @@
   <div class="container mx-auto px-7">
     <!-- Header -->
     <div
-      class="sticky top-0 z-50 mb-12 space-y-5 -mx-5 px-5 py-9 border-b border-gray-200 dark:border-gray-800"
+      class="sticky top-0 z-50 mb-12 space-y-5 -mx-5 px-5 py-9 dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800"
     >
       <div>
         <h1 class="text-4xl font-bold mb-2">Blogs Management</h1>

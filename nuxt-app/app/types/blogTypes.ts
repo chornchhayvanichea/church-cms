@@ -14,6 +14,10 @@ export interface Blog {
   createdAt: string;
   updatedAt: string;
 }
+export interface EditorImage {
+  url: string;
+  id: number;
+}
 enum Status {
   draft = "draft",
   published = "published",
