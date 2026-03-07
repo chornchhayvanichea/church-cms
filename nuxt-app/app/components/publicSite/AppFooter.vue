@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FooterColumn } from "@nuxt/ui";
+import { DASHBOARD_ROUTES } from "~/constants/routes";
 
 const columns: FooterColumn[] = [
   {
@@ -49,9 +50,9 @@ const columns: FooterColumn[] = [
         target: "_blank",
       },
       {
-        label: "Nuxt UI",
-        to: "https://ui.nuxt.com/",
-        target: "_blank",
+        label: "Staff Login",
+        to: DASHBOARD_ROUTES.AUTH_LOGIN,
+        target: "_self",
       },
     ],
   },

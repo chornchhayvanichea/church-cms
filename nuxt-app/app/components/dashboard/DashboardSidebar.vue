@@ -35,6 +35,10 @@ const items: NavigationMenuItem[][] = [
     },
 
     {
+      label: "Media",
+      to: DASHBOARD_ROUTES.MEDIA,
+    },
+    {
       label: "Series",
       icon: "i-lucide-layers",
 
@@ -56,11 +60,15 @@ const items: NavigationMenuItem[][] = [
         {
           label: "Aboutpage settings",
         },
+        {
+          label: "User Profile",
+          to: DASHBOARD_ROUTES.SETTINGS.PROFILE,
+        },
       ],
     },
     {
       label: "Logout",
-      icon: "i-lucide-button",
+      icon: "i-lucide-log-out",
       onSelect: handleLogout,
     },
   ],
@@ -112,10 +120,6 @@ const items: NavigationMenuItem[][] = [
         orientation="vertical"
         class="mt-auto"
       />
-    </template>
-
-    <template #footer>
-      <UColorModeSwitch />
     </template>
   </UDashboardSidebar>
 </template>

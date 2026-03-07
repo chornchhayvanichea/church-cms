@@ -19,10 +19,11 @@ const authStore = useAuthStore();
         </template>
 
         <template #right>
+          <UColorModeSelect />
           <UUser
             :name="authStore.user?.name"
             :description="authStore.user?.role"
-            :to="DASHBOARD_ROUTES.PROFILE"
+            :to="DASHBOARD_ROUTES.SETTINGS.PROFILE"
             :avatar="{
               src:
                 authStore.user?.image ??
@@ -32,7 +33,7 @@ const authStore = useAuthStore();
               color: 'primary',
               position: 'top-right',
             }"
-            class="mx-10"
+            class="mx-5"
           />
         </template>
       </UDashboardNavbar>
