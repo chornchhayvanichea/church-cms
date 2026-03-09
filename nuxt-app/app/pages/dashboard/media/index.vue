@@ -21,7 +21,7 @@ import ImagesList from "~/components/dashboard/media/ImagesList.vue";
 import RecentMediaList from "~/components/dashboard/media/RecentMediaList.vue";
 import VideosList from "~/components/dashboard/media/VideosList.vue";
 
-const activeTab = ref("recents");
+const activeTab = ref("Recents");
 const mediaTab = computed<NavigationMenuItem[][]>(() => [
   [
     {

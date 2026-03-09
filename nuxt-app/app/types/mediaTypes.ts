@@ -10,3 +10,14 @@ export interface Media {
   original_url: string;
   preview_url?: string;
 }
+enum MediaCollection {
+  image = "image",
+  audio = "audio",
+  video = "video",
+}
+export interface UploadData {
+  file: File;
+  collection: MediaCollection;
+  //            'file' => ['required', 'file', 'max:10240'],
+  //            'collection' => ['required', 'in:image,audio,video'],
+}

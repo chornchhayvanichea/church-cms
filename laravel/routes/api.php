@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\SermonController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('sermons', SermonController::class);
     Route::apiResource('events', EventController::class);
     Route::apiResource('blogs', BlogController::class);
+    Route::apiResource('media', MediaController::class)->only(['index', 'store', 'destroy']);
 
     Route::post('blogs/upload-editor-image', [BlogController::class, 'uploadEditorImage']);
 

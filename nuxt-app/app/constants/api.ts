@@ -4,6 +4,11 @@ export const END_POINTS = {
   USER: {
     GET: `${API}/user`,
   },
+  MEDIA: {
+    INDEX: `${API}/media`,
+    STORE: `${API}/media`,
+    DESTROY: (id: number | string) => `${API}/media/${id}`,
+  },
   BLOG: {
     STORE: `${API}/blogs`,
     INDEX: `${API}/blogs`,

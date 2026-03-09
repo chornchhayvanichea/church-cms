@@ -1,11 +1,24 @@
 <template>
-  <div>
+  <div class="space-y-5 p-5">
     <!-- Blog Posts Grid -->
+    <div class="flex items-center gap-2">
+      <div class="mr-auto flex gap-2">
+        <USelect v-model="sortValue" :items="sortItems" />
+        <UButton>Upload</UButton>
+      </div>
+
+      <UButton icon="i-lucide-grid-2x2" variant="outline" />
+      <UButton icon="i-lucide-list" variant="outline" />
+    </div>
     <div
       class="grid gap-3"
       style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))"
     >
-      <div v-for="post in filteredPosts" :key="post.id" class="relative group">
+      <div
+        v-for="image in filteredImages"
+        :key="image.id"
+        class="relative group"
+      >
         <UCard
           :ui="{
             root: 'rounded-none',
@@ -13,7 +26,7 @@
           }"
           variant="soft"
         >
-          <img :src="post.image" class="w-full h-48 object-cover" />
+          <img :src="image.original_url" class="w-full h-48 object-cover" />
         </UCard>
         <!-- Action buttons on hover -->
         <div
@@ -24,14 +37,14 @@
             color="primary"
             variant="ghost"
             size="sm"
-            @click="openPreview(post.image)"
+            @click="openPreview(image.original_url)"
           />
           <UButton
             icon="i-heroicons-trash"
             color="primary"
             variant="ghost"
             size="sm"
-            @click="deletePost(post.id)"
+            @click="deleteImage(image.id)"
           />
         </div>
       </div>
@@ -64,8 +77,14 @@
 </template>
 
 <script setup lang="ts">
-const statusFilter = ref("All");
-const authorFilter = ref("All");
+const sortItems = ref([
+  "Recents",
+  "Last week",
+  "Last month",
+  "Decend",
+  "Ascend",
+]);
+const sortValue = ref("ascend");
 
 const selectedImage = ref<string | null>(null);
 const isOpen = ref(false);
@@ -80,100 +99,16 @@ const openPreview = (url: string) => {
   zoom.value = 1;
   isOpen.value = true;
 };
-
-const deletePost = async (id: number) => {
-  if (confirm("Are you sure you want to delete this post?")) {
-    posts.value = posts.value.filter((post) => post.id !== id);
-  }
-};
-const posts = ref([
-  {
-    id: 1,
-    title: "Introducing Nuxt Icon v1",
-    description:
-      "Discover Nuxt Icon v1 - a modern, versatile, and customizable icon solution for your Nuxt projects.",
-    image: "https://nuxt.com/assets/blog/nuxt-icon/cover.png",
-    date: "2024-11-25",
-    status: "Published",
-    author: "Anthony Fu",
-    authors: [
-      {
-        name: "Anthony Fu",
-        description: "antfu7",
-        avatar: { src: "https://github.com/antfu.png" },
-        to: "https://github.com/antfu",
-        target: "_blank",
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "Introducing Nuxt Icon v1",
-    description:
-      "Discover Nuxt Icon v1 - a modern, versatile, and customizable icon solution for your Nuxt projects.",
-    image: "https://nuxt.com/assets/blog/nuxt-icon/cover.png",
-    date: "2024-11-25",
-    status: "Published",
-    author: "Anthony Fu",
-    authors: [
-      {
-        name: "Anthony Fu",
-        description: "antfu7",
-        avatar: { src: "https://github.com/antfu.png" },
-        to: "https://github.com/antfu",
-        target: "_blank",
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "Introducing Nuxt Icon v1",
-    description:
-      "Discover Nuxt Icon v1 - a modern, versatile, and customizable icon solution for your Nuxt projects.",
-    image: "https://nuxt.com/assets/blog/nuxt-icon/cover.png",
-    date: "2024-11-25",
-    status: "Published",
-    author: "Anthony Fu",
-    authors: [
-      {
-        name: "Anthony Fu",
-        description: "antfu7",
-        avatar: { src: "https://github.com/antfu.png" },
-        to: "https://github.com/antfu",
-        target: "_blank",
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "Introducing Nuxt Icon v1",
-    description:
-      "Discover Nuxt Icon v1 - a modern, versatile, and customizable icon solution for your Nuxt projects.",
-    image: "https://nuxt.com/assets/blog/nuxt-icon/cover.png",
-    date: "2024-11-25",
-    status: "Published",
-    author: "Anthony Fu",
-    authors: [
-      {
-        name: "Anthony Fu",
-        description: "antfu7",
-        avatar: { src: "https://github.com/antfu.png" },
-        to: "https://github.com/antfu",
-        target: "_blank",
-      },
-    ],
-  },
-]);
-
-const filteredPosts = computed(() => {
-  return posts.value.filter((post) => {
-    const statusMatch =
-      statusFilter.value === "All" || post.status === statusFilter.value;
-    const authorMatch =
-      authorFilter.value === "All" || post.author === authorFilter.value;
-    return statusMatch && authorMatch;
-  });
+const mediaStore = useMediaStore();
+const { images } = storeToRefs(mediaStore);
+onMounted(async () => {
+  await mediaStore.getMedia();
+  console.log(images.value);
 });
-</script>
 
-<style scoped></style>
+const deleteImage = async (id: number) => {
+  await mediaStore.removeMedia(id);
+};
+
+const filteredImages = computed(() => images.value);
+</script>
