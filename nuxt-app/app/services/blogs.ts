@@ -1,14 +1,25 @@
 import type { ApiResponse } from "~/types/dataWrapper";
 import { api } from "./axios";
-import type { Blog, EditorImage } from "~/types/blogTypes";
+import type { Blog, BlogStoreData, EditorImage } from "~/types/blogTypes";
 import { END_POINTS } from "~/constants/api";
 
-export const storeBlogApi = (data: Partial<Blog>) => {
-  return api.post<ApiResponse<Blog>>(END_POINTS.BLOG.STORE, data);
+export const storeBlogApi = async (data: BlogStoreData) => {
+  const formData = new FormData();
+  formData.append("title", data.title);
+  formData.append("content", data.content);
+  if (data.excerpt) formData.append("excerpt", data.excerpt);
+  if (data.thumbnail) formData.append("thumbnail", data.thumbnail);
+  if (data.published_at) formData.append("published_at", data.published_at);
+
+  return await api.post<ApiResponse<Blog>>(END_POINTS.BLOG.STORE, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 export const indexBlogApi = () => {
-  return api.get<ApiResponse<Blog>>(END_POINTS.BLOG.INDEX);
+  return api.get<ApiResponse<Blog[]>>(END_POINTS.BLOG.INDEX);
 };
 
 export const showBlogApi = (id: number) => {

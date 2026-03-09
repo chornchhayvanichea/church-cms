@@ -48,13 +48,13 @@
       class="grid gap-4"
       style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))"
     >
-      <div v-for="post in filteredPosts" :key="post.id" class="relative group">
+      <div v-for="blog in filteredPosts" :key="blog.id" class="relative group">
         <UBlogPost
-          :title="post.title"
-          :description="post.description"
-          :image="post.image"
-          :date="post.date"
-          :authors="post.authors"
+          :title="blog.title"
+          :description="blog.excerpt"
+          :image="blog.thumbnail"
+          :date="blog.published_at"
+          :author="blog.author"
           variant="subtle"
           :ui="{
             title: 'text-md',
@@ -70,14 +70,14 @@
             color="primary"
             variant="ghost"
             size="sm"
-            :to="`/dashboard/blogs/${post.id}/edit`"
+            :to="`/dashboard/blogs/${blog.id}/edit`"
           />
           <UButton
             icon="i-heroicons-trash"
             color="primary"
             variant="ghost"
             size="sm"
-            @click="deletePost(post.id)"
+            @click="deletePost(blog.id)"
           />
         </div>
       </div>
@@ -106,101 +106,27 @@ const authorItems = ref(["All", "Anthony Fu", "You"]);
 defineShortcuts({
   o: () => (open.value = !open.value),
 });
+const blogStore = useBlogStore();
+const { blogs } = storeToRefs(blogStore);
 
-const posts = ref([
-  {
-    id: 1,
-    title: "Introducing Nuxt Icon v1",
-    description:
-      "Discover Nuxt Icon v1 - a modern, versatile, and customizable icon solution for your Nuxt projects.",
-    image: "https://nuxt.com/assets/blog/nuxt-icon/cover.png",
-    date: "2024-11-25",
-    status: "Published",
-    author: "Anthony Fu",
-    authors: [
-      {
-        name: "Anthony Fu",
-        description: "antfu7",
-        avatar: { src: "https://github.com/antfu.png" },
-        to: "https://github.com/antfu",
-        target: "_blank",
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "Introducing Nuxt Icon v1",
-    description:
-      "Discover Nuxt Icon v1 - a modern, versatile, and customizable icon solution for your Nuxt projects.",
-    image: "https://nuxt.com/assets/blog/nuxt-icon/cover.png",
-    date: "2024-11-25",
-    status: "Published",
-    author: "Anthony Fu",
-    authors: [
-      {
-        name: "Anthony Fu",
-        description: "antfu7",
-        avatar: { src: "https://github.com/antfu.png" },
-        to: "https://github.com/antfu",
-        target: "_blank",
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "Introducing Nuxt Icon v1",
-    description:
-      "Discover Nuxt Icon v1 - a modern, versatile, and customizable icon solution for your Nuxt projects.",
-    image: "https://nuxt.com/assets/blog/nuxt-icon/cover.png",
-    date: "2024-11-25",
-    status: "Published",
-    author: "Anthony Fu",
-    authors: [
-      {
-        name: "Anthony Fu",
-        description: "antfu7",
-        avatar: { src: "https://github.com/antfu.png" },
-        to: "https://github.com/antfu",
-        target: "_blank",
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "Introducing Nuxt Icon v1",
-    description:
-      "Discover Nuxt Icon v1 - a modern, versatile, and customizable icon solution for your Nuxt projects.",
-    image: "https://nuxt.com/assets/blog/nuxt-icon/cover.png",
-    date: "2024-11-25",
-    status: "Published",
-    author: "Anthony Fu",
-    authors: [
-      {
-        name: "Anthony Fu",
-        description: "antfu7",
-        avatar: { src: "https://github.com/antfu.png" },
-        to: "https://github.com/antfu",
-        target: "_blank",
-      },
-    ],
-  },
-]);
-
+onMounted(async () => {
+  await blogStore.getBlogs();
+});
 const page = ref(5);
 
 const filteredPosts = computed(() => {
-  return posts.value.filter((post) => {
+  return blogs.value.filter((blog) => {
     const statusMatch =
-      statusFilter.value === "All" || post.status === statusFilter.value;
+      statusFilter.value === "All" || blog.status === statusFilter.value;
     const authorMatch =
-      authorFilter.value === "All" || post.author === authorFilter.value;
+      authorFilter.value === "All" || blog.author === authorFilter.value;
     return statusMatch && authorMatch;
   });
 });
 
 const deletePost = async (id: number) => {
   if (confirm("Are you sure you want to delete this post?")) {
-    posts.value = posts.value.filter((post) => post.id !== id);
+    blogs.value = blogs.value.filter((blog) => blog.id !== id);
   }
 };
 </script>

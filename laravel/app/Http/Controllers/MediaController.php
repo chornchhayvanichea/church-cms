@@ -18,6 +18,11 @@ class MediaController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
+        // TODO: pagination per media type (image/audio/video)
+        // - pass type param to indexMediaApi
+        // - filter in Laravel with mime_type like
+        // - cache fetched state per type in store
+
         $media = Media::paginate(15);
 
         return MediaResource::collection($media);
@@ -31,10 +36,17 @@ class MediaController extends Controller
         return new MediaResource($media);
     }
 
-    public function destroy(Media $media): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
+        /*
+           * another way to bind model from 3rd party package using this
+           * Route::model('media', \Spatie\MediaLibrary\MediaCollections\Models\Media::class);
+           */
+        $media = Media::findOrFail($id);
         $media->delete();
 
-        return response()->json(['message' => 'Media deleted successfully.']);
+        return response()->json([
+            'message' => 'Media deleted successfully.',
+        ]);
     }
 }

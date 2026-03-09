@@ -84,7 +84,7 @@ const sortItems = ref([
   "Decend",
   "Ascend",
 ]);
-const sortValue = ref("ascend");
+const sortValue = useState("sort", () => "Ascend");
 
 const selectedImage = ref<string | null>(null);
 const isOpen = ref(false);
@@ -101,13 +101,10 @@ const openPreview = (url: string) => {
 };
 const mediaStore = useMediaStore();
 const { images } = storeToRefs(mediaStore);
-onMounted(async () => {
-  await mediaStore.getMedia();
-  console.log(images.value);
-});
 
 const deleteImage = async (id: number) => {
   await mediaStore.removeMedia(id);
+  console.log();
 };
 
 const filteredImages = computed(() => images.value);

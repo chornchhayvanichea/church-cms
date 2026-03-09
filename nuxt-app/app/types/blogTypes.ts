@@ -6,17 +6,25 @@ export interface Blog {
   slug: string;
   content: HTMLElement;
   excerpt?: string;
-  thumbnail?: string;
+  thumbnail?: File;
   status: Status;
-  author_id: number;
-  author: User;
+  author_id: number | string;
+  author: User | string;
   published_at: string;
   createdAt: string;
   updatedAt: string;
 }
+
+export interface BlogStoreData {
+  title: string;
+  content: string;
+  excerpt?: string;
+  thumbnail?: File;
+  published_at?: string;
+}
 export interface EditorImage {
   url: string;
-  id: number;
+  id: number | string;
 }
 enum Status {
   draft = "draft",

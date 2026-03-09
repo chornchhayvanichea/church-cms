@@ -7,10 +7,15 @@
     >
       <UNavigationMenu :items="mediaTab" highlight class="flex-1" />
     </UDashboardToolbar>
-    <RecentMediaList v-if="activeTab === 'recents'" />
-    <AudiosList v-if="activeTab === 'audios'" />
-    <ImagesList v-if="activeTab === 'images'" />
-    <VideosList v-if="activeTab === 'videos'" />
+    <RecentMediaList v-show="activeTab === 'recents'" />
+    <AudiosList v-show="activeTab === 'audios'" />
+    <ImagesList v-show="activeTab === 'images'" />
+    <VideosList v-show="activeTab === 'videos'" />
+    <UPagination
+      v-model:page="page"
+      :total="mediaStore.meta.total"
+      :items-per-page="mediaStore.meta.per_page"
+    />
   </div>
 </template>
 
@@ -21,7 +26,17 @@ import ImagesList from "~/components/dashboard/media/ImagesList.vue";
 import RecentMediaList from "~/components/dashboard/media/RecentMediaList.vue";
 import VideosList from "~/components/dashboard/media/VideosList.vue";
 
-const activeTab = ref("Recents");
+const activeTab = useState("mediaTab", () => "recents");
+
+const page = ref(1);
+watch(page, async (newPage) => {
+  await mediaStore.getMedia(newPage);
+});
+
+const mediaStore = useMediaStore();
+onMounted(async () => {
+  await mediaStore.getMedia();
+});
 const mediaTab = computed<NavigationMenuItem[][]>(() => [
   [
     {

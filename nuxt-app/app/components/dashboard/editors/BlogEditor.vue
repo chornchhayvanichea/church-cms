@@ -96,7 +96,7 @@ const imgToolbar = (editor: Editor): EditorToolbarItem[][] => {
   ];
 };
 
-const value = ref(`;sdfklsdfksad;`);
+const value = defineModel<string>({ default: "" });
 
 // SSR-safe function to append menus to body (avoids z-index issues in docs)
 const appendToBody = false ? () => document.body : undefined;

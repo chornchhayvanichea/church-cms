@@ -1,10 +1,12 @@
-import type { ApiResponse } from "~/types/dataWrapper";
+import type { ApiResponse, PaginateResponse } from "~/types/dataWrapper";
 import type { Media, UploadData } from "~/types/mediaTypes";
 import { api } from "./axios";
 import { END_POINTS } from "~/constants/api";
 
-export const indexMediaApi = () => {
-  return api.get<ApiResponse<Media[]>>(END_POINTS.MEDIA.INDEX);
+export const indexMediaApi = (page = 1) => {
+  return api.get<PaginateResponse<Media[]>>(END_POINTS.MEDIA.INDEX, {
+    params: { page },
+  });
 };
 
 export const destroyMediaApi = (id: number | string) => {

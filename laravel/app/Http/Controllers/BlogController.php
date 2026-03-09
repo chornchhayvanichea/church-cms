@@ -36,8 +36,7 @@ class BlogController extends Controller
             'author_id' => Auth::id(),
         ]);
         if ($request->hasFile('thumbnail')) {
-            $blog->addMediaFromRequest('thumbnail');
-            $blog->toMediaCollection(self::BLOG_THUMBNAIL);
+            $blog->addMediaFromRequest('thumbnail')->toMediaCollection(self::BLOG_THUMBNAIL);
         }
 
         auth()->user()->getMedia('editor-temp')->each(function ($media) use ($blog) {
