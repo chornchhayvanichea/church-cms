@@ -73,10 +73,25 @@
         </div>
       </template>
     </UModal>
+    <UPagination
+      v-model:page="page"
+      :total="mediaStore.meta.total"
+      :items-per-page="mediaStore.meta.per_page"
+      class="flex justify-center mt-8"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+const page = ref(1);
+onMounted(async () => {
+  await mediaStore.getMedia(page.value, "image");
+});
+
+watch(page, async (newPage) => {
+  await mediaStore.getMedia(newPage, "image");
+});
+
 const sortItems = ref([
   "Recents",
   "Last week",
@@ -106,6 +121,5 @@ const deleteImage = async (id: number) => {
   await mediaStore.removeMedia(id);
   console.log();
 };
-
 const filteredImages = computed(() => images.value);
 </script>

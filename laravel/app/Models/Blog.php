@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasMediaUpload as TraitsHasMediaUpload;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Enums\Fit;
@@ -13,7 +14,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Blog extends Model implements HasMedia
 {
-    use HasSlug, InteractsWithMedia, SoftDeletes;
+    use HasSlug, InteractsWithMedia, SoftDeletes, TraitsHasMediaUpload;
 
     public function registerMediaConversions(?Media $media = null): void
     {

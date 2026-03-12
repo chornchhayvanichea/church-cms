@@ -16,6 +16,13 @@
           class="w-full"
         />
       </UFormField>
+      <UFormField label="Status">
+        <USelect
+          v-model="formData.status"
+          value-key="value"
+          :items="blogStatus"
+        />
+      </UFormField>
     </div>
 
     <UFormField label="Excerpt">
@@ -26,20 +33,16 @@
         class="w-full"
       />
     </UFormField>
-    <UFormField label="Thumbnail">
-      <UFileUpload
-        v-model="formData.thumbnail"
-        label="Drop your image here"
-        description="SVG, PNG, JPG or GIF (max. 2MB)"
-        class="w-96 min-h-48"
-        accept="image/*"
-      />
+
+    <UFormField>
+      <MediaImagePicker v-model="formData.thumbnail" />
     </UFormField>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { BlogStoreData } from "~/types/blogTypes";
+import { BlogStatus, type BlogStoreData } from "~/types/blogTypes";
+import MediaImagePicker from "../MediaImagePicker.vue";
 
 const formData = defineModel<BlogStoreData>({
   default: () => ({
@@ -47,6 +50,12 @@ const formData = defineModel<BlogStoreData>({
     excerpt: "",
     published_at: "",
     thumbnail: undefined,
+    status: BlogStatus.draft,
   }),
 });
+const blogStatus = [
+  { label: "Draft", value: BlogStatus.draft },
+  { label: "Published", value: BlogStatus.published },
+  { label: "Archived", value: BlogStatus.archived },
+];
 </script>

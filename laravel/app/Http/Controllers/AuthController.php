@@ -35,11 +35,11 @@ class AuthController extends Controller
     public function signup(SignupRequest $request)
     {
         $validated = $request->validated();
-
         $user = User::create([
             ...$validated,
             'password' => Hash::make($validated['password']),
         ]);
+
         if ($request->hasFile('avatar')) {
             $user->addMediaFromRequest('avatar');
             $user->toMediaCollection(self::USER_AVATAR);
@@ -49,6 +49,8 @@ class AuthController extends Controller
             'message' => 'signup successfully',
         ]);
     }
+
+    public function update() {}
 
     public function user(Request $request): UserResource
     {

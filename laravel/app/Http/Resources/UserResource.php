@@ -34,7 +34,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'image' => $this->image,
+            'avatar' => $this->getFirstMediaUrl('User/avatar'),
             'role' => $this->role,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,

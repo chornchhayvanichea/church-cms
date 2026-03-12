@@ -8,10 +8,18 @@ export const storeBlogApi = async (data: BlogStoreData) => {
   formData.append("title", data.title);
   formData.append("content", data.content);
   if (data.excerpt) formData.append("excerpt", data.excerpt);
-  if (data.thumbnail) formData.append("thumbnail", data.thumbnail);
-  if (data.published_at) formData.append("published_at", data.published_at);
+  if (data.status) formData.append("status", data.status);
 
-  return await api.post<ApiResponse<Blog>>(END_POINTS.BLOG.STORE, formData, {
+  if (data.thumbnail instanceof File) {
+    formData.append("thumbnail", data.thumbnail);
+  } else if (typeof data.thumbnail === "string") {
+    formData.append("thumbnail_url", data.thumbnail);
+  }
+
+  if (data.published_at)
+    formData.append("published_at", new Date(data.published_at).toISOString());
+
+  return api.post<ApiResponse<Blog>>(END_POINTS.BLOG.STORE, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -29,13 +37,9 @@ export const showBlogApi = (id: number) => {
 export const editorUploadImage = async (image: File) => {
   const formData = new FormData();
   formData.append("image", image);
-  return await api.post<EditorImage>(
-    END_POINTS.BLOG.EDITOR_UPLOAD_IMAGE,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+  return api.post<EditorImage>(END_POINTS.BLOG.EDITOR_UPLOAD_IMAGE, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
     },
-  );
+  });
 };

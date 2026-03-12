@@ -24,10 +24,10 @@ export const useMediaStore = defineStore("media", () => {
     media.value.filter((m) => m.mime_type?.startsWith("video")),
   );
 
-  const getMedia = async (page = 1) => {
+  const getMedia = async (page = 1, type?: string) => {
     loading.value = true;
     try {
-      const response = await indexMediaApi(page);
+      const response = await indexMediaApi(page, type);
       media.value = response.data.data;
       meta.value = response.data.meta;
       console.log(media.value);

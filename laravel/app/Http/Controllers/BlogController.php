@@ -24,7 +24,7 @@ class BlogController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        return BlogResource::collection(Blog::with('author')->paginate(15));
+        return BlogResource::collection(Blog::with('author')->paginate(100));
     }
 
     public function store(BlogStoreRequest $request): BlogResource
@@ -35,9 +35,8 @@ class BlogController extends Controller
             ...$validated,
             'author_id' => Auth::id(),
         ]);
-        if ($request->hasFile('thumbnail')) {
-            $blog->addMediaFromRequest('thumbnail')->toMediaCollection(self::BLOG_THUMBNAIL);
-        }
+
+        $blog->handleMediaUpload($request, 'thumbnail', self::BLOG_THUMBNAIL);
 
         auth()->user()->getMedia('editor-temp')->each(function ($media) use ($blog) {
             $media->copy($blog, 'editor-images');
@@ -59,18 +58,13 @@ class BlogController extends Controller
         ]);
     }
 
-    public function update(blogupdaterequest $request, blog $blog): blogresource
+    public function update(BlogUpdateRequest $request, Blog $blog): BlogResource
     {
         $validated = $request->validated();
-        if ($request->hasfile('thumbnail')) {
-
-            $blog->clearmediacollection(self::BLOG_THUMBNAIL);
-            $blog->addmediafromrequest('thumbnail');
-            $blog->toMediaCollection(self::BLOG_THUMBNAIL);
-        }
-        if ($request->boolean('remove_file')) {
+        if ($request->hasFile('thumbnail')) {
             $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
         }
+        $blog->handleMediaUpload($request, 'thumbnail', self::BLOG_THUMBNAIL);
 
         $oldMedia = $blog->getMedia('editor-images');
         foreach ($oldMedia as $media) {
@@ -87,6 +81,7 @@ class BlogController extends Controller
 
     public function destroy(Blog $blog): JsonResponse
     {
+
         $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
         $blog->clearMediaCollection('editor-images');
         $blog->delete();

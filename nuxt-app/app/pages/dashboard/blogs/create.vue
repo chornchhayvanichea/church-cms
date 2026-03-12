@@ -37,19 +37,23 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 import BlogEditor from "~/components/dashboard/editors/BlogEditor.vue";
 import BlogGeneral from "~/components/dashboard/editors/BlogGeneral.vue";
 import { DASHBOARD_ROUTES } from "~/constants/routes";
-import type { BlogStoreData } from "~/types/blogTypes";
+import { BlogStatus, type BlogStoreData } from "~/types/blogTypes";
 
 const activeTab = useState("blogTab", () => "general");
-
 const form = ref<BlogStoreData>({
   title: "",
   excerpt: "",
   thumbnail: undefined,
   published_at: "",
+  status: BlogStatus.draft,
   content: "",
 });
+
+console.log(form.value);
+
 const blogStore = useBlogStore();
 const handleSubmit = async () => {
+  console.log("submitting:", JSON.stringify(form.value));
   await blogStore.createBlog(form.value);
 
   form.value = {

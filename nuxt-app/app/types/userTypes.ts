@@ -3,12 +3,12 @@ enum Role {
   editor = "editor",
 }
 export interface User {
-  id: number | string;
+  id: number;
   name: string;
   email: string;
   password: string;
   role: Role;
-  image?: File;
+  avatar?: string;
   created_at: string;
   updated_at: string;
 }

@@ -7,6 +7,8 @@ use App\Http\Resources\MediaResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class MediaController extends Controller
 {
@@ -22,8 +24,11 @@ class MediaController extends Controller
         // - pass type param to indexMediaApi
         // - filter in Laravel with mime_type like
         // - cache fetched state per type in store
-
-        $media = Media::paginate(15);
+        $media = QueryBuilder::for(Media::class)
+            ->allowedFilters([
+                AllowedFilter::partial('mime_type'),
+            ])
+            ->paginate(30);
 
         return MediaResource::collection($media);
     }

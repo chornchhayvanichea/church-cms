@@ -54,7 +54,10 @@
           :description="blog.excerpt"
           :image="blog.thumbnail"
           :date="blog.published_at"
-          :author="blog.author"
+          :badge="blog.status"
+          :authors="[
+            { name: blog.author.name, avatar: { src: blog.author.avatar } },
+          ]"
           variant="subtle"
           :ui="{
             title: 'text-md',

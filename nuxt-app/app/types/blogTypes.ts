@@ -9,7 +9,7 @@ export interface Blog {
   thumbnail?: File;
   status: Status;
   author_id: number | string;
-  author: User | string;
+  author: User;
   published_at: string;
   createdAt: string;
   updatedAt: string;
@@ -21,12 +21,13 @@ export interface BlogStoreData {
   excerpt?: string;
   thumbnail?: File;
   published_at?: string;
+  status?: BlogStatus;
 }
 export interface EditorImage {
   url: string;
   id: number | string;
 }
-enum Status {
+export enum BlogStatus {
   draft = "draft",
   published = "published",
   archived = "archived",
