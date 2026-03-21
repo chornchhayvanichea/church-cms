@@ -10,7 +10,7 @@ export interface Media {
   original_url: string;
   preview_url?: string;
 }
-enum MediaCollection {
+export enum MediaCollection {
   image = "image",
   audio = "audio",
   video = "video",

@@ -10,18 +10,32 @@ export interface Sermon {
   description?: string;
   notes?: string;
   scripture_reference?: string;
-  video_url?: string;
-  audio_url?: string;
-  pdf_url?: string;
+  video?: string;
+  audio?: string;
+  pdf?: string;
   thumbnail?: string;
-  status: Status;
+  status?: SermonStatus;
   view_count: number;
   created_by: User;
   published_at?: string;
   created_at: string;
   updated_at: string;
 }
-enum Status {
+
+export interface SermonStoreData {
+  title: string;
+  speaker: string;
+  sermon_date: string;
+  description?: string;
+  notes?: string;
+  scripture_reference?: string;
+  video?: File | string;
+  audio?: File | string;
+  thumbnail?: File | string;
+  published_at?: string;
+  status?: SermonStatus;
+}
+export enum SermonStatus {
   draft = "draft",
   published = "published",
   archived = "archived",

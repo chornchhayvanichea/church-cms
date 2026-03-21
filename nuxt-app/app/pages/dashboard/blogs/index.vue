@@ -56,7 +56,11 @@
           :date="blog.published_at"
           :badge="blog.status"
           :authors="[
-            { name: blog.author.name, avatar: { src: blog.author.avatar } },
+            {
+              name: blog.author.name,
+              description: blog.author.role, // role here
+              avatar: { src: blog.author.avatar },
+            },
           ]"
           variant="subtle"
           :ui="{

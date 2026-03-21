@@ -1,6 +1,10 @@
-import { destroyMediaApi, indexMediaApi } from "~/services/media";
+import {
+  destroyMediaApi,
+  indexMediaApi,
+  storeMediaApi,
+} from "~/services/media";
 import type { PaginationMeta } from "~/types/dataWrapper";
-import type { Media } from "~/types/mediaTypes";
+import type { Media, UploadData } from "~/types/mediaTypes";
 
 export const useMediaStore = defineStore("media", () => {
   const media = ref<Media[]>([]);
@@ -39,7 +43,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const removeMedia = async (id: number) => {
     try {
-      console.log("deleting id:", id); // is the right id being passed?
+      console.log("deleting id:", id);
       const response = await destroyMediaApi(id);
       console.log(response);
       media.value = media.value.filter((m) => m.id !== id);
@@ -47,11 +51,24 @@ export const useMediaStore = defineStore("media", () => {
       console.error(e);
     }
   };
+  const uploadMedia = async (data: UploadData) => {
+    loading.value = true;
+    try {
+      const response = await storeMediaApi(data);
+      await getMedia();
+      console.log(response);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loading.value = false;
+    }
+  };
   const values = {
     media,
     meta,
     loading,
     getMedia,
+    uploadMedia,
     images,
     audios,
     videos,

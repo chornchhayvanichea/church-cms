@@ -4,10 +4,10 @@ export interface Blog {
   id: number;
   title: string;
   slug: string;
-  content: HTMLElement;
+  content: string;
   excerpt?: string;
-  thumbnail?: File;
-  status: Status;
+  thumbnail?: string;
+  status: BlogStatus;
   author_id: number | string;
   author: User;
   published_at: string;

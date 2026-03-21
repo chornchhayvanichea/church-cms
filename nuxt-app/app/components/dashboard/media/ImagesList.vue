@@ -3,8 +3,9 @@
     <!-- Blog Posts Grid -->
     <div class="flex items-center gap-2">
       <div class="mr-auto flex gap-2">
+        <!-- layout template for misc-->
         <USelect v-model="sortValue" :items="sortItems" />
-        <UButton>Upload</UButton>
+        <UploadMedia :collection="MediaCollection.image" />
       </div>
 
       <UButton icon="i-lucide-grid-2x2" variant="outline" />
@@ -83,6 +84,9 @@
 </template>
 
 <script setup lang="ts">
+import { MediaCollection } from "~/types/mediaTypes";
+import UploadMedia from "./UploadMedia.vue";
+
 const page = ref(1);
 onMounted(async () => {
   await mediaStore.getMedia(page.value, "image");

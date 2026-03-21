@@ -10,6 +10,7 @@ export const useBlogStore = defineStore("blog", () => {
     loading.value = true;
     try {
       const response = await storeBlogApi(data);
+      await getBlogs();
       console.log(response);
     } catch (e) {
       console.error(e);

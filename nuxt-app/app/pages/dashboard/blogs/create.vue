@@ -63,7 +63,6 @@ const handleSubmit = async () => {
     published_at: "",
     content: "",
   };
-  if (blogStore.blog) navigateTo(DASHBOARD_ROUTES.BLOGS);
 };
 
 const hasChanges = ref(false);
