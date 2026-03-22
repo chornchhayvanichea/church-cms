@@ -14,8 +14,10 @@ export const indexMediaApi = (page = 1, type?: string) => {
   });
 };
 
-export const destroyMediaApi = (id: number | string) => {
-  return api.delete<{ message: string }>(END_POINTS.MEDIA.DESTROY(id));
+export const destroyMediaApi = (id: number | string, force = false) => {
+  return api.delete<{ message: string }>(END_POINTS.MEDIA.DESTROY(id), {
+    params: { force },
+  });
 };
 
 export const storeMediaApi = (data: UploadData) => {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasMediaUpload;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Enums\Fit;
@@ -13,7 +14,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Sermon extends Model implements HasMedia
 {
-    use HasSlug,InteractsWithMedia,SoftDeletes;
+    use HasMediaUpload,HasSlug,InteractsWithMedia,SoftDeletes;
 
     public function registerMediaConversions(?Media $media = null): void
     {
@@ -33,8 +34,8 @@ class Sermon extends Model implements HasMedia
         'description',
         'note',
         'scripture_reference',
-        'video_url',
-        'pdf_url',
+        'video',
+        'audio',
         'thumbnail',
         'status',
         'view_count',
@@ -51,10 +52,5 @@ class Sermon extends Model implements HasMedia
     public function creator()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class, 'sermon_category');
     }
 }

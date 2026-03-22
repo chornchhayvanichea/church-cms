@@ -1,8 +1,11 @@
+import { error } from "#build/ui";
+import { api } from "~/services/axios";
 import {
   destroyMediaApi,
   indexMediaApi,
   storeMediaApi,
 } from "~/services/media";
+import type { ApiError } from "~/types/blogTypes";
 import type { PaginationMeta } from "~/types/dataWrapper";
 import type { Media, UploadData } from "~/types/mediaTypes";
 
@@ -41,14 +44,20 @@ export const useMediaStore = defineStore("media", () => {
       loading.value = false;
     }
   };
-  const removeMedia = async (id: number) => {
+  const removeMedia = async (id: number, force = false) => {
     try {
       console.log("deleting id:", id);
-      const response = await destroyMediaApi(id);
-      console.log(response);
+      const response = await destroyMediaApi(id, force);
       media.value = media.value.filter((m) => m.id !== id);
-    } catch (e) {
-      console.error(e);
+      console.log(response);
+    } catch (error: unknown) {
+      const apiError = error as { response?: { data?: { in_use?: boolean } } };
+      if (apiError?.response?.data?.in_use) {
+        const confirmed = confirm(
+          "This media is used in a blog. Delete anyway?",
+        );
+        if (confirmed) removeMedia(id, true);
+      }
     }
   };
   const uploadMedia = async (data: UploadData) => {

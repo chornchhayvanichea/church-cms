@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class SermonResource extends JsonResource
 {
@@ -25,9 +24,9 @@ class SermonResource extends JsonResource
             'description' => $this->description,
             'notes' => $this->notes,
             'scripture_reference' => $this->scripture_reference,
-            'video_url' => $this->video_url,
-            'pdf_url' => $this->pdf_url,
-            'thumbnail' => $this->thumbnail ? Storage::url($this->thumbnail) : null,
+            'thumbnail' => $this->getFirstMediaUrl('Sermon/thumbnail') ?: $this->thumbnail,
+            'audio' => $this->getFirstMediaUrl('Sermon/audio') ?: $this->audio,
+            'video' => $this->getFirstMediaUrl('Sermon/video') ?: $this->video,
             'status' => $this->status,
             'view_count' => $this->view_count,
             'created_by' => UserResource::make($this->whenLoaded('creator', 'brief')),

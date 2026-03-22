@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->enum('status', ['draft', 'publish', 'archive'])->default('draft');
             $table->unsignedInteger('views_count')->default(0);
-
+            $table->audio('string');
             $table->foreignId('created_by')
                 ->constrained('users')
                 ->cascadeOnDelete();

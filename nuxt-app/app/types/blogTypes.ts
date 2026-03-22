@@ -14,7 +14,6 @@ export interface Blog {
   createdAt: string;
   updatedAt: string;
 }
-
 export interface BlogStoreData {
   title: string;
   content: string;
@@ -31,4 +30,11 @@ export enum BlogStatus {
   draft = "draft",
   published = "published",
   archived = "archived",
+}
+
+export interface ApiError {
+  data?: {
+    in_use?: boolean;
+    message?: string;
+  };
 }

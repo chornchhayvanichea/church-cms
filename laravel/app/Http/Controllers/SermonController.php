@@ -16,6 +16,8 @@ class SermonController extends Controller
 
     private const SERMON_AUDIO = 'Sermon/audio';
 
+    private const SERMON_VIDEO = 'Sermon/video';
+
     public function show(Sermon $sermon): SermonResource
     {
         return new SermonResource($sermon->load(['series', 'creator']));
@@ -36,10 +38,9 @@ class SermonController extends Controller
             ...$validated,
             'created_by' => Auth::id(),
         ]);
-        if ($request->hasFile('thumbnail')) {
-            $sermon->addMediaFromRequest('thumbnail');
-            $sermon->toMediaCollection(self::SERMON_THUMBNAIL);
-        }
+        $sermon->handleMediaUpload($request, 'thumbnail', self::SERMON_THUMBNAIL);
+        $sermon->handleMediaUpload($request, 'video', self::SERMON_VIDEO);
+        $sermon->handleMediaUpload($request, 'audio', self::SERMON_AUDIO);
         $sermon->load('creator');
 
         return new SermonResource($sermon);
@@ -47,15 +48,22 @@ class SermonController extends Controller
 
     public function update(SermonUpdateRequest $request, Sermon $sermon): SermonResource
     {
-        $validated = $request->validated();
 
-        if ($request->hasFile('thumbnail')) {
-            $sermon->clearMediaCollection(self::SERMON_THUMBNAIL);
-            $sermon->addMediaFromRequest('thumbnail');
-            $sermon->toMediaCollection(self::SERMON_THUMBNAIL);
+        $validated = $request->validated();
+        $fileFields = [
+            'thumbnail' => self::SERMON_THUMBNAIL,
+            'video' => self::SERMON_VIDEO,
+            'audio' => self::SERMON_AUDIO,
+        ];
+
+        foreach ($fileFields as $field => $collection) {
+            if ($request->hasFile($field)) {
+                $sermon->clearMediaCollection($collection);
+                $sermon->handleMediaUpload($request, $field, $collection);
+            }
         }
-        if ($request->boolean('remove_thumbnail')) {
-            $sermon->clearMediaCollection(self::SERMON_THUMBNAIL);
+
+        if ($request->hasFile('audio')) {
         }
         $sermon->update($validated);
         $sermon->load(['series', 'creator']);

@@ -27,9 +27,11 @@ class SermonStoreRequest extends FormRequest
             'sermon_date' => ['date', 'required'],
             'description' => ['string', 'nullable'],
             'notes' => ['string', 'nullable'],
+
             'scripture_reference' => ['string', 'nullable'],
+            'video' => ['nullable', 'mimes:mp4,mov,avi,mkv', 'max:102400'],
+            'audio' => ['nullable', 'mimes:mp3,wav,ogg,ma4', 'max:51200'],
             'video_url' => ['string', 'nullable'],
-            'pdf_url' => ['string', 'nullable'],
             'thumbnail' => ['nullable', 'mimes:jpg,jpeg,png,gif,webp', 'max:5126'],
             'published_at' => ['date', 'nullable'],
         ];
