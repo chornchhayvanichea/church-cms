@@ -12,7 +12,6 @@ watch(file, async (newFile) => {
   if (!newFile) return;
 
   loading.value = true;
-
   try {
     const response = await editorUploadImage(newFile);
 

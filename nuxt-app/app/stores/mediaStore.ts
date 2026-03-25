@@ -1,11 +1,8 @@
-import { error } from "#build/ui";
-import { api } from "~/services/axios";
 import {
   destroyMediaApi,
   indexMediaApi,
   storeMediaApi,
 } from "~/services/media";
-import type { ApiError } from "~/types/blogTypes";
 import type { PaginationMeta } from "~/types/dataWrapper";
 import type { Media, UploadData } from "~/types/mediaTypes";
 
@@ -37,6 +34,11 @@ export const useMediaStore = defineStore("media", () => {
       const response = await indexMediaApi(page, type);
       media.value = response.data.data;
       meta.value = response.data.meta;
+      console.log("all media:", media.value.length);
+      console.log(
+        "audios:",
+        media.value.filter((m) => m.mime_type?.startsWith("audio")).length,
+      );
       console.log(media.value);
     } catch (e) {
       console.error(e);
@@ -64,7 +66,7 @@ export const useMediaStore = defineStore("media", () => {
     loading.value = true;
     try {
       const response = await storeMediaApi(data);
-      await getMedia();
+      await getMedia(1, data.collection);
       console.log(response);
     } catch (e) {
       console.error(e);

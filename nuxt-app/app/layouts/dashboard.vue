@@ -7,8 +7,8 @@ const authStore = useAuthStore();
 <template>
   <UDashboardGroup>
     <DashboardSidebar />
-
     <UDashboardPanel>
+      <MusicFlow :options="{ autoplay: true }" />
       <UDashboardNavbar>
         <template #leading>
           <UDashboardSidebarCollapse />
@@ -26,7 +26,7 @@ const authStore = useAuthStore();
             :to="DASHBOARD_ROUTES.SETTINGS.PROFILE"
             :avatar="{
               src:
-                authStore.user?.image ??
+                authStore.user?.avatar ??
                 'https://www.gravatar.com/avatar/?d=mp',
             }"
             :chip="{

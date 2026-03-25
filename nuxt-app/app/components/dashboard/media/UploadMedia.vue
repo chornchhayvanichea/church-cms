@@ -27,11 +27,11 @@ const mediaStore = useMediaStore();
 const files = ref<File[] | null>(null);
 const open = ref(false);
 const handleUpload = async () => {
-  open.value = false;
   if (!files.value?.length) return;
   for (const file of files.value) {
     await mediaStore.uploadMedia({ file, collection: props.collection });
   }
   files.value = null;
+  open.value = false;
 };
 </script>

@@ -9,9 +9,18 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
+    "nuxt-music-flow",
   ],
   colorMode: {
     preference: "light", // Sets the default theme to light mode
+  },
+  nitro: {
+    devProxy: {
+      "/storage": {
+        target: "http://localhost:8000/storage",
+        changeOrigin: true,
+      },
+    },
   },
   vite: {
     optimizeDeps: {

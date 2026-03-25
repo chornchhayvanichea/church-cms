@@ -8,9 +8,10 @@
       <UNavigationMenu :items="mediaTab" highlight class="flex-1" />
     </UDashboardToolbar>
     <RecentMediaList v-show="activeTab === 'recents'" />
-    <AudiosList v-show="activeTab === 'audios'" />
-    <ImagesList v-show="activeTab === 'images'" />
-    <VideosList v-show="activeTab === 'videos'" />
+    <AudiosList v-if="activeTab === 'audios'" />
+    <ImagesList v-if="activeTab === 'images'" />
+    <VideosList v-if="activeTab === 'videos'" />
+    <UButton label="click" @click="test" />
   </div>
 </template>
 
@@ -19,10 +20,14 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 import AudiosList from "~/components/dashboard/media/AudiosList.vue";
 import ImagesList from "~/components/dashboard/media/ImagesList.vue";
 import RecentMediaList from "~/components/dashboard/media/RecentMediaList.vue";
+
 import VideosList from "~/components/dashboard/media/VideosList.vue";
 
 const activeTab = useState("mediaTab", () => "recents");
-
+const mediaStore = useMediaStore();
+const test = () => {
+  console.log(mediaStore.audios);
+};
 const mediaTab = computed<NavigationMenuItem[][]>(() => [
   [
     {

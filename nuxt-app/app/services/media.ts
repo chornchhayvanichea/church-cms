@@ -9,8 +9,11 @@ import { END_POINTS } from "~/constants/api";
  */
 export const indexMediaApi = (page = 1, type?: string) => {
   return api.get<PaginateResponse<Media[]>>(END_POINTS.MEDIA.INDEX, {
-    params: { page },
-    ...(type && { "filter[mime_type]": type }),
+    params: {
+      page,
+
+      ...(type && { "filter[mime_type]": type }),
+    },
   });
 };
 
