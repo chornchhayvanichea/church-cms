@@ -22,7 +22,7 @@ class MediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => ['required', 'file', 'max:10240'],
+            'file' => ['required', 'file'],
             'collection' => ['required', 'in:image,audio,video'],
         ];
     }

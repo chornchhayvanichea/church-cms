@@ -15,16 +15,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import Plyr from "plyr";
-import "plyr/dist/plyr.css";
 import type { Media } from "~/types/mediaTypes";
 
 const props = defineProps<{ item: Media }>();
 
 const player = ref<HTMLVideoElement | null>(null);
 
-onMounted(() => {
+onMounted(async () => {
   if (player.value) {
+    const Plyr = (await import("plyr")).default;
+    await import("plyr/dist/plyr.css");
     new Plyr(player.value);
   }
 });

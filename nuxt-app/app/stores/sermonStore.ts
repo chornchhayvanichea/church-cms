@@ -1,4 +1,8 @@
-import { SermonIndexApi, SermonStoreApi } from "~/services/sermons";
+import {
+  sermonDestroyApi,
+  sermonIndexApi,
+  sermonStoreApi,
+} from "~/services/sermons";
 import type { Sermon, SermonStoreData } from "~/types/sermonTypes";
 
 export const useSermonStore = defineStore("sermon", () => {
@@ -9,7 +13,7 @@ export const useSermonStore = defineStore("sermon", () => {
   const getSermons = async () => {
     loading.value = true;
     try {
-      const response = await SermonIndexApi();
+      const response = await sermonIndexApi();
       sermons.value = response.data.data;
       console.log(response);
     } catch (e) {
@@ -22,9 +26,8 @@ export const useSermonStore = defineStore("sermon", () => {
   const createSermon = async (data: SermonStoreData) => {
     loading.value = true;
     try {
-      const response = await SermonStoreApi(data);
+      const response = await sermonStoreApi(data);
       await getSermons();
-      //debug
       console.log(response);
     } catch (e) {
       console.error(e);
@@ -32,6 +35,23 @@ export const useSermonStore = defineStore("sermon", () => {
       loading.value = false;
     }
   };
-  const values = { sermon, sermons, loading, getSermons, createSermon };
+  const deleteSermon = async (id: number) => {
+    loading.value = true;
+    try {
+      await sermonDestroyApi(id);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loading.value = false;
+    }
+  };
+  const values = {
+    sermon,
+    sermons,
+    loading,
+    getSermons,
+    createSermon,
+    deleteSermon,
+  };
   return values;
 });

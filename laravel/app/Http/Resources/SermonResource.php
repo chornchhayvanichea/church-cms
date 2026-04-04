@@ -29,7 +29,7 @@ class SermonResource extends JsonResource
             'video' => $this->getFirstMediaUrl('Sermon/video') ?: $this->video,
             'status' => $this->status,
             'view_count' => $this->view_count,
-            'created_by' => UserResource::make($this->whenLoaded('creator', 'brief')),
+            'created_by' => UserResource::make($this->whenLoaded('creator')),
             'published_at' => $this->published_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -25,7 +25,7 @@ class SermonController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        $sermons = Sermon::with('series')->paginate(15);
+        $sermons = Sermon::with(['series', 'creator'])->paginate(15);
 
         return SermonResource::collection($sermons);
     }
@@ -34,6 +34,7 @@ class SermonController extends Controller
     {
         $validated = $request->validated();
 
+        \Log::info('auth id: '.auth()->id());
         $sermon = Sermon::create([
             ...$validated,
             'created_by' => Auth::id(),

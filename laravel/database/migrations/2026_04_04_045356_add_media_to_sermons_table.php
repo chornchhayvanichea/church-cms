@@ -6,16 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::table('blogs', function (Blueprint $table) {
+        Schema::table('sermons', function (Blueprint $table) {
             $table->string('thumbnail')->nullable();
+            $table->string('audio')->nullable();
+            $table->string('video')->nullable();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('blogs', function (Blueprint $table) {
+        Schema::table('sermons', function (Blueprint $table) {
             //
         });
     }

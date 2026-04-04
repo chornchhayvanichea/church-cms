@@ -24,8 +24,6 @@ const items: NavigationMenuItem[][] = [
     {
       label: "Sermons",
       icon: "i-lucide-mic",
-      //    badge: "4",
-
       to: DASHBOARD_ROUTES.SERMONS,
     },
     {

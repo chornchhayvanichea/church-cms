@@ -10,6 +10,10 @@ export const useMediaStore = defineStore("media", () => {
   const media = ref<Media[]>([]);
   const loading = ref(false);
 
+  const ImageMedia = ref<Media[]>([]);
+  const AudioMedia = ref<Media[]>([]);
+  const VideoMedia = ref<Media[]>([]);
+
   const meta = ref<PaginationMeta>({
     current_page: 1,
     last_page: 1,
@@ -18,22 +22,33 @@ export const useMediaStore = defineStore("media", () => {
     from: 0,
     to: 0,
   });
-  const images = computed(() =>
-    media.value.filter((m) => m.mime_type?.startsWith("image")),
-  );
-  const audios = computed(() =>
-    media.value.filter((m) => m.mime_type?.startsWith("audio")),
-  );
-  const videos = computed(() =>
-    media.value.filter((m) => m.mime_type?.startsWith("video")),
-  );
 
+  const images = ImageMedia;
+  const audios = AudioMedia;
+  const videos = VideoMedia;
+
+  //  const images = computed(() =>
+  //    media.value.filter((m) => m.mime_type?.startsWith("image")),
+  //  );
+  //  const audios = computed(() =>
+  //    media.value.filter((m) => m.mime_type?.startsWith("audio")),
+  //  );
+  //  const videos = computed(() =>
+  //    media.value.filter((m) => m.mime_type?.startsWith("video")),
+  //  );
+  //
   const getMedia = async (page = 1, type?: string) => {
     loading.value = true;
     try {
       const response = await indexMediaApi(page, type);
-      media.value = response.data.data;
+      const data = response.data.data;
       meta.value = response.data.meta;
+
+      if (type === "image") ImageMedia.value = data;
+      else if (type === "audio") AudioMedia.value = data;
+      else if (type === "video") VideoMedia.value = data;
+      else media.value = data;
+
       console.log("all media:", media.value.length);
       console.log(
         "audios:",
@@ -84,6 +99,9 @@ export const useMediaStore = defineStore("media", () => {
     audios,
     videos,
     removeMedia,
+    ImageMedia,
+    AudioMedia,
+    VideoMedia,
   };
   return values;
 });

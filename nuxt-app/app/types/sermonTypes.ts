@@ -3,7 +3,7 @@ import type { User } from "./userTypes";
 export interface Sermon {
   id: number;
   title: string;
-  slug: string;
+  //  slug: string;
   speaker: string;
   sermon_date: string;
   series_id?: number;
@@ -12,14 +12,13 @@ export interface Sermon {
   scripture_reference?: string;
   video?: string;
   audio?: string;
-  pdf?: string;
   thumbnail?: string;
   status?: SermonStatus;
   view_count: number;
   created_by: User;
   published_at?: string;
-  created_at: string;
-  updated_at: string;
+  // created_at: string;
+  //updated_at: string;
 }
 
 export interface SermonStoreData {
@@ -29,9 +28,9 @@ export interface SermonStoreData {
   description?: string;
   notes?: string;
   scripture_reference?: string;
-  video?: File | string;
-  audio?: File | string;
-  thumbnail?: File | string;
+  video?: File;
+  audio?: File;
+  thumbnail?: File;
   published_at?: string;
   status?: SermonStatus;
 }

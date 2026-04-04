@@ -35,7 +35,7 @@
     </UFormField>
 
     <UFormField>
-      <MediaImagePicker v-model="formData.thumbnail" />
+      <MediaImagePicker v-model="formData.thumbnail" mime-type="image" />
     </UFormField>
   </div>
 </template>

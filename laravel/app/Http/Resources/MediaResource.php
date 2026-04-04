@@ -23,7 +23,9 @@ class MediaResource extends JsonResource
             'mime_type' => $this->mime_type,
             'disk' => $this->disk,
             'size' => $this->size,
-            'original_url' => $this->original_url,
+            'original_url' => app()->environment('local')
+                ? str_replace('http://localhost:8000', 'http://localhost:3000', $this->original_url)
+                : $this->original_url,
             'preview_url' => $this->preview_url,
         ];
     }

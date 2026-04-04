@@ -17,18 +17,6 @@ export const useAuthStore = defineStore("auth", () => {
     return user.value != null;
   });
 
-  //  const signup = async (data: SignupData) => {
-  //    loading.value = true;
-  //    try {
-  //      const response = await signupApi(data);
-  //      console.log("success", response);
-  //    } catch (e) {
-  //      console.error(e);
-  //    } finally {
-  //      loading.value = false;
-  //    }
-  //  };
-
   const getUser = async () => {
     loading.value = true;
     try {

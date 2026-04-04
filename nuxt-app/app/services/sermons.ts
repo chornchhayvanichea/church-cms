@@ -3,7 +3,7 @@ import { api } from "./axios";
 import type { Sermon, SermonStoreData } from "~/types/sermonTypes";
 import { END_POINTS } from "~/constants/api";
 
-export const SermonStoreApi = (data: SermonStoreData) => {
+export const sermonStoreApi = (data: SermonStoreData) => {
   const formData = new FormData();
   formData.append("title", data.title);
   formData.append("speaker", data.speaker);
@@ -20,6 +20,10 @@ export const SermonStoreApi = (data: SermonStoreData) => {
   return api.post<ApiResponse<Sermon>>(END_POINTS.SERMON.STORE, formData);
 };
 
-export const SermonIndexApi = () => {
+export const sermonIndexApi = () => {
   return api.get<ApiResponse<Sermon[]>>(END_POINTS.SERMON.INDEX);
+};
+
+export const sermonDestroyApi = (id: number) => {
+  return api.post<{ message: string }>(END_POINTS.SERMON.DESTROY(id));
 };

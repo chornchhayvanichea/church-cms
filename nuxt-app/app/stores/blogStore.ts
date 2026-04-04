@@ -1,4 +1,4 @@
-import { indexBlogApi, storeBlogApi } from "~/services/blogs";
+import { blogIndexApi, blogStoreApi } from "~/services/blogs";
 import type { Blog, BlogStoreData } from "~/types/blogTypes";
 
 export const useBlogStore = defineStore("blog", () => {
@@ -9,7 +9,7 @@ export const useBlogStore = defineStore("blog", () => {
   const createBlog = async (data: BlogStoreData) => {
     loading.value = true;
     try {
-      const response = await storeBlogApi(data);
+      const response = await blogStoreApi(data);
       await getBlogs();
       console.log(response);
     } catch (e) {
@@ -22,7 +22,7 @@ export const useBlogStore = defineStore("blog", () => {
   const getBlogs = async () => {
     loading.value = true;
     try {
-      const response = await indexBlogApi();
+      const response = await blogIndexApi();
       blogs.value = response.data.data;
       console.log(response);
     } catch (e) {
