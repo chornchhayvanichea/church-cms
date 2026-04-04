@@ -18,7 +18,7 @@ export interface BlogStoreData {
   title: string;
   content: string;
   excerpt?: string;
-  thumbnail?: File;
+  thumbnail?: File | string | undefined;
   published_at?: string;
   status?: BlogStatus;
 }

@@ -16,8 +16,8 @@ export default defineNuxtConfig({
   },
   nitro: {
     devProxy: {
-      "/storage": {
-        target: "http://localhost:8000/storage",
+      "/storage/": {
+        target: "http://localhost:8000/storage/",
         changeOrigin: true,
       },
     },
