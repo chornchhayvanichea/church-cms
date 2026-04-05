@@ -37,7 +37,7 @@ export const blogUpdateApi = async (data: BlogStoreData, id: number) => {
 };
 
 export const blogDestroyApi = (id: number) => {
-  return api.post<{ message: string }>(END_POINTS.BLOG.DESTROY(id));
+  return api.delete<{ message: string }>(END_POINTS.BLOG.DESTROY(id));
 };
 
 export const editorUploadImage = async (image: File) => {

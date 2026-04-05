@@ -1,4 +1,6 @@
+import { finalize } from "zod/v4/core";
 import {
+  blogDestroyApi,
   blogIndexApi,
   blogShowApi,
   blogStoreApi,
@@ -57,6 +59,16 @@ export const useBlogStore = defineStore("blog", () => {
       loading.value = false;
     }
   };
+  const deleteBlog = async (id: number) => {
+    loading.value = true;
+    try {
+      await blogDestroyApi(id);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loading.value = false;
+    }
+  };
   const values = {
     blog,
     blogs,
@@ -65,6 +77,7 @@ export const useBlogStore = defineStore("blog", () => {
     getBlogs,
     getBlog,
     updateBlog,
+    deleteBlog,
   };
   return values;
 });

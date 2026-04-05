@@ -84,7 +84,7 @@
             color="primary"
             variant="ghost"
             size="sm"
-            @click="deletePost(blog.id)"
+            @click="openDeleteModal(blog.id)"
           />
         </div>
       </div>
@@ -92,10 +92,16 @@
     <div class="flex justify-center mt-8">
       <UPagination v-model:page="page" :total="100" />
     </div>
+    <ConfirmModal
+      v-model="showConfirmModal"
+      message="are you sure you want to delete?"
+      @confirm="deleteBlog"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import ConfirmModal from "~/components/dashboard/ConfirmModal.vue";
 import { DASHBOARD_ROUTES } from "~/constants/routes";
 
 definePageMeta({
@@ -131,9 +137,16 @@ const filteredPosts = computed(() => {
   });
 });
 
-const deletePost = async (id: number) => {
-  if (confirm("Are you sure you want to delete this post?")) {
-    blogs.value = blogs.value.filter((blog) => blog.id !== id);
-  }
+const selectId = ref<number | null>(null);
+const showConfirmModal = ref(false);
+const openDeleteModal = (id: number) => {
+  selectId.value = id;
+  showConfirmModal.value = true;
+};
+const deleteBlog = async () => {
+  if (!selectId.value) return;
+  await blogStore.deleteBlog(selectId.value);
+  showConfirmModal.value = false;
+  await blogStore.getBlogs();
 };
 </script>
