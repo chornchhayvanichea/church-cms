@@ -34,9 +34,31 @@ class MediaController extends Controller
     public function store(MediaRequest $request): MediaResource
     {
         $user = auth()->user();
-        $media = $user->addMediaFromRequest('file')->toMediaCollection(self::MEDIA_COLLECTIONS[$request->collection]);
+        $file = $request->file('file');
+        $collection = self::MEDIA_COLLECTIONS[$request->collection];
+        $extension = $file->getClientOriginalExtension();
+        $baseName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $uniqueName = $this->uniqueMediaName($baseName, $collection);
+
+        $media = $user->addMediaFromRequest('file')
+            ->usingName($uniqueName)
+            ->usingFileName("{$uniqueName}.{$extension}")
+            ->toMediaCollection($collection);
 
         return new MediaResource($media);
+    }
+
+    private function uniqueMediaName(string $baseName, string $collection): string
+    {
+        $name = $baseName;
+        $counter = 1;
+
+        while (Media::where('collection_name', $collection)->where('name', $name)->exists()) {
+            $name = "{$baseName} ({$counter})";
+            $counter++;
+        }
+
+        return $name;
     }
 
     public function destroy(int $id, Request $request): JsonResponse

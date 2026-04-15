@@ -7,7 +7,6 @@
     >
       <UNavigationMenu :items="mediaTab" highlight class="flex-1" />
     </UDashboardToolbar>
-    <RecentMediaList v-show="activeTab === 'recents'" />
     <AudiosList v-if="activeTab === 'audios'" />
     <ImagesList v-if="activeTab === 'images'" />
     <VideosList v-if="activeTab === 'videos'" />
@@ -19,7 +18,6 @@
 import type { NavigationMenuItem } from "@nuxt/ui";
 import AudiosList from "~/components/dashboard/media/AudiosList.vue";
 import ImagesList from "~/components/dashboard/media/ImagesList.vue";
-import RecentMediaList from "~/components/dashboard/media/RecentMediaList.vue";
 
 import VideosList from "~/components/dashboard/media/VideosList.vue";
 
@@ -29,14 +27,6 @@ const test = () => {
   console.log(mediaStore.audios);
 };
 const mediaTab = computed<NavigationMenuItem[][]>(() => [
-  [
-    {
-      label: "Recents",
-      //     icon: "i-lucide-users",
-      active: activeTab.value === "recents",
-      onSelect: () => (activeTab.value = "recents"),
-    },
-  ],
   [
     {
       icon: "i-heroicons-photo",

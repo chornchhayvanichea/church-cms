@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class SeriesResource extends JsonResource
 {
@@ -20,7 +19,7 @@ class SeriesResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            'thumbnail' => $this->thumbnail ? Storage::url($this->thumbnail) : null,
+            'thumbnail' => $this->getFirstMediaUrl('Series/thumbnails') ?: null,
             'sermons' => SermonResource::collection($this->whenLoaded('sermons')),
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,

@@ -37,10 +37,7 @@ class EventController extends Controller
             ...$validated,
             'created_by' => Auth::id(),
         ]);
-        if ($request->hasFile('image')) {
-            $event->addMediaFromRequest('image');
-            $event->toMediaCollection(self::EVENT_IMAGE_DIR);
-        }
+        $event->handleMediaUpload($request, 'image', self::EVENT_IMAGE_DIR);
         $event->load('creator');
 
         return new EventResource($event);
@@ -52,13 +49,12 @@ class EventController extends Controller
 
         if ($request->hasFile('image')) {
             $event->clearMediaCollection(self::EVENT_IMAGE_DIR);
-            $event->addMediaFromRequest('image');
-            $event->toMediaCollection(self::EVENT_IMAGE_DIR);
-        }
-
-        if ($request->boolean('remove_file')) {
+        } elseif ($request->boolean('remove_image')) {
             $event->clearMediaCollection(self::EVENT_IMAGE_DIR);
+            $event->image = null;
+            $event->save();
         }
+        $event->handleMediaUpload($request, 'image', self::EVENT_IMAGE_DIR);
         $event->update($validated);
         $event->load('creator');
 

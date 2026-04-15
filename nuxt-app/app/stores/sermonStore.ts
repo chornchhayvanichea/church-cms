@@ -4,20 +4,23 @@ import {
   sermonShowApi,
   sermonStoreApi,
   sermonUpdateApi,
+  type SermonIndexParams,
 } from "~/services/sermons";
 import type { Sermon, SermonStoreData } from "~/types/sermonTypes";
+import type { PaginationMeta } from "~/types/dataWrapper";
 
 export const useSermonStore = defineStore("sermon", () => {
   const sermon = ref<Sermon | null>(null);
   const sermons = ref<Sermon[]>([]);
   const loading = ref(false);
+  const meta = ref<PaginationMeta>({ current_page: 1, last_page: 1, per_page: 15, total: 0, from: 1, to: 0 });
 
-  const getSermons = async () => {
+  const getSermons = async (params: SermonIndexParams = {}) => {
     loading.value = true;
     try {
-      const response = await sermonIndexApi();
+      const response = await sermonIndexApi(params);
       sermons.value = response.data.data;
-      console.log(response);
+      meta.value = response.data.meta;
     } catch (e) {
       console.error(e);
     } finally {
@@ -75,6 +78,7 @@ export const useSermonStore = defineStore("sermon", () => {
     sermon,
     sermons,
     loading,
+    meta,
     getSermons,
     createSermon,
     deleteSermon,

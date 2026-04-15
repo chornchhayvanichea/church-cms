@@ -9,6 +9,8 @@ use App\Models\Sermon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SermonController extends Controller
 {
@@ -25,7 +27,16 @@ class SermonController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        $sermons = Sermon::with(['series', 'creator'])->paginate(15);
+        $sermons = QueryBuilder::for(Sermon::class)
+            ->with(['series', 'creator'])
+            ->allowedFilters([
+                AllowedFilter::partial('title'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::partial('speaker'),
+            ])
+            ->defaultSort('-created_at')
+            ->allowedSorts(['created_at', 'title', 'sermon_date', 'speaker'])
+            ->paginate(15);
 
         return SermonResource::collection($sermons);
     }
@@ -60,12 +71,14 @@ class SermonController extends Controller
         foreach ($fileFields as $field => $collection) {
             if ($request->hasFile($field)) {
                 $sermon->clearMediaCollection($collection);
-                $sermon->handleMediaUpload($request, $field, $collection);
+            } elseif ($request->boolean('remove_'.$field)) {
+                $sermon->clearMediaCollection($collection);
+                $sermon->{$field} = null;
+                $sermon->save();
             }
+            $sermon->handleMediaUpload($request, $field, $collection);
         }
 
-        if ($request->hasFile('audio')) {
-        }
         $sermon->update($validated);
         $sermon->load(['series', 'creator']);
 
@@ -76,6 +89,8 @@ class SermonController extends Controller
     {
 
         $sermon->clearMediaCollection(self::SERMON_THUMBNAIL);
+        $sermon->clearMediaCollection(self::SERMON_AUDIO);
+        $sermon->clearMediaCollection(self::SERMON_VIDEO);
         $sermon->delete();
 
         return response()->json([

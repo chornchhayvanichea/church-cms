@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import ConfirmModal from "~/components/dashboard/ConfirmModal.vue";
 import type { DropdownMenuItem, TableColumn } from "@nuxt/ui";
 import { DASHBOARD_ROUTES } from "~/constants/routes";
 import type { Sermon } from "~/types/sermonTypes";
+import type { SermonIndexParams } from "~/services/sermons";
 
 definePageMeta({
   layout: "dashboard",
@@ -12,9 +14,39 @@ const sermonStore = useSermonStore();
 const { sermons } = storeToRefs(sermonStore);
 const data = computed(() => sermons.value);
 
-onMounted(() => {
-  sermonStore.getSermons();
+const page = ref(1);
+const search = ref("");
+const statusFilter = ref("All");
+const speakerSearch = ref("");
+
+const statusItems = ["All", "Draft", "Published", "Archived"];
+
+const fetchSermons = () => {
+  const params: SermonIndexParams = { page: page.value };
+  if (search.value) params["filter[title]"] = search.value;
+  if (statusFilter.value !== "All") params["filter[status]"] = statusFilter.value.toLowerCase();
+  if (speakerSearch.value) params["filter[speaker]"] = speakerSearch.value;
+  sermonStore.getSermons(params);
+};
+
+onMounted(fetchSermons);
+
+watch(page, fetchSermons);
+watch(statusFilter, () => {
+  page.value = 1;
+  fetchSermons();
 });
+
+let searchTimer: ReturnType<typeof setTimeout>;
+const onSearchInput = () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    page.value = 1;
+    fetchSermons();
+  }, 400);
+};
+watch(search, onSearchInput);
+watch(speakerSearch, onSearchInput);
 
 const truncate = (str: string | undefined, len = 24) => {
   if (!str) return "";
@@ -37,7 +69,7 @@ const columns: TableColumn<Sermon>[] = [
     header: "Status",
     cell: ({ row }) => {
       const color = {
-        drafted: "neutral" as const,
+        draft: "neutral" as const,
         published: "success" as const,
         archived: "secondary" as const,
       }[row.getValue("status") as string];
@@ -56,6 +88,20 @@ const columns: TableColumn<Sermon>[] = [
   { accessorKey: "created_at", header: "Created At" },
 ];
 
+const selectedId = ref<number | null>(null);
+const showConfirmModal = ref(false);
+
+const openDeleteModal = (id: number) => {
+  selectedId.value = id;
+  showConfirmModal.value = true;
+};
+
+const deleteSermon = async () => {
+  if (!selectedId.value) return;
+  await sermonStore.deleteSermon(selectedId.value);
+  await fetchSermons();
+};
+
 function getDropdownActions(sermon: Sermon, id: number): DropdownMenuItem[][] {
   return [
     [
@@ -68,6 +114,7 @@ function getDropdownActions(sermon: Sermon, id: number): DropdownMenuItem[][] {
         label: "Delete",
         icon: "i-lucide-trash",
         color: "error",
+        onSelect: () => openDeleteModal(id),
       },
     ],
   ];
@@ -86,6 +133,28 @@ function getDropdownActions(sermon: Sermon, id: number): DropdownMenuItem[][] {
         :to="DASHBOARD_ROUTES.SERMONS_CREATE"
         icon="i-lucide-plus"
         label="New Sermon"
+      />
+    </div>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap gap-3">
+      <UInput
+        v-model="search"
+        icon="i-heroicons-magnifying-glass"
+        placeholder="Search title..."
+        class="w-64"
+      />
+      <UInput
+        v-model="speakerSearch"
+        icon="i-lucide-mic"
+        placeholder="Search speaker..."
+        class="w-48"
+      />
+      <USelectMenu
+        v-model="statusFilter"
+        :items="statusItems"
+        placeholder="Filter by status"
+        class="w-40"
       />
     </div>
 
@@ -179,5 +248,18 @@ function getDropdownActions(sermon: Sermon, id: number): DropdownMenuItem[][] {
         </template>
       </UTable>
     </UCard>
+
+    <UPagination
+      v-model:page="page"
+      :total="sermonStore.meta.total"
+      :items-per-page="sermonStore.meta.per_page"
+      class="flex justify-center mt-4"
+    />
+
+    <ConfirmModal
+      v-model="showConfirmModal"
+      message="Are you sure you want to delete this sermon?"
+      @confirm="deleteSermon"
+    />
   </div>
 </template>

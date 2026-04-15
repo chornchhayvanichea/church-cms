@@ -14,10 +14,10 @@ export interface Event {
   registrationLink?: string;
   status: Status;
   createdBy: User;
-  createdBt: string;
-  updatedBt: string;
+  created_at: string;
+  updated_at: string;
 }
-enum Status {
+export enum Status {
   upcoming = "upcoming",
   past = "past",
   cancelled = "cancelled",

@@ -21,9 +21,8 @@ return new class extends Migration
 
             $table->string('scripture_reference')->nullable();
 
-            $table->enum('status', ['draft', 'publish', 'archive'])->default('draft');
-            $table->unsignedInteger('views_count')->default(0);
-            $table->audio('string');
+            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
+            $table->unsignedInteger('view_count')->default(0);
             $table->foreignId('created_by')
                 ->constrained('users')
                 ->cascadeOnDelete();

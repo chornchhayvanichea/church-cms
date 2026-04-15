@@ -10,6 +10,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class BlogController extends Controller
 {
@@ -24,7 +26,18 @@ class BlogController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        return BlogResource::collection(Blog::with('author')->paginate(100));
+        $blogs = QueryBuilder::for(Blog::class)
+            ->with('author')
+            ->allowedFilters([
+                AllowedFilter::partial('title'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::exact('author_id'),
+            ])
+            ->defaultSort('-created_at')
+            ->allowedSorts(['created_at', 'title', 'published_at'])
+            ->paginate(15);
+
+        return BlogResource::collection($blogs);
     }
 
     public function store(BlogStoreRequest $request): BlogResource

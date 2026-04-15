@@ -30,12 +30,8 @@ class SeriesController extends Controller
         $validated = $request->validated();
 
         $series = Series::create($validated);
+        $series->handleMediaUpload($request, 'thumbnail', self::SERIES_THUMBNAIL);
         $series->load('creator');
-
-        if ($request->hasFile('thumbnail')) {
-            $series->addMediaFromRequest('thumbnail');
-            $series->toMediaCollection(self::SERIES_THUMBNAIL);
-        }
 
         return new SeriesResource($series);
     }
@@ -46,12 +42,12 @@ class SeriesController extends Controller
 
         if ($request->hasFile('thumbnail')) {
             $series->clearMediaCollection(self::SERIES_THUMBNAIL);
-            $series->addMediaFromRequest('thumbnail');
-            $series->toMediaCollection(self::SERIES_THUMBNAIL);
-        }
-        if ($request->boolean('remove_thumbnail')) {
+        } elseif ($request->boolean('remove_thumbnail')) {
             $series->clearMediaCollection(self::SERIES_THUMBNAIL);
+            $series->thumbnail = null;
+            $series->save();
         }
+        $series->handleMediaUpload($request, 'thumbnail', self::SERIES_THUMBNAIL);
         $series->update($validated);
         $series->load('creator');
 

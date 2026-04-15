@@ -1,10 +1,17 @@
-import type { ApiResponse } from "~/types/dataWrapper";
+import type { ApiResponse, PaginateResponse } from "~/types/dataWrapper";
 import { api } from "./axios";
 import type { Blog, BlogStoreData, EditorImage } from "~/types/blogTypes";
 import { END_POINTS } from "~/constants/api";
 
-export const blogIndexApi = () => {
-  return api.get<ApiResponse<Blog[]>>(END_POINTS.BLOG.INDEX);
+export interface BlogIndexParams {
+  page?: number;
+  'filter[title]'?: string;
+  'filter[status]'?: string;
+  'filter[author_id]'?: number;
+}
+
+export const blogIndexApi = (params: BlogIndexParams = {}) => {
+  return api.get<PaginateResponse<Blog>>(END_POINTS.BLOG.INDEX, { params });
 };
 
 export const blogShowApi = (id: number) => {

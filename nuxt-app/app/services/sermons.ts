@@ -1,4 +1,4 @@
-import type { ApiResponse } from "~/types/dataWrapper";
+import type { ApiResponse, PaginateResponse } from "~/types/dataWrapper";
 import { api } from "./axios";
 import type { Sermon, SermonStoreData } from "~/types/sermonTypes";
 import { END_POINTS } from "~/constants/api";
@@ -36,16 +36,23 @@ export const sermonUpdateApi = (data: SermonStoreData, id: number) => {
   if (data.status) formData.append("status", data.status);
 
   formData.append("_method", "PUT");
-  return api.post(END_POINTS.SERMON.UPDATE(id), formData);
+  return api.post<ApiResponse<Sermon>>(END_POINTS.SERMON.UPDATE(id), formData);
 };
 
 export const sermonShowApi = (id: number) => {
   return api.get<ApiResponse<Sermon>>(END_POINTS.SERMON.SHOW(id));
 };
-export const sermonIndexApi = () => {
-  return api.get<ApiResponse<Sermon[]>>(END_POINTS.SERMON.INDEX);
+export interface SermonIndexParams {
+  page?: number;
+  'filter[title]'?: string;
+  'filter[status]'?: string;
+  'filter[speaker]'?: string;
+}
+
+export const sermonIndexApi = (params: SermonIndexParams = {}) => {
+  return api.get<PaginateResponse<Sermon>>(END_POINTS.SERMON.INDEX, { params });
 };
 
 export const sermonDestroyApi = (id: number) => {
-  return api.post<{ message: string }>(END_POINTS.SERMON.DESTROY(id));
+  return api.delete<{ message: string }>(END_POINTS.SERMON.DESTROY(id));
 };

@@ -33,6 +33,9 @@ class SermonUpdateRequest extends FormRequest
             'pdf_url' => ['string', 'nullable', 'sometimes'],
             'thumbnail' => ['nullable', 'mimes:jpg,jpeg,png,gif,webp', 'max:5126', 'sometimes'],
             'published_at' => ['date', 'nullable', 'sometimes'],
+            'status' => ['string', 'nullable', 'sometimes', 'in:draft,published,archived'],
+            'video' => ['nullable', 'mimes:mp4,mov,avi,mkv', 'max:102400', 'sometimes'],
+            'audio' => ['nullable', 'mimes:mp3,wav,ogg,ma4', 'max:51200', 'sometimes'],
         ];
 
         // Table sermons {

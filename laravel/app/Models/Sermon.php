@@ -32,7 +32,7 @@ class Sermon extends Model implements HasMedia
         'speaker',
         'sermon_date',
         'description',
-        'note',
+        'notes',
         'scripture_reference',
         'video',
         'audio',
