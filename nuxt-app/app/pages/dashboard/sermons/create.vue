@@ -95,13 +95,14 @@
             Publishing
           </p>
         </template>
-        <UFormField label="Status">
-          <USelect
-            v-model="formData.status"
-            :items="statusOptions"
-            class="w-48"
-          />
-        </UFormField>
+        <div class="flex flex-col gap-4">
+          <UFormField label="Series">
+            <USelect v-model="formData.series_id" :items="seriesOptions" class="w-48" />
+          </UFormField>
+          <UFormField label="Status">
+            <USelect v-model="formData.status" :items="statusOptions" class="w-48" />
+          </UFormField>
+        </div>
       </UCard>
 
       <!-- Actions -->
@@ -119,7 +120,9 @@
 
 <script setup lang="ts">
 import MediaPicker from "~/components/dashboard/MediaPicker.vue";
+import { DASHBOARD_ROUTES } from "~/constants/routes";
 import { SermonStatus, type SermonStoreData } from "~/types/sermonTypes";
+import { seriesIndexApi } from "~/services/series";
 
 const sermonStore = useSermonStore();
 
@@ -127,6 +130,16 @@ const statusOptions = [
   { label: "Draft", value: SermonStatus.draft },
   { label: "Published", value: SermonStatus.published },
 ];
+
+const seriesOptions = ref([{ label: "None", value: null }]);
+
+onMounted(async () => {
+  const response = await seriesIndexApi({ per_page: 100 });
+  seriesOptions.value = [
+    { label: "None", value: null },
+    ...response.data.data.map((s) => ({ label: s.name, value: s.id })),
+  ];
+});
 
 const formData = ref<SermonStoreData>({
   title: "",
@@ -137,10 +150,12 @@ const formData = ref<SermonStoreData>({
   scripture_reference: "",
   published_at: "",
   status: SermonStatus.draft,
+  series_id: null,
 });
 
 const submitHandler = async () => {
   await sermonStore.createSermon(formData.value);
+  navigateTo(DASHBOARD_ROUTES.SERMONS);
 };
 
 definePageMeta({

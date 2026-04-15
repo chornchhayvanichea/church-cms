@@ -27,6 +27,8 @@ class SermonController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
+        $perPage = min((int) request()->get('per_page', 15), 100);
+
         $sermons = QueryBuilder::for(Sermon::class)
             ->with(['series', 'creator'])
             ->allowedFilters([
@@ -36,7 +38,7 @@ class SermonController extends Controller
             ])
             ->defaultSort('-created_at')
             ->allowedSorts(['created_at', 'title', 'sermon_date', 'speaker'])
-            ->paginate(15);
+            ->paginate($perPage);
 
         return SermonResource::collection($sermons);
     }

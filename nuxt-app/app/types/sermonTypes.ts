@@ -33,6 +33,7 @@ export interface SermonStoreData {
   thumbnail?: File | string;
   published_at?: string;
   status?: SermonStatus;
+  series_id?: number | null;
 }
 export type SermonUpdateData = SermonStoreData;
 export enum SermonStatus {

@@ -6,8 +6,12 @@ use App\Http\Requests\Series\SeriesStoreRequest;
 use App\Http\Requests\Series\SeriesUpdateRequest;
 use App\Http\Resources\SeriesResource;
 use App\Models\Series;
+use App\Models\Sermon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SeriesController extends Controller
 {
@@ -15,14 +19,20 @@ class SeriesController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        $series = Series::with('sermons')->paginate(15);
+        $perPage = min((int) request()->get('per_page', 15), 100);
+
+        $series = QueryBuilder::for(Series::class)
+            ->with('sermons')
+            ->allowedFilters([AllowedFilter::partial('name')])
+            ->defaultSort('-created_at')
+            ->paginate($perPage);
 
         return SeriesResource::collection($series);
     }
 
     public function show(Series $series): SeriesResource
     {
-        return new SeriesResource($series->load('creator'));
+        return new SeriesResource($series->load('sermons'));
     }
 
     public function store(SeriesStoreRequest $request): SeriesResource
@@ -31,7 +41,6 @@ class SeriesController extends Controller
 
         $series = Series::create($validated);
         $series->handleMediaUpload($request, 'thumbnail', self::SERIES_THUMBNAIL);
-        $series->load('creator');
 
         return new SeriesResource($series);
     }
@@ -49,9 +58,24 @@ class SeriesController extends Controller
         }
         $series->handleMediaUpload($request, 'thumbnail', self::SERIES_THUMBNAIL);
         $series->update($validated);
-        $series->load('creator');
 
         return new SeriesResource($series);
+    }
+
+    public function syncSermons(Request $request, Series $series): SeriesResource
+    {
+        $request->validate([
+            'sermon_ids' => ['array'],
+            'sermon_ids.*' => ['integer', 'exists:sermons,id'],
+        ]);
+
+        Sermon::where('series_id', $series->id)->update(['series_id' => null]);
+
+        if (!empty($request->sermon_ids)) {
+            Sermon::whereIn('id', $request->sermon_ids)->update(['series_id' => $series->id]);
+        }
+
+        return new SeriesResource($series->load('sermons'));
     }
 
     public function destroy(Series $series): JsonResponse

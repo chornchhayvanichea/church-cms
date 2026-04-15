@@ -34,6 +34,7 @@ class SermonStoreRequest extends FormRequest
             'video_url' => ['string', 'nullable'],
             'thumbnail' => ['nullable', 'mimes:jpg,jpeg,png,gif,webp', 'max:5126'],
             'published_at' => ['date', 'nullable'],
+            'series_id' => ['nullable', 'integer', 'exists:series,id'],
         ];
     }
 }

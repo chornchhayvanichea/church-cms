@@ -18,6 +18,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     */
 
     Route::apiResource('series', SeriesController::class);
+    Route::put('series/{series}/sermons', [SeriesController::class, 'syncSermons']);
     Route::apiResource('sermons', SermonController::class);
     Route::apiResource('events', EventController::class);
     Route::apiResource('blogs', BlogController::class);

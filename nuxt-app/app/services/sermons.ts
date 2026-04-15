@@ -17,6 +17,7 @@ export const sermonStoreApi = (data: SermonStoreData) => {
   appendFileOrUrl(formData, "video", data.video);
   if (data.published_at) formData.append("published_at", data.published_at);
   if (data.status) formData.append("status", data.status);
+  if (data.series_id) formData.append("series_id", String(data.series_id));
   return api.post<ApiResponse<Sermon>>(END_POINTS.SERMON.STORE, formData);
 };
 export const sermonUpdateApi = (data: SermonStoreData, id: number) => {
@@ -34,6 +35,8 @@ export const sermonUpdateApi = (data: SermonStoreData, id: number) => {
   if (data.published_at)
     formData.append("published_at", new Date(data.published_at).toISOString());
   if (data.status) formData.append("status", data.status);
+  if (data.series_id) formData.append("series_id", String(data.series_id));
+  else formData.append("series_id", "");
 
   formData.append("_method", "PUT");
   return api.post<ApiResponse<Sermon>>(END_POINTS.SERMON.UPDATE(id), formData);
@@ -44,6 +47,7 @@ export const sermonShowApi = (id: number) => {
 };
 export interface SermonIndexParams {
   page?: number;
+  per_page?: number;
   'filter[title]'?: string;
   'filter[status]'?: string;
   'filter[speaker]'?: string;
