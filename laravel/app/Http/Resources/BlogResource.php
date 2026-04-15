@@ -20,7 +20,7 @@ class BlogResource extends JsonResource
             'slug' => $this->slug,
             'content' => $this->content,
             'excerpt' => $this->excerpt,
-            'thumbnail' => $this->getFirstMediaUrl('Blog/thumbnail') ?: $this->thumbnail,
+            'thumbnail' => $this->getFirstMediaUrl('Blog/thumbnail') ?: ($this->thumbnail ?? null),
             'status' => $this->status,
             'author_id' => $this->author_id,
             'author' => new UserResource($this->whenLoaded('author')),

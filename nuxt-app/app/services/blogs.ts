@@ -32,6 +32,7 @@ export const blogUpdateApi = async (data: BlogStoreData, id: number) => {
   appendFileOrUrl(formData, "thumbnail", data.thumbnail);
   if (data.published_at)
     formData.append("published_at", new Date(data.published_at).toISOString());
+
   formData.append("_method", "PUT");
   return api.post<ApiResponse<Blog>>(END_POINTS.BLOG.UPDATE(id), formData);
 };

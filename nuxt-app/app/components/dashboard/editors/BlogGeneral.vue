@@ -35,15 +35,14 @@
     </UFormField>
 
     <UFormField>
-      <MediaImagePicker v-model="formData.thumbnail" mime-type="image" />
+      <MediaPicker v-model="formData.thumbnail" mime-type="image" />
     </UFormField>
   </div>
 </template>
 
 <script setup lang="ts">
 import { BlogStatus, type BlogStoreData } from "~/types/blogTypes";
-import MediaImagePicker from "../MediaImagePicker.vue";
-
+import MediaPicker from "../MediaPicker.vue";
 const formData = defineModel<BlogStoreData>({
   default: () => ({
     title: "",

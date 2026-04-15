@@ -1,7 +1,9 @@
 import {
   sermonDestroyApi,
   sermonIndexApi,
+  sermonShowApi,
   sermonStoreApi,
+  sermonUpdateApi,
 } from "~/services/sermons";
 import type { Sermon, SermonStoreData } from "~/types/sermonTypes";
 
@@ -35,10 +37,34 @@ export const useSermonStore = defineStore("sermon", () => {
       loading.value = false;
     }
   };
+  const updateSermon = async (data: SermonStoreData, id: number) => {
+    loading.value = true;
+    try {
+      const response = await sermonUpdateApi(data, id);
+      await getSermons();
+      console.log("Update success", response.data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const deleteSermon = async (id: number) => {
     loading.value = true;
     try {
       await sermonDestroyApi(id);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loading.value = false;
+    }
+  };
+  const getSermon = async (id: number) => {
+    loading.value = true;
+    try {
+      const response = await sermonShowApi(id);
+      sermon.value = response.data.data;
     } catch (e) {
       console.error(e);
     } finally {
@@ -52,6 +78,8 @@ export const useSermonStore = defineStore("sermon", () => {
     getSermons,
     createSermon,
     deleteSermon,
+    getSermon,
+    updateSermon,
   };
   return values;
 });

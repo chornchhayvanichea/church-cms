@@ -34,6 +34,7 @@ const items: NavigationMenuItem[][] = [
 
     {
       label: "Media",
+      icon: "i-heroicons-film",
       to: DASHBOARD_ROUTES.MEDIA,
     },
     {

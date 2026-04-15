@@ -139,7 +139,7 @@ const mediaList = computed(() => {
 });
 
 const removeImg = () => {
-  selected.value = undefined;
+  selected.value = null;
   localFile.value = undefined;
 };
 
@@ -167,7 +167,7 @@ watch(page, async (newPage) => {
 });
 
 const isOpen = ref(false);
-const selected = defineModel<string | File>();
+const selected = defineModel<string | File | null>();
 
 const confirmedFromLibrary = (url: string) => {
   selected.value = url;

@@ -39,20 +39,20 @@ const mediaTab = computed<NavigationMenuItem[][]>(() => [
   ],
   [
     {
-      label: "Images",
+      icon: "i-heroicons-photo",
       //    icon: "i-lucide-users",
       active: activeTab.value === "images",
       onSelect: () => (activeTab.value = "images"),
     },
     {
-      label: "Audios",
+      icon: "i-heroicons-musical-note",
       //      icon: "i-lucide-users",
       active: activeTab.value === "audios",
       onSelect: () => (activeTab.value = "audios"),
     },
 
     {
-      label: "Videos",
+      icon: "i-heroicons-video-camera",
       //     icon: "i-lucide-users",
       active: activeTab.value === "videos",
       onSelect: () => (activeTab.value = "videos"),

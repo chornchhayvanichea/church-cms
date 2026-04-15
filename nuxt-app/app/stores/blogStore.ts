@@ -1,4 +1,3 @@
-import { finalize } from "zod/v4/core";
 import {
   blogDestroyApi,
   blogIndexApi,
@@ -30,6 +29,7 @@ export const useBlogStore = defineStore("blog", () => {
     loading.value = true;
     try {
       await blogUpdateApi(data, id);
+      await getBlogs();
     } catch (e) {
       console.error(e);
     } finally {

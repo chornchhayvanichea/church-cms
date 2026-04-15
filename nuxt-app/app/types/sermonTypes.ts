@@ -28,9 +28,22 @@ export interface SermonStoreData {
   description?: string;
   notes?: string;
   scripture_reference?: string;
-  video?: File;
-  audio?: File;
-  thumbnail?: File;
+  video?: File | string;
+  audio?: File | string;
+  thumbnail?: File | string;
+  published_at?: string;
+  status?: SermonStatus;
+}
+export interface SermonUpdateData {
+  title: string;
+  speaker: string;
+  sermon_date: string;
+  description?: string;
+  notes?: string;
+  scripture_reference?: string;
+  video?: File | string;
+  audio?: File | string;
+  thumbnail?: File | string;
   published_at?: string;
   status?: SermonStatus;
 }

@@ -7,5 +7,7 @@ export const appendFileOrUrl = (
     formData.append(key, value);
   } else if (typeof value === "string") {
     formData.append(`${key}_url`, value);
+  } else if (value === null) {
+    formData.append(`remove_${key}`, "1");
   }
 };

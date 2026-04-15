@@ -77,6 +77,7 @@ onMounted(async () => {
 
 const handleSubmit = async () => {
   await blogStore.updateBlog(form.value, Number(id));
+  navigateTo(DASHBOARD_ROUTES.BLOGS);
 };
 const hasChanges = ref(false);
 watch(

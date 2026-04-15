@@ -53,7 +53,7 @@ class BlogController extends Controller
         $media = auth()->user()->addMediaFromRequest('image')->toMediaCollection('editor-temp');
 
         return response()->json([
-            'url' => $media->getUrl(),
+            'url' => '/storage/'.$media->id.'/'.$media->file_name,
             'media_id' => $media->id,
         ]);
     }
@@ -63,8 +63,14 @@ class BlogController extends Controller
         $validated = $request->validated();
         if ($request->hasFile('thumbnail')) {
             $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
+        } elseif ($request->boolean('remove_thumbnail')) {
+            $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
+            $blog->thumbnail = null;
+            $blog->save();
         }
         $blog->handleMediaUpload($request, 'thumbnail', self::BLOG_THUMBNAIL);
+
+        $blog->update($validated);
 
         $oldMedia = $blog->getMedia('editor-images');
         foreach ($oldMedia as $media) {
@@ -73,7 +79,6 @@ class BlogController extends Controller
             }
         }
 
-        $blog->update($validated);
         $blog->load('author');
 
         return new BlogResource($blog);

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from "@nuxt/ui";
+import LogoComponent from "../LogoComponent.vue";
 
 const route = useRoute();
 
@@ -41,8 +42,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 <template>
   <UHeader toggle-side="right">
     <template #title>
-      <Logo class="h-6 w-auto" />
-      Jesus Saves You
+      <LogoComponent />
     </template>
 
     <UNavigationMenu :items="items" />
