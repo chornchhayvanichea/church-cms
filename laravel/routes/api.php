@@ -6,6 +6,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\SermonController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
@@ -17,6 +18,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route::model('media', \Spatie\MediaLibrary\MediaCollections\Models\Media::class);
     */
 
+    Route::apiResource('users', UserController::class);
     Route::apiResource('series', SeriesController::class);
     Route::put('series/{series}/sermons', [SeriesController::class, 'syncSermons']);
     Route::apiResource('sermons', SermonController::class);

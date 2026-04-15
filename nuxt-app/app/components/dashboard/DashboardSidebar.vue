@@ -112,7 +112,6 @@ const items: NavigationMenuItem[][] = [
         :items="items[0]"
         orientation="vertical"
       />
-
     </template>
   </UDashboardSidebar>
 </template>

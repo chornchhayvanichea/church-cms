@@ -3,6 +3,11 @@ const API = "/api";
 export const END_POINTS = {
   USER: {
     GET: `${API}/user`,
+    INDEX: `${API}/users`,
+    STORE: `${API}/users`,
+    SHOW: (id: number | string) => `${API}/users/${id}`,
+    UPDATE: (id: number | string) => `${API}/users/${id}`,
+    DESTROY: (id: number | string) => `${API}/users/${id}`,
   },
   MEDIA: {
     INDEX: `${API}/media`,

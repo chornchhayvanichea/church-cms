@@ -25,4 +25,6 @@ export const DASHBOARD_ROUTES = {
   },
 
   USERS: "/dashboard/users",
+  USERS_CREATE: "/dashboard/users/create",
+  USERS_EDIT: (id: string | number) => `/dashboard/users/${id}/edit`,
 };
