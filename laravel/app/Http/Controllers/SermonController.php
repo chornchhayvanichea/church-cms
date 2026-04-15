@@ -45,7 +45,6 @@ class SermonController extends Controller
     {
         $validated = $request->validated();
 
-        \Log::info('auth id: '.auth()->id());
         $sermon = Sermon::create([
             ...$validated,
             'created_by' => Auth::id(),

@@ -17,6 +17,13 @@ export const END_POINTS = {
     DESTROY: (id: number | string) => `${API}/blogs/${id}`,
     EDITOR_UPLOAD_IMAGE: `${API}/blogs/upload-editor-image`,
   },
+  EVENT: {
+    INDEX: `${API}/events`,
+    STORE: `${API}/events`,
+    SHOW: (id: number | string) => `${API}/events/${id}`,
+    UPDATE: (id: number | string) => `${API}/events/${id}`,
+    DESTROY: (id: number | string) => `${API}/events/${id}`,
+  },
   SERMON: {
     STORE: `${API}/sermons`,
     INDEX: `${API}/sermons`,

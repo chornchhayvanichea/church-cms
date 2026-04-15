@@ -25,12 +25,13 @@ class EventUpdateRequest extends FormRequest
             'title' => ['string', 'sometimes', 'max:255'],
             'description' => ['sometimes', 'nullable'],
             'event_date' => ['date', 'sometimes', 'nullable'],
-            'event_time' => ['time', 'sometimes', 'nullable'],
+            'event_time' => ['date_format:H:i', 'sometimes', 'nullable'],
             'end_date' => ['date', 'sometimes', 'nullable'],
-            'end_time' => ['time', 'sometimes', 'nullable'],
+            'end_time' => ['date_format:H:i', 'sometimes', 'nullable'],
             'location' => ['string', 'sometimes', 'nullable'],
             'image' => ['mimes:jpg,png,jpeg,gif,webp', 'max:5126', 'sometimes', 'nullable'],
-            'registration_link' => ['nullable', 'string', 'sometimes', 'nullable'],
+            'registration_link' => ['nullable', 'string', 'sometimes'],
+            'status' => ['string', 'sometimes', 'nullable', 'in:upcoming,past,cancelled'],
         ];
 
     }

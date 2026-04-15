@@ -5,19 +5,35 @@ export interface Event {
   title: string;
   slug: string;
   description?: string;
-  eventDate: string;
-  eventTime?: string;
-  endDate?: string;
-  endTime?: string;
+  event_date: string;
+  event_time?: string;
+  end_date?: string;
+  end_time?: string;
   location?: string;
   image?: string;
-  registrationLink?: string;
-  status: Status;
-  createdBy: User;
+  registration_link?: string;
+  status: EventStatus;
+  created_by: User;
   created_at: string;
   updated_at: string;
 }
-export enum Status {
+
+export interface EventStoreData {
+  title: string;
+  description?: string;
+  event_date: string;
+  event_time?: string;
+  end_date?: string;
+  end_time?: string;
+  location?: string;
+  image?: File | string;
+  registration_link?: string;
+  status?: EventStatus;
+}
+
+export type EventUpdateData = EventStoreData;
+
+export enum EventStatus {
   upcoming = "upcoming",
   past = "past",
   cancelled = "cancelled",

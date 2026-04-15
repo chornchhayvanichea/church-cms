@@ -9,6 +9,8 @@ use App\Models\Event;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class EventController extends Controller
 {
@@ -24,7 +26,15 @@ class EventController extends Controller
     public function index(): AnonymousResourceCollection
     {
 
-        $events = Event::with('creator')->paginate(15);
+        $events = QueryBuilder::for(Event::class)
+            ->with('creator')
+            ->allowedFilters([
+                AllowedFilter::partial('title'),
+                AllowedFilter::exact('status'),
+            ])
+            ->defaultSort('-created_at')
+            ->allowedSorts(['created_at', 'title', 'event_date'])
+            ->paginate(15);
 
         return EventResource::collection($events);
     }

@@ -23,9 +23,12 @@ class EventResource extends JsonResource
             'event_time' => $this->event_time,
             'location' => $this->location,
             'image' => $this->getFirstMediaUrl('Event/image') ?: null,
+            'end_date' => $this->end_date,
+            'end_time' => $this->end_time,
             'registration_link' => $this->registration_link,
             'status' => $this->status,
-            'created_by' => UserResource::make($this->whenLoaded('creator', $this->creator)),
+            'created_by' => UserResource::make($this->whenLoaded('creator')),
+            'created_at' => $this->created_at,
         ];
     }
 }
