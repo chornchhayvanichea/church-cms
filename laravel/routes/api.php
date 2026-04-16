@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('signup', [AuthController::class, 'signup']);
 
+Route::prefix('public')->group(function () {
+    Route::get('blogs', [BlogController::class, 'publicIndex']);
+    Route::get('blogs/{blog:slug}', [BlogController::class, 'publicShow']);
+    Route::get('sermons', [SermonController::class, 'publicIndex']);
+    Route::get('sermons/{sermon:slug}', [SermonController::class, 'publicShow']);
+    Route::get('events', [EventController::class, 'publicIndex']);
+});
+
 Route::middleware(['auth:sanctum'])->group(function () {
     /*
     * another way to bind model from 3rd party package using this

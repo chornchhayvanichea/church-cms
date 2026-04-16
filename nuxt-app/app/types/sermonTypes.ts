@@ -1,12 +1,21 @@
 import type { User } from "./userTypes";
 
+export interface SermonSeries {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+  thumbnail?: string;
+}
+
 export interface Sermon {
   id: number;
   title: string;
-  //  slug: string;
+  slug: string;
   speaker: string;
   sermon_date: string;
   series_id?: number;
+  series?: SermonSeries;
   description?: string;
   notes?: string;
   scripture_reference?: string;

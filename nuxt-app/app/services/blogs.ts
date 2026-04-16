@@ -5,9 +5,9 @@ import { END_POINTS } from "~/constants/api";
 
 export interface BlogIndexParams {
   page?: number;
-  'filter[title]'?: string;
-  'filter[status]'?: string;
-  'filter[author_id]'?: number;
+  "filter[title]"?: string;
+  "filter[status]"?: string;
+  "filter[author_id]"?: number;
 }
 
 export const blogIndexApi = (params: BlogIndexParams = {}) => {
@@ -46,6 +46,18 @@ export const blogUpdateApi = async (data: BlogStoreData, id: number) => {
 
 export const blogDestroyApi = (id: number) => {
   return api.delete<{ message: string }>(END_POINTS.BLOG.DESTROY(id));
+};
+
+export const publicBlogIndexApi = (
+  params: { page?: number; "filter[title]"?: string } = {},
+) => {
+  return api.get<PaginateResponse<Blog>>(END_POINTS.BLOG.PUBLIC_INDEX, {
+    params,
+  });
+};
+
+export const publicBlogShowApi = (slug: string) => {
+  return api.get<ApiResponse<Blog>>(END_POINTS.BLOG.PUBLIC_SHOW(slug));
 };
 
 export const editorUploadImage = async (image: File) => {

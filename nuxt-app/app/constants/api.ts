@@ -21,6 +21,8 @@ export const END_POINTS = {
     UPDATE: (id: number | string) => `${API}/blogs/${id}`,
     DESTROY: (id: number | string) => `${API}/blogs/${id}`,
     EDITOR_UPLOAD_IMAGE: `${API}/blogs/upload-editor-image`,
+    PUBLIC_INDEX: `${API}/public/blogs`,
+    PUBLIC_SHOW: (slug: string) => `${API}/public/blogs/${slug}`,
   },
   SERIES: {
     INDEX: `${API}/series`,
@@ -36,6 +38,7 @@ export const END_POINTS = {
     SHOW: (id: number | string) => `${API}/events/${id}`,
     UPDATE: (id: number | string) => `${API}/events/${id}`,
     DESTROY: (id: number | string) => `${API}/events/${id}`,
+    PUBLIC_INDEX: `${API}/public/events`,
   },
   SERMON: {
     STORE: `${API}/sermons`,
@@ -43,6 +46,8 @@ export const END_POINTS = {
     SHOW: (id: number | string) => `${API}/sermons/${id}`,
     UPDATE: (id: number | string) => `${API}/sermons/${id}`,
     DESTROY: (id: number | string) => `${API}/sermons/${id}`,
+    PUBLIC_INDEX: `${API}/public/sermons`,
+    PUBLIC_SHOW: (slug: string) => `${API}/public/sermons/${slug}`,
   },
   AUTH: {
     LOGIN: `${API}/login`,

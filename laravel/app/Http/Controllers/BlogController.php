@@ -17,6 +17,26 @@ class BlogController extends Controller
 {
     private const BLOG_THUMBNAIL = 'Blog/thumbnail';
 
+    public function publicIndex(): AnonymousResourceCollection
+    {
+        $blogs = QueryBuilder::for(Blog::class)
+            ->with('author')
+            ->where('status', 'published')
+            ->allowedFilters([AllowedFilter::partial('title')])
+            ->defaultSort('-published_at')
+            ->paginate(12);
+
+        return BlogResource::collection($blogs);
+    }
+
+    public function publicShow(Blog $blog): BlogResource
+    {
+        abort_if($blog->status !== 'published', 404);
+        $blog->load('author');
+
+        return new BlogResource($blog);
+    }
+
     public function show(Blog $blog): BlogResource
     {
         $blog->load('author');

@@ -28,6 +28,7 @@ class BlogUpdateRequest extends FormRequest
             'excerpt' => ['sometimes', 'nullable', 'string'],
             'thumbnail' => ['sometimes', 'nullable', 'mimes:jpg,jpeg,png,webp,gif'],
             'published_at' => ['sometimes', 'nullable', 'date'],
+            'status' => ['sometimes', 'in:draft,published,archived'],
         ];
     }
 }

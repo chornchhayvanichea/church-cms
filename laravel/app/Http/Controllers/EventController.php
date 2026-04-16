@@ -16,6 +16,17 @@ class EventController extends Controller
 {
     private const EVENT_IMAGE_DIR = 'Event/image';
 
+    public function publicIndex(): AnonymousResourceCollection
+    {
+        $events = QueryBuilder::for(Event::class)
+            ->where('status', 'upcoming')
+            ->allowedFilters([AllowedFilter::partial('title')])
+            ->defaultSort('event_date')
+            ->paginate(12);
+
+        return EventResource::collection($events);
+    }
+
     public function show(Event $event): EventResource
     {
         $event->load('creator');

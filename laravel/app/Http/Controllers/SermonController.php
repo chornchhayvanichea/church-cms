@@ -20,6 +20,28 @@ class SermonController extends Controller
 
     private const SERMON_VIDEO = 'Sermon/video';
 
+    public function publicIndex(): AnonymousResourceCollection
+    {
+        $sermons = QueryBuilder::for(Sermon::class)
+            ->with(['series', 'creator'])
+            ->where('status', 'published')
+            ->allowedFilters([
+                AllowedFilter::partial('title'),
+                AllowedFilter::exact('series_id'),
+            ])
+            ->defaultSort('-published_at')
+            ->paginate(12);
+
+        return SermonResource::collection($sermons);
+    }
+
+    public function publicShow(Sermon $sermon): SermonResource
+    {
+        abort_if($sermon->status !== 'published', 404);
+
+        return new SermonResource($sermon->load(['series', 'creator']));
+    }
+
     public function show(Sermon $sermon): SermonResource
     {
         return new SermonResource($sermon->load(['series', 'creator']));

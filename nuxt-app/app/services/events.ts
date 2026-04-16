@@ -51,3 +51,12 @@ export const eventUpdateApi = (data: EventStoreData, id: number) => {
 export const eventDestroyApi = (id: number) => {
   return api.delete<{ message: string }>(END_POINTS.EVENT.DESTROY(id));
 };
+
+export interface PublicEventIndexParams {
+  page?: number;
+  "filter[title]"?: string;
+}
+
+export const publicEventIndexApi = (params: PublicEventIndexParams = {}) => {
+  return api.get<PaginateResponse<Event>>(END_POINTS.EVENT.PUBLIC_INDEX, { params });
+};

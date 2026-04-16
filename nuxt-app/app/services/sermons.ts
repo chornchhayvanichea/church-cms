@@ -60,3 +60,17 @@ export const sermonIndexApi = (params: SermonIndexParams = {}) => {
 export const sermonDestroyApi = (id: number) => {
   return api.delete<{ message: string }>(END_POINTS.SERMON.DESTROY(id));
 };
+
+export interface PublicSermonIndexParams {
+  page?: number;
+  'filter[title]'?: string;
+  'filter[series_id]'?: number;
+}
+
+export const publicSermonIndexApi = (params: PublicSermonIndexParams = {}) => {
+  return api.get<PaginateResponse<Sermon>>(END_POINTS.SERMON.PUBLIC_INDEX, { params });
+};
+
+export const publicSermonShowApi = (slug: string) => {
+  return api.get<ApiResponse<Sermon>>(END_POINTS.SERMON.PUBLIC_SHOW(slug));
+};

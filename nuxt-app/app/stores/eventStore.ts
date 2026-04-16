@@ -4,7 +4,9 @@ import {
   eventShowApi,
   eventStoreApi,
   eventUpdateApi,
+  publicEventIndexApi,
   type EventIndexParams,
+  type PublicEventIndexParams,
 } from "~/services/events";
 import type { Event, EventStoreData } from "~/types/eventTypes";
 import type { PaginationMeta } from "~/types/dataWrapper";
@@ -73,5 +75,23 @@ export const useEventStore = defineStore("event", () => {
     }
   };
 
-  return { event, events, loading, meta, getEvents, getEvent, createEvent, updateEvent, deleteEvent };
+  // --- Public ---
+  const publicEvents = ref<Event[]>([]);
+  const publicMeta = ref<PaginationMeta>({ current_page: 1, last_page: 1, per_page: 12, total: 0, from: 1, to: 0 });
+  const publicLoading = ref(false);
+
+  const getPublicEvents = async (params: PublicEventIndexParams = {}) => {
+    publicLoading.value = true;
+    try {
+      const response = await publicEventIndexApi(params);
+      publicEvents.value = response.data.data;
+      publicMeta.value = response.data.meta;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      publicLoading.value = false;
+    }
+  };
+
+  return { event, events, loading, meta, getEvents, getEvent, createEvent, updateEvent, deleteEvent, publicEvents, publicMeta, publicLoading, getPublicEvents };
 });

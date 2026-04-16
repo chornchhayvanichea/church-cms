@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\SeriesResource;
 
 class SermonResource extends JsonResource
 {
@@ -29,6 +30,7 @@ class SermonResource extends JsonResource
             'video' => $this->getFirstMediaUrl('Sermon/video') ?: $this->video,
             'status' => $this->status,
             'view_count' => $this->view_count,
+            'series' => SeriesResource::make($this->whenLoaded('series')),
             'created_by' => UserResource::make($this->whenLoaded('creator')),
             'published_at' => $this->published_at,
             'created_at' => $this->created_at,
