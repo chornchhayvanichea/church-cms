@@ -54,10 +54,8 @@ const items: NavigationMenuItem[][] = [
       defaultOpen: true,
       children: [
         {
-          label: "Homepage settings",
-        },
-        {
-          label: "Aboutpage settings",
+          label: "Site Settings",
+          to: DASHBOARD_ROUTES.SETTINGS.SITE,
         },
         {
           label: "User Profile",

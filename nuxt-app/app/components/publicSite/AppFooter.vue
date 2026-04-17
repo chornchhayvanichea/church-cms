@@ -1,81 +1,97 @@
 <script setup lang="ts">
-import type { FooterColumn } from "@nuxt/ui";
 import { DASHBOARD_ROUTES } from "~/constants/routes";
 
-const columns: FooterColumn[] = [
-  {
-    label: "Recent Posts",
-    children: [
-      {
-        label: "idk bro",
-      },
-    ],
-  },
-  {
-    label: "Contact Us",
-    children: [
-      {
-        label: "Nuxters",
-        to: "https://nuxters.nuxt.com",
-        target: "_blank",
-      },
-      {
-        label: "Video Courses",
-        to: "https://masteringnuxt.com/nuxt3?ref=nuxt",
-        target: "_blank",
-      },
-      {
-        label: "Nuxt on GitHub",
-        to: "https://github.com/nuxt",
-        target: "_blank",
-      },
-    ],
-  },
-  {
-    label: "Useful links",
-    children: [
-      {
-        label: "Nuxt Content",
-        to: "https://content.nuxt.com/",
-        target: "_blank",
-      },
-      {
-        label: "Nuxt DevTools",
-        to: "https://devtools.nuxt.com/",
-        target: "_blank",
-      },
-      {
-        label: "Nuxt Image",
-        to: "https://image.nuxt.com/",
-        target: "_blank",
-      },
-      {
-        label: "Staff Login",
-        to: DASHBOARD_ROUTES.AUTH_LOGIN,
-        target: "_self",
-      },
-    ],
-  },
+const settingStore = useSettingStore();
+const { settings } = storeToRefs(settingStore);
+
+const quickLinks = [
+  { label: "Home", to: "/" },
+  { label: "About", to: "/about" },
+  { label: "Sermons", to: "/sermons" },
+  { label: "Events", to: "/events" },
+  { label: "Blog", to: "/blogs" },
+  { label: "Contact", to: "/contact" },
 ];
 </script>
+
 <template>
-  <UFooter class="bg-amber-950">
-    <template #top>
-      <UContainer>
-        <UFooterColumns :columns="columns">
-          <template #left>
-            <h1 class="font-bold">Jesus saves you</h1>
-            <p class="text-xs w-full">
-              Semper vulputate quis, praesent, aenean lacus lorem sed ridiculus
-              porta non massa. Imperdiet diam, non, nulla ultricies ac lectus
-              arcu in fusce cras suspendisse. Aliquam.
-            </p>
-          </template>
-        </UFooterColumns>
+  <footer class="bg-amber-950 text-white">
+    <UContainer class="py-12 sm:py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <!-- Brand -->
+        <div class="lg:col-span-1 space-y-3">
+          <h2 class="font-bold text-lg text-white">
+            {{ settings.site_name || 'Church Name' }}
+          </h2>
+          <p class="text-sm text-white/60 leading-relaxed">
+            {{ settings.footer_description || settings.site_tagline || 'A community built on faith, hope, and love.' }}
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="space-y-3">
+          <h3 class="text-xs font-bold uppercase tracking-widest text-white/40">Quick Links</h3>
+          <ul class="space-y-2">
+            <li v-for="link in quickLinks" :key="link.label">
+              <NuxtLink :to="link.to" class="text-sm text-white/70 hover:text-white transition-colors">
+                {{ link.label }}
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="space-y-3">
+          <h3 class="text-xs font-bold uppercase tracking-widest text-white/40">Contact Us</h3>
+          <ul class="space-y-2 text-sm text-white/70">
+            <li v-if="settings.church_address" class="flex items-start gap-2">
+              <UIcon name="i-lucide-map-pin" class="w-4 h-4 mt-0.5 shrink-0 text-amber-400" />
+              <span>{{ settings.church_address }}<span v-if="settings.church_city">, {{ settings.church_city }}</span></span>
+            </li>
+            <li v-if="settings.church_phone">
+              <a :href="`tel:${settings.church_phone}`" class="flex items-center gap-2 hover:text-white transition-colors">
+                <UIcon name="i-lucide-phone" class="w-4 h-4 shrink-0 text-amber-400" />
+                {{ settings.church_phone }}
+              </a>
+            </li>
+            <li v-if="settings.church_email">
+              <a :href="`mailto:${settings.church_email}`" class="flex items-center gap-2 hover:text-white transition-colors">
+                <UIcon name="i-lucide-mail" class="w-4 h-4 shrink-0 text-amber-400" />
+                {{ settings.church_email }}
+              </a>
+            </li>
+            <li v-if="settings.church_service_time" class="flex items-center gap-2">
+              <UIcon name="i-lucide-clock" class="w-4 h-4 shrink-0 text-amber-400" />
+              {{ settings.church_service_time }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Give -->
+        <div class="space-y-3">
+          <h3 class="text-xs font-bold uppercase tracking-widest text-white/40">More</h3>
+          <ul class="space-y-2">
+            <li>
+              <NuxtLink to="/donate" class="text-sm text-white/70 hover:text-white transition-colors">
+                Donate
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink :to="DASHBOARD_ROUTES.AUTH_LOGIN" class="text-sm text-white/70 hover:text-white transition-colors">
+                Staff Login
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </UContainer>
+
+    <div class="border-t border-white/10">
+      <UContainer class="py-4">
+        <p class="text-[11px] text-white/30">
+          Copyright © {{ new Date().getFullYear() }} {{ settings.site_name || 'Church Name' }}. All rights reserved.
+        </p>
       </UContainer>
-    </template>
-    <p class="text-muted text-[10px]">
-      Copyright © {{ new Date().getFullYear() }}
-    </p>
-  </UFooter>
+    </div>
+  </footer>
 </template>

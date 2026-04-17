@@ -15,9 +15,10 @@ const buildParams = (): PublicSermonIndexParams => ({
   "filter[series_id]": seriesFilter.value ?? undefined,
 });
 
-const { refresh } = await useAsyncData("public-sermons", () =>
-  sermonStore.getPublicSermons(buildParams()),
-);
+const [{ refresh }, { settings }] = await Promise.all([
+  useAsyncData("public-sermons", () => sermonStore.getPublicSermons(buildParams())),
+  usePublicSettings(),
+]);
 
 watch(page, () => refresh());
 watch(seriesFilter, () => { page.value = 1; sermonStore.getPublicSermons(buildParams()); });
@@ -42,8 +43,8 @@ const formatDate = (d: string) =>
   <div>
     <!-- Hero -->
     <UPageHero
-      title="Sermons"
-      description="Listen to messages that encourage, challenge, and grow your faith."
+      :title="settings.sermons_hero_title || 'Sermons'"
+      :description="settings.sermons_hero_description || 'Listen to messages that encourage, challenge, and grow your faith.'"
       class="bg-cover bg-center bg-fixed min-h-[40%]"
       :style="{
         backgroundImage: `linear-gradient(rgba(255,255,255,0.1), rgba(0,0,0,0.55)), url(${sermonBg})`,

@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\SermonController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +20,8 @@ Route::prefix('public')->group(function () {
     Route::get('sermons', [SermonController::class, 'publicIndex']);
     Route::get('sermons/{sermon:slug}', [SermonController::class, 'publicShow']);
     Route::get('events', [EventController::class, 'publicIndex']);
+    Route::get('settings', [SettingController::class, 'publicIndex']);
+    Route::post('contact', [ContactController::class, 'store']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -33,6 +37,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('events', EventController::class);
     Route::apiResource('blogs', BlogController::class);
     Route::apiResource('media', MediaController::class);
+    Route::put('settings', [SettingController::class, 'update']);
+    Route::get('overview', [ContactController::class, 'overview']);
 
     Route::post('blogs/upload-editor-image', [BlogController::class, 'uploadEditorImage']);
 

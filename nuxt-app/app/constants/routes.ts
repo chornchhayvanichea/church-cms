@@ -21,6 +21,7 @@ export const DASHBOARD_ROUTES = {
   SERMONS_EDIT: (id: string | number) => `/dashboard/sermons/${id}/edit`,
 
   SETTINGS: {
+    SITE: "/dashboard/settings/site",
     PROFILE: "/dashboard/settings/profile",
   },
 

@@ -49,6 +49,13 @@ export const END_POINTS = {
     PUBLIC_INDEX: `${API}/public/sermons`,
     PUBLIC_SHOW: (slug: string) => `${API}/public/sermons/${slug}`,
   },
+  DASHBOARD: {
+    OVERVIEW: `${API}/overview`,
+  },
+  SETTING: {
+    PUBLIC_INDEX: `${API}/public/settings`,
+    UPDATE: `${API}/settings`,
+  },
   AUTH: {
     LOGIN: `${API}/login`,
     LOGOUT: `${API}/logout`,
