@@ -1,57 +1,86 @@
-<template>
-  <div class="flex flex-col items-center justify-center gap-4 p-4">
-    <UPageCard class="w-full max-w-md">
-      <ClientOnly>
-        <UAuthForm
-          :schema="schema"
-          :fields="fields"
-          title="Login"
-          description="Enter your credentials to access your account."
-          icon="i-lucide-user"
-          @submit="onSubmit"
-        />
-      </ClientOnly>
-    </UPageCard>
-  </div>
-</template>
-
 <script setup lang="ts">
-import type { FormSubmitEvent, AuthFormField } from "@nuxt/ui";
+import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import { DASHBOARD_ROUTES } from "~/constants/routes";
 
 const schema = z.object({
   email: z.email("Invalid email"),
-  password: z
-    .string("Password is required")
-    .min(8, "Must be at least 8 characters"),
+  password: z.string().min(8, "Must be at least 8 characters"),
 });
 type Schema = z.output<typeof schema>;
 
 const store = useAuthStore();
 
+const state = reactive({ email: "", password: "" });
+
 async function onSubmit(payload: FormSubmitEvent<Schema>) {
   await store.login(payload.data);
-  console.log("Submitted", payload);
   if (store.user) {
     await navigateTo(DASHBOARD_ROUTES.ROOT);
   }
 }
-
-const fields: AuthFormField[] = [
-  {
-    name: "email",
-    type: "email",
-    label: "Email",
-    placeholder: "Enter your email",
-    required: true,
-  },
-  {
-    name: "password",
-    label: "Password",
-    type: "password",
-    placeholder: "Enter your password",
-    required: true,
-  },
-];
 </script>
+
+<template>
+  <div class="w-full max-w-[380px]">
+    <!-- Heading -->
+    <div class="mb-8">
+      <h2
+        class="text-gray-900 dark:text-white font-medium mb-1.5"
+        style="font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; letter-spacing: -0.01em; line-height: 1.1;"
+      >
+        Welcome back
+      </h2>
+      <p class="text-gray-400 text-sm" style="font-family: 'DM Sans', sans-serif;">
+        Sign in to access your dashboard
+      </p>
+    </div>
+
+    <!-- Error -->
+    <UAlert
+      v-if="store.error"
+      color="error"
+      variant="soft"
+      :description="store.error"
+      class="mb-6"
+    />
+
+    <!-- Form -->
+    <UForm :schema="schema" :state="state" class="space-y-5" @submit="onSubmit">
+      <UFormField label="Email address" name="email">
+        <UInput
+          v-model="state.email"
+          type="email"
+          placeholder="you@gracechurch.org"
+          size="lg"
+          class="w-full"
+          autocomplete="email"
+        />
+      </UFormField>
+
+      <UFormField label="Password" name="password">
+        <UInput
+          v-model="state.password"
+          type="password"
+          placeholder="••••••••"
+          size="lg"
+          class="w-full"
+          autocomplete="current-password"
+        />
+      </UFormField>
+
+      <div class="pt-1">
+        <UButton
+          type="submit"
+          size="lg"
+          block
+          color="neutral"
+          :loading="store.loading"
+          style="font-family: 'DM Sans', sans-serif; letter-spacing: 0.04em;"
+        >
+          Sign In
+        </UButton>
+      </div>
+    </UForm>
+  </div>
+</template>
