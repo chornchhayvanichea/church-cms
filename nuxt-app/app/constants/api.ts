@@ -56,6 +56,9 @@ export const END_POINTS = {
     PUBLIC_INDEX: `${API}/public/settings`,
     UPDATE: `${API}/settings`,
   },
+  PROFILE: {
+    UPDATE: `${API}/profile`,
+  },
   AUTH: {
     LOGIN: `${API}/login`,
     LOGOUT: `${API}/logout`,

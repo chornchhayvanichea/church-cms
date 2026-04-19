@@ -41,6 +41,16 @@ export const userUpdateApi = (data: UserUpdateData, id: number) => {
   return api.post<ApiResponse<User>>(END_POINTS.USER.UPDATE(id), formData);
 };
 
+export const profileUpdateApi = (data: UserUpdateData) => {
+  const formData = new FormData();
+  if (data.name) formData.append("name", data.name);
+  if (data.email) formData.append("email", data.email);
+  if (data.password) formData.append("password", data.password);
+  if (data.avatar instanceof File) formData.append("avatar", data.avatar);
+  else if (data.avatar === undefined) formData.append("remove_avatar", "1");
+  return api.post<ApiResponse<User>>(END_POINTS.PROFILE.UPDATE, formData);
+};
+
 export const userDestroyApi = (id: number) => {
   return api.delete<{ message: string }>(END_POINTS.USER.DESTROY(id));
 };

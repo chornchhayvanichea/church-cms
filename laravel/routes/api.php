@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
@@ -42,6 +43,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('blogs/upload-editor-image', [BlogController::class, 'uploadEditorImage']);
 
     Route::get('user', [AuthController::class, 'user']);
+    Route::post('profile', [ProfileController::class, 'update']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

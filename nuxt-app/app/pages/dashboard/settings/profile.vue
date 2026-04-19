@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import MediaPicker from "~/components/dashboard/MediaPicker.vue";
+import { profileUpdateApi } from "~/services/users";
 import type { UserUpdateData } from "~/types/userTypes";
 
 definePageMeta({
@@ -8,7 +9,6 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const userStore = useUserStore();
 const toast = useToast();
 
 const form = reactive<UserUpdateData>({
@@ -23,12 +23,11 @@ watch(() => authStore.user, (u) => {
   form.name = u.name;
   form.email = u.email;
   form.avatar = u.avatar;
-});
+}, { immediate: true });
 
 const saving = ref(false);
 
 const submit = async () => {
-  if (!authStore.user) return;
   saving.value = true;
   try {
     const payload: UserUpdateData = {
@@ -37,12 +36,12 @@ const submit = async () => {
       avatar: form.avatar,
     };
     if (form.password) payload.password = form.password;
-    await userStore.updateUser(payload, authStore.user.id);
+    await profileUpdateApi(payload);
     await authStore.getUser();
     toast.add({ title: "Profile updated.", color: "success", icon: "i-lucide-check-circle" });
     form.password = "";
-  } catch {
-    toast.add({ title: "Failed to update profile.", color: "error", icon: "i-lucide-x-circle" });
+  } catch (e) {
+    toast.add({ title: "Failed to update profile.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
   } finally {
     saving.value = false;
   }
