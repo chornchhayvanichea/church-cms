@@ -27,11 +27,11 @@ export const useBlogStore = defineStore("blog", () => {
   const createBlog = async (data: BlogStoreData) => {
     loading.value = true;
     try {
-      const response = await blogStoreApi(data);
+      await blogStoreApi(data);
       await getBlogs();
-      console.log(response);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -41,13 +41,14 @@ export const useBlogStore = defineStore("blog", () => {
     loading.value = true;
     try {
       await blogUpdateApi(data, id);
-      await getBlogs();
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
   };
+
   const getBlog = async (id: number) => {
     loading.value = true;
     try {
@@ -59,6 +60,7 @@ export const useBlogStore = defineStore("blog", () => {
       loading.value = false;
     }
   };
+
   const getBlogs = async (params: BlogIndexParams = {}) => {
     loading.value = true;
     try {
@@ -71,12 +73,14 @@ export const useBlogStore = defineStore("blog", () => {
       loading.value = false;
     }
   };
+
   const deleteBlog = async (id: number) => {
     loading.value = true;
     try {
       await blogDestroyApi(id);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -115,22 +119,10 @@ export const useBlogStore = defineStore("blog", () => {
     }
   };
 
-  const values = {
-    blog,
-    blogs,
-    loading,
-    meta,
-    createBlog,
-    getBlogs,
-    getBlog,
-    updateBlog,
-    deleteBlog,
-    publicBlog,
-    publicBlogs,
-    publicMeta,
-    publicLoading,
-    getPublicBlogs,
-    getPublicBlog,
+  return {
+    blog, blogs, loading, meta,
+    createBlog, getBlogs, getBlog, updateBlog, deleteBlog,
+    publicBlog, publicBlogs, publicMeta, publicLoading,
+    getPublicBlogs, getPublicBlog,
   };
-  return values;
 });

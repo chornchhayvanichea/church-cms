@@ -34,23 +34,23 @@ export const useSermonStore = defineStore("sermon", () => {
   const createSermon = async (data: SermonStoreData) => {
     loading.value = true;
     try {
-      const response = await sermonStoreApi(data);
+      await sermonStoreApi(data);
       await getSermons();
-      console.log(response);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
   };
+
   const updateSermon = async (data: SermonStoreData, id: number) => {
     loading.value = true;
     try {
-      const response = await sermonUpdateApi(data, id);
-      await getSermons();
-      console.log("Update success", response.data);
+      await sermonUpdateApi(data, id);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -62,10 +62,12 @@ export const useSermonStore = defineStore("sermon", () => {
       await sermonDestroyApi(id);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
   };
+
   const getSermon = async (id: number) => {
     loading.value = true;
     try {
@@ -77,6 +79,7 @@ export const useSermonStore = defineStore("sermon", () => {
       loading.value = false;
     }
   };
+
   // --- Public ---
   const publicSermon = ref<Sermon | null>(null);
   const publicSermons = ref<Sermon[]>([]);
@@ -110,22 +113,10 @@ export const useSermonStore = defineStore("sermon", () => {
     }
   };
 
-  const values = {
-    sermon,
-    sermons,
-    loading,
-    meta,
-    getSermons,
-    createSermon,
-    deleteSermon,
-    getSermon,
-    updateSermon,
-    publicSermon,
-    publicSermons,
-    publicMeta,
-    publicLoading,
-    getPublicSermons,
-    getPublicSermon,
+  return {
+    sermon, sermons, loading, meta,
+    getSermons, createSermon, deleteSermon, getSermon, updateSermon,
+    publicSermon, publicSermons, publicMeta, publicLoading,
+    getPublicSermons, getPublicSermon,
   };
-  return values;
 });

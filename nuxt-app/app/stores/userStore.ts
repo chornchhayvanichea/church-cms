@@ -46,6 +46,7 @@ export const useUserStore = defineStore("user", () => {
       await userStoreApi(data);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -57,6 +58,7 @@ export const useUserStore = defineStore("user", () => {
       await userUpdateApi(data, id);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -68,6 +70,7 @@ export const useUserStore = defineStore("user", () => {
       await userDestroyApi(id);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }

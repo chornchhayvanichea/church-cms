@@ -48,6 +48,7 @@ export const useEventStore = defineStore("event", () => {
       await eventStoreApi(data);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -59,6 +60,7 @@ export const useEventStore = defineStore("event", () => {
       await eventUpdateApi(data, id);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -70,6 +72,7 @@ export const useEventStore = defineStore("event", () => {
       await eventDestroyApi(id);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -93,5 +96,9 @@ export const useEventStore = defineStore("event", () => {
     }
   };
 
-  return { event, events, loading, meta, getEvents, getEvent, createEvent, updateEvent, deleteEvent, publicEvents, publicMeta, publicLoading, getPublicEvents };
+  return {
+    event, events, loading, meta,
+    getEvents, getEvent, createEvent, updateEvent, deleteEvent,
+    publicEvents, publicMeta, publicLoading, getPublicEvents,
+  };
 });

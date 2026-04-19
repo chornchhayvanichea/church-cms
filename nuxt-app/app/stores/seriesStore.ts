@@ -46,6 +46,7 @@ export const useSeriesStore = defineStore("series", () => {
       await seriesStoreApi(data);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -57,6 +58,7 @@ export const useSeriesStore = defineStore("series", () => {
       await seriesUpdateApi(data, id);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -68,6 +70,7 @@ export const useSeriesStore = defineStore("series", () => {
       await seriesDestroyApi(id);
     } catch (e) {
       console.error(e);
+      throw e;
     } finally {
       loading.value = false;
     }
