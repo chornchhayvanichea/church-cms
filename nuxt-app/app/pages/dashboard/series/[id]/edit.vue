@@ -100,6 +100,7 @@ import { sermonIndexApi } from "~/services/sermons";
 definePageMeta({ layout: "dashboard", middleware: "dashboard" });
 
 const seriesStore = useSeriesStore();
+const toast = useToast();
 const route = useRoute();
 const id = Number(route.params.id);
 
@@ -151,10 +152,15 @@ onMounted(async () => {
 });
 
 const submitHandler = async () => {
-  await Promise.all([
-    seriesStore.updateSeries(formData.value, id),
-    seriesSyncSermonsApi(id, selectedSermonIds.value),
-  ]);
-  navigateTo(DASHBOARD_ROUTES.SERIES);
+  try {
+    await Promise.all([
+      seriesStore.updateSeries(formData.value, id),
+      seriesSyncSermonsApi(id, selectedSermonIds.value),
+    ]);
+    toast.add({ title: "Series updated.", color: "success", icon: "i-lucide-check-circle" });
+    navigateTo(DASHBOARD_ROUTES.SERIES);
+  } catch (e) {
+    toast.add({ title: "Failed to update series.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+  }
 };
 </script>

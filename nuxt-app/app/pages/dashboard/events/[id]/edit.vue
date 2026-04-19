@@ -72,6 +72,7 @@ import { EventStatus, type EventStoreData } from "~/types/eventTypes";
 definePageMeta({ layout: "dashboard", middleware: "dashboard" });
 
 const eventStore = useEventStore();
+const toast = useToast();
 const route = useRoute();
 const id = Number(route.params.id);
 
@@ -106,7 +107,12 @@ onMounted(async () => {
 });
 
 const submitHandler = async () => {
-  await eventStore.updateEvent(formData.value, id);
-  navigateTo(DASHBOARD_ROUTES.EVENTS);
+  try {
+    await eventStore.updateEvent(formData.value, id);
+    toast.add({ title: "Event updated.", color: "success", icon: "i-lucide-check-circle" });
+    navigateTo(DASHBOARD_ROUTES.EVENTS);
+  } catch (e) {
+    toast.add({ title: "Failed to update event.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+  }
 };
 </script>

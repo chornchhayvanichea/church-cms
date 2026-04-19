@@ -125,6 +125,7 @@ import { SermonStatus, type SermonStoreData } from "~/types/sermonTypes";
 import { seriesIndexApi } from "~/services/series";
 
 const sermonStore = useSermonStore();
+const toast = useToast();
 
 const statusOptions = [
   { label: "Draft", value: SermonStatus.draft },
@@ -154,8 +155,13 @@ const formData = ref<SermonStoreData>({
 });
 
 const submitHandler = async () => {
-  await sermonStore.createSermon(formData.value);
-  navigateTo(DASHBOARD_ROUTES.SERMONS);
+  try {
+    await sermonStore.createSermon(formData.value);
+    toast.add({ title: "Sermon created.", color: "success", icon: "i-lucide-check-circle" });
+    navigateTo(DASHBOARD_ROUTES.SERMONS);
+  } catch (e) {
+    toast.add({ title: "Failed to create sermon.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+  }
 };
 
 definePageMeta({

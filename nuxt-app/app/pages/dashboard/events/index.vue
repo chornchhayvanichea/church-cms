@@ -68,6 +68,7 @@ const columns: TableColumn<Event>[] = [
   { accessorKey: "creator", header: "Creator" },
 ];
 
+const toast = useToast();
 const selectedId = ref<number | null>(null);
 const showConfirmModal = ref(false);
 
@@ -78,8 +79,15 @@ const openDeleteModal = (id: number) => {
 
 const deleteEvent = async () => {
   if (!selectedId.value) return;
-  await eventStore.deleteEvent(selectedId.value);
-  await fetchEvents();
+  try {
+    await eventStore.deleteEvent(selectedId.value);
+    toast.add({ title: "Event deleted.", color: "success", icon: "i-lucide-check-circle" });
+    showConfirmModal.value = false;
+    await fetchEvents();
+  } catch (e) {
+    toast.add({ title: "Failed to delete event.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+    showConfirmModal.value = false;
+  }
 };
 
 function getDropdownActions(id: number): DropdownMenuItem[][] {

@@ -56,6 +56,7 @@ import { UserRole, type UserUpdateData } from "~/types/userTypes";
 definePageMeta({ layout: "dashboard", middleware: "dashboard" });
 
 const userStore = useUserStore();
+const toast = useToast();
 const route = useRoute();
 const id = Number(route.params.id);
 
@@ -85,7 +86,12 @@ onMounted(async () => {
 });
 
 const submitHandler = async () => {
-  await userStore.updateUser(formData.value, id);
-  navigateTo(DASHBOARD_ROUTES.USERS);
+  try {
+    await userStore.updateUser(formData.value, id);
+    toast.add({ title: "User updated.", color: "success", icon: "i-lucide-check-circle" });
+    navigateTo(DASHBOARD_ROUTES.USERS);
+  } catch (e) {
+    toast.add({ title: "Failed to update user.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+  }
 };
 </script>

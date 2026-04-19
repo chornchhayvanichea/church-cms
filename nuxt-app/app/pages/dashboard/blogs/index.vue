@@ -1,117 +1,8 @@
-<template>
-  <div class="m-5">
-    <!-- Header -->
-    <div
-      class="sticky top-0 z-50 mb-12 -mx-5 px-5 light:bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800"
-    >
-      <div class="space-y-5">
-        <h1 class="text-4xl font-bold mb-2">Blogs Management</h1>
-      </div>
-      <div
-        class="flex flex-col sm:flex-row sm:items-center mb-5 sm:justify-between gap-4 sm:gap-5"
-      >
-        <div class="flex flex-col sm:flex-row gap-3 sm:gap-5">
-          <UInput
-            v-model="search"
-            icon="i-heroicons-magnifying-glass"
-            placeholder="Search blogs..."
-            class="w-full sm:w-64"
-          />
-          <USelectMenu
-            v-model="statusFilter"
-            :items="statusItems"
-            class="w-full sm:w-48"
-            placeholder="Filter by status"
-          />
-          <USelectMenu
-            v-model="authorFilter"
-            :items="authorItems"
-            class="w-full sm:w-48"
-            placeholder="Filter by author"
-          />
-        </div>
-        <div class="space-x-5 p-2">
-          <UButton :to="DASHBOARD_ROUTES.BLOGS_CREATE" class="w-full sm:w-auto">
-            <UIcon name="i-heroicons-plus" />
-            New
-          </UButton>
-        </div>
-      </div>
-    </div>
-
-    <!-- Empty State -->
-    <div v-if="blogs.length === 0 && !blogStore.loading" class="text-center py-12">
-      <p class="text-gray-500 mb-4">No blog posts found</p>
-      <UButton :to="DASHBOARD_ROUTES.BLOGS_CREATE">Create your first blog post</UButton>
-    </div>
-
-    <!-- Blog Posts Grid -->
-    <div
-      v-else
-      class="grid gap-4"
-      style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))"
-    >
-      <div v-for="blog in blogs" :key="blog.id" class="relative group">
-        <UBlogPost
-          :title="blog.title"
-          :description="blog.excerpt"
-          :image="blog.thumbnail"
-          :date="blog.published_at"
-          :badge="blog.status"
-          :authors="[
-            {
-              name: blog.author.name,
-              description: blog.author.role,
-              avatar: { src: blog.author.avatar },
-            },
-          ]"
-          variant="subtle"
-          :ui="{
-            title: 'text-md',
-            description: 'text-sm',
-          }"
-        />
-        <!-- Action buttons on hover -->
-        <div
-          class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2"
-        >
-          <UButton
-            icon="i-heroicons-pencil"
-            color="primary"
-            variant="ghost"
-            size="sm"
-            :to="`/dashboard/blogs/${blog.id}/edit`"
-          />
-          <UButton
-            icon="i-heroicons-trash"
-            color="primary"
-            variant="ghost"
-            size="sm"
-            @click="openDeleteModal(blog.id)"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div class="flex justify-center mt-8">
-      <UPagination
-        v-model:page="page"
-        :total="blogStore.meta.total"
-        :items-per-page="blogStore.meta.per_page"
-      />
-    </div>
-
-    <ConfirmModal
-      v-model="showConfirmModal"
-      message="Are you sure you want to delete this blog post?"
-      @confirm="deleteBlog"
-    />
-  </div>
-</template>
-
 <script setup lang="ts">
 import ConfirmModal from "~/components/dashboard/ConfirmModal.vue";
+import type { DropdownMenuItem, TableColumn } from "@nuxt/ui";
 import { DASHBOARD_ROUTES } from "~/constants/routes";
+import type { Blog } from "~/types/blogTypes";
 import type { BlogIndexParams } from "~/services/blogs";
 
 definePageMeta({
@@ -140,7 +31,6 @@ const fetchBlogs = () => {
 };
 
 onMounted(fetchBlogs);
-
 watch(page, fetchBlogs);
 watch(statusFilter, () => { page.value = 1; fetchBlogs(); });
 watch(authorFilter, () => { page.value = 1; fetchBlogs(); });
@@ -151,18 +41,149 @@ watch(search, () => {
   searchTimer = setTimeout(() => { page.value = 1; fetchBlogs(); }, 400);
 });
 
-const selectId = ref<number | null>(null);
+const truncate = (str: string | undefined, len = 32) => {
+  if (!str) return "";
+  return str.length > len ? str.slice(0, len) + "…" : str;
+};
+
+const UBadge = resolveComponent("UBadge");
+
+const columns: TableColumn<Blog>[] = [
+  { id: "action", header: "Action" },
+  { accessorKey: "thumbnail", header: "Image" },
+  { accessorKey: "title", header: "Title" },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const color = {
+        draft: "neutral" as const,
+        published: "success" as const,
+        archived: "secondary" as const,
+      }[row.getValue("status") as string];
+      return h(UBadge, { class: "capitalize", variant: "subtle", color }, () => row.getValue("status"));
+    },
+  },
+  { accessorKey: "author", header: "Author" },
+  { accessorKey: "published_at", header: "Published" },
+];
+
+const toast = useToast();
+const selectedId = ref<number | null>(null);
 const showConfirmModal = ref(false);
 
 const openDeleteModal = (id: number) => {
-  selectId.value = id;
+  selectedId.value = id;
   showConfirmModal.value = true;
 };
 
 const deleteBlog = async () => {
-  if (!selectId.value) return;
-  await blogStore.deleteBlog(selectId.value);
-  showConfirmModal.value = false;
-  await fetchBlogs();
+  if (!selectedId.value) return;
+  try {
+    await blogStore.deleteBlog(selectedId.value);
+    toast.add({ title: "Blog post deleted.", color: "success", icon: "i-lucide-check-circle" });
+    showConfirmModal.value = false;
+    await fetchBlogs();
+  } catch (e) {
+    toast.add({ title: "Failed to delete post.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+    showConfirmModal.value = false;
+  }
 };
+
+function getDropdownActions(id: number): DropdownMenuItem[][] {
+  return [
+    [
+      { label: "Edit", icon: "i-lucide-edit", to: `/dashboard/blogs/${id}/edit` },
+      { label: "Delete", icon: "i-lucide-trash", color: "error", onSelect: () => openDeleteModal(id) },
+    ],
+  ];
+}
 </script>
+
+<template>
+  <div class="px-6 py-8 space-y-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-muted mb-1">Content</p>
+        <h1 class="text-2xl font-semibold text-highlighted">Blogs</h1>
+      </div>
+      <UButton :to="DASHBOARD_ROUTES.BLOGS_CREATE" icon="i-lucide-plus" label="New Post" />
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+      <UInput
+        v-model="search"
+        icon="i-heroicons-magnifying-glass"
+        placeholder="Search title..."
+        class="w-64"
+      />
+      <USelectMenu v-model="statusFilter" :items="statusItems" placeholder="Status" class="w-40" />
+      <USelectMenu v-model="authorFilter" :items="authorItems" placeholder="Author" class="w-40" />
+    </div>
+
+    <div v-if="blogs.length === 0 && !blogStore.loading" class="py-16 text-center text-muted">
+      <UIcon name="i-lucide-book-open" class="w-10 h-10 mx-auto mb-3 opacity-30" />
+      <p class="text-sm">No blog posts found.</p>
+      <UButton :to="DASHBOARD_ROUTES.BLOGS_CREATE" variant="soft" size="sm" class="mt-3">Create your first post</UButton>
+    </div>
+
+    <UCard v-else>
+      <UTable :data="blogs" :columns="columns">
+        <template #action-cell="{ row }">
+          <UDropdownMenu :items="getDropdownActions(row.original.id)">
+            <UButton icon="i-heroicons-ellipsis-vertical-solid" color="neutral" variant="ghost" aria-label="Actions" />
+          </UDropdownMenu>
+        </template>
+
+        <template #thumbnail-cell="{ row }">
+          <img
+            v-if="row.original.thumbnail"
+            :src="row.original.thumbnail"
+            :alt="row.original.title"
+            class="w-16 h-10 object-cover rounded"
+            loading="lazy"
+          />
+          <div v-else class="w-16 h-10 rounded bg-(--color-background-secondary) flex items-center justify-center">
+            <UIcon name="i-lucide-image" class="text-muted w-4 h-4" />
+          </div>
+        </template>
+
+        <template #title-cell="{ row }">
+          <div>
+            <p class="font-medium text-highlighted max-w-56 truncate">{{ row.original.title }}</p>
+            <p v-if="row.original.excerpt" class="text-xs text-muted mt-0.5 max-w-56 truncate">{{ row.original.excerpt }}</p>
+          </div>
+        </template>
+
+        <template #author-cell="{ row }">
+          <div class="flex items-center gap-2.5">
+            <UAvatar :src="row.original.author.avatar" :alt="row.original.author.name" size="sm" loading="lazy" />
+            <div>
+              <p class="text-sm font-medium text-highlighted leading-tight">{{ row.original.author.name }}</p>
+              <p class="text-xs text-muted leading-tight capitalize">{{ row.original.author.role }}</p>
+            </div>
+          </div>
+        </template>
+
+        <template #published_at-cell="{ row }">
+          <span class="text-sm text-muted">
+            {{ row.original.published_at ? new Date(row.original.published_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—" }}
+          </span>
+        </template>
+      </UTable>
+    </UCard>
+
+    <UPagination
+      v-model:page="page"
+      :total="blogStore.meta.total"
+      :items-per-page="blogStore.meta.per_page"
+      class="flex justify-center mt-4"
+    />
+
+    <ConfirmModal
+      v-model="showConfirmModal"
+      message="Are you sure you want to delete this blog post?"
+      @confirm="deleteBlog"
+    />
+  </div>
+</template>

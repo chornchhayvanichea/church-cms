@@ -53,11 +53,17 @@ import type { SeriesStoreData } from "~/types/seriesTypes";
 definePageMeta({ layout: "dashboard", middleware: "dashboard" });
 
 const seriesStore = useSeriesStore();
+const toast = useToast();
 
 const formData = ref<SeriesStoreData>({ name: "" });
 
 const submitHandler = async () => {
-  await seriesStore.createSeries(formData.value);
-  navigateTo(DASHBOARD_ROUTES.SERIES);
+  try {
+    await seriesStore.createSeries(formData.value);
+    toast.add({ title: "Series created.", color: "success", icon: "i-lucide-check-circle" });
+    navigateTo(DASHBOARD_ROUTES.SERIES);
+  } catch (e) {
+    toast.add({ title: "Failed to create series.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+  }
 };
 </script>

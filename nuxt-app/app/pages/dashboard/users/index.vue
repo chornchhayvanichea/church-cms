@@ -49,6 +49,7 @@ const toggle = (id: number) => {
   expandedIds.value = next;
 };
 
+const toast = useToast();
 const selectedId = ref<number | null>(null);
 const showConfirmModal = ref(false);
 
@@ -59,8 +60,15 @@ const openDeleteModal = (id: number) => {
 
 const deleteUser = async () => {
   if (!selectedId.value) return;
-  await userStore.deleteUser(selectedId.value);
-  await fetchUsers();
+  try {
+    await userStore.deleteUser(selectedId.value);
+    toast.add({ title: "User deleted.", color: "success", icon: "i-lucide-check-circle" });
+    showConfirmModal.value = false;
+    await fetchUsers();
+  } catch (e) {
+    toast.add({ title: "Failed to delete user.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+    showConfirmModal.value = false;
+  }
 };
 </script>
 
@@ -72,7 +80,11 @@ const deleteUser = async () => {
         <p class="text-sm text-muted mb-1">Management</p>
         <h1 class="text-2xl font-semibold text-highlighted">Users</h1>
       </div>
-      <UButton :to="DASHBOARD_ROUTES.USERS_CREATE" icon="i-lucide-plus" label="New User" />
+      <UButton
+        :to="DASHBOARD_ROUTES.USERS_CREATE"
+        icon="i-lucide-plus"
+        label="New User"
+      />
     </div>
 
     <!-- Filters -->
@@ -93,7 +105,10 @@ const deleteUser = async () => {
 
     <!-- List -->
     <div class="divide-y divide-default border border-default rounded-md">
-      <div v-if="users.length === 0 && !userStore.loading" class="py-12 text-center text-sm text-muted">
+      <div
+        v-if="users.length === 0 && !userStore.loading"
+        class="py-12 text-center text-sm text-muted"
+      >
         No users found.
       </div>
 
@@ -108,7 +123,13 @@ const deleteUser = async () => {
             class="w-4 h-4 text-muted shrink-0 transition-transform duration-200"
             :class="{ 'rotate-90': expandedIds.has(item.id) }"
           />
-          <UAvatar :src="item.avatar" :alt="item.name" size="sm" loading="lazy" class="shrink-0" />
+          <UAvatar
+            :src="item.avatar"
+            :alt="item.name"
+            size="sm"
+            loading="lazy"
+            class="shrink-0"
+          />
           <div class="flex-1 min-w-0">
             <p class="font-medium text-highlighted truncate">{{ item.name }}</p>
             <p class="text-xs text-muted">{{ item.email }}</p>
@@ -139,23 +160,38 @@ const deleteUser = async () => {
         </div>
 
         <!-- Expanded details -->
-        <div v-if="expandedIds.has(item.id)" class="border-t border-default bg-elevated/30 px-10 py-4">
+        <div
+          v-if="expandedIds.has(item.id)"
+          class="border-t border-default bg-elevated/30 px-10 py-4"
+        >
           <dl class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
             <div>
-              <dt class="text-muted text-xs uppercase tracking-wider mb-0.5">Email</dt>
+              <dt class="text-muted text-xs uppercase tracking-wider mb-0.5">
+                Email
+              </dt>
               <dd class="text-highlighted">{{ item.email }}</dd>
             </div>
             <div>
-              <dt class="text-muted text-xs uppercase tracking-wider mb-0.5">Role</dt>
+              <dt class="text-muted text-xs uppercase tracking-wider mb-0.5">
+                Role
+              </dt>
               <dd class="capitalize text-highlighted">{{ item.role }}</dd>
             </div>
             <div>
-              <dt class="text-muted text-xs uppercase tracking-wider mb-0.5">Joined</dt>
-              <dd class="text-highlighted">{{ new Date(item.created_at).toLocaleDateString() }}</dd>
+              <dt class="text-muted text-xs uppercase tracking-wider mb-0.5">
+                Joined
+              </dt>
+              <dd class="text-highlighted">
+                {{ new Date(item.created_at).toLocaleDateString() }}
+              </dd>
             </div>
             <div>
-              <dt class="text-muted text-xs uppercase tracking-wider mb-0.5">Last Updated</dt>
-              <dd class="text-highlighted">{{ new Date(item.updated_at).toLocaleDateString() }}</dd>
+              <dt class="text-muted text-xs uppercase tracking-wider mb-0.5">
+                Last Updated
+              </dt>
+              <dd class="text-highlighted">
+                {{ new Date(item.updated_at).toLocaleDateString() }}
+              </dd>
             </div>
           </dl>
         </div>

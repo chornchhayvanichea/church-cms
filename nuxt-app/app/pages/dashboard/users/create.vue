@@ -8,36 +8,66 @@
     <div class="flex flex-col gap-6">
       <UCard>
         <template #header>
-          <p class="text-sm font-medium text-muted uppercase tracking-wider">Details</p>
+          <p class="text-sm font-medium text-muted uppercase tracking-wider">
+            Details
+          </p>
         </template>
         <div class="flex flex-col gap-4">
           <UFormField label="Name" required>
-            <UInput v-model="formData.name" placeholder="Full name" class="w-full" />
+            <UInput
+              v-model="formData.name"
+              placeholder="Full name"
+              class="w-full"
+            />
           </UFormField>
           <UFormField label="Email" required>
-            <UInput v-model="formData.email" type="email" placeholder="email@example.com" class="w-full" />
+            <UInput
+              v-model="formData.email"
+              type="email"
+              placeholder="email@example.com"
+              class="w-full"
+            />
           </UFormField>
           <UFormField label="Password" required>
-            <UInput v-model="formData.password" type="password" placeholder="Min. 8 characters" class="w-full" />
+            <UInput
+              v-model="formData.password"
+              type="password"
+              placeholder="Min. 8 characters"
+              class="w-full"
+            />
           </UFormField>
           <UFormField label="Role" required>
-            <USelect v-model="formData.role" :items="roleOptions" class="w-48" />
+            <USelect
+              v-model="formData.role"
+              :items="roleOptions"
+              class="w-48"
+            />
           </UFormField>
         </div>
       </UCard>
 
       <UCard>
         <template #header>
-          <p class="text-sm font-medium text-muted uppercase tracking-wider">Avatar</p>
+          <p class="text-sm font-medium text-muted uppercase tracking-wider">
+            Avatar
+          </p>
         </template>
         <UFormField label="Avatar">
-          <MediaPicker v-model="formData.avatar" accept="image/*" mime-type="image" />
+          <MediaPicker
+            v-model="formData.avatar"
+            accept="image/*"
+            mime-type="image"
+          />
         </UFormField>
       </UCard>
 
       <div class="flex justify-end gap-3">
-        <UButton variant="ghost" color="neutral" @click="$router.back()">Cancel</UButton>
-        <UButton :loading="userStore.loading" @click="submitHandler">Create User</UButton>
+        <UButton variant="ghost" color="neutral" @click="$router.back()"
+          >Cancel</UButton
+        >
+        <UButton :loading="userStore.loading" @click="submitHandler"
+          >Create User</UButton
+        >
       </div>
     </div>
   </div>
@@ -51,6 +81,7 @@ import { UserRole, type UserStoreData } from "~/types/userTypes";
 definePageMeta({ layout: "dashboard", middleware: "dashboard" });
 
 const userStore = useUserStore();
+const toast = useToast();
 
 const roleOptions = [
   { label: "Editor", value: UserRole.editor },
@@ -65,7 +96,12 @@ const formData = ref<UserStoreData>({
 });
 
 const submitHandler = async () => {
-  await userStore.createUser(formData.value);
-  navigateTo(DASHBOARD_ROUTES.USERS);
+  try {
+    await userStore.createUser(formData.value);
+    toast.add({ title: "User created.", color: "success", icon: "i-lucide-check-circle" });
+    navigateTo(DASHBOARD_ROUTES.USERS);
+  } catch (e) {
+    toast.add({ title: "Failed to create user.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+  }
 };
 </script>

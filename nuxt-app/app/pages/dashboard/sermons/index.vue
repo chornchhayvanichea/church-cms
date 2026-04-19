@@ -88,6 +88,7 @@ const columns: TableColumn<Sermon>[] = [
   { accessorKey: "created_at", header: "Created At" },
 ];
 
+const toast = useToast();
 const selectedId = ref<number | null>(null);
 const showConfirmModal = ref(false);
 
@@ -98,8 +99,15 @@ const openDeleteModal = (id: number) => {
 
 const deleteSermon = async () => {
   if (!selectedId.value) return;
-  await sermonStore.deleteSermon(selectedId.value);
-  await fetchSermons();
+  try {
+    await sermonStore.deleteSermon(selectedId.value);
+    toast.add({ title: "Sermon deleted.", color: "success", icon: "i-lucide-check-circle" });
+    showConfirmModal.value = false;
+    await fetchSermons();
+  } catch (e) {
+    toast.add({ title: "Failed to delete sermon.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+    showConfirmModal.value = false;
+  }
 };
 
 function getDropdownActions(sermon: Sermon, id: number): DropdownMenuItem[][] {

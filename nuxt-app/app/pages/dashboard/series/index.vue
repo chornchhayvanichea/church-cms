@@ -33,6 +33,7 @@ const toggle = (id: number) => {
   expandedIds.value = next;
 };
 
+const toast = useToast();
 const selectedId = ref<number | null>(null);
 const showConfirmModal = ref(false);
 
@@ -43,8 +44,15 @@ const openDeleteModal = (id: number) => {
 
 const deleteSeries = async () => {
   if (!selectedId.value) return;
-  await seriesStore.deleteSeries(selectedId.value);
-  await fetchSeries();
+  try {
+    await seriesStore.deleteSeries(selectedId.value);
+    toast.add({ title: "Series deleted.", color: "success", icon: "i-lucide-check-circle" });
+    showConfirmModal.value = false;
+    await fetchSeries();
+  } catch (e) {
+    toast.add({ title: "Failed to delete series.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+    showConfirmModal.value = false;
+  }
 };
 
 const formatDateRange = (start?: string, end?: string) => {

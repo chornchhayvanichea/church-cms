@@ -129,6 +129,7 @@ import { SermonStatus, type SermonStoreData } from "~/types/sermonTypes";
 import { seriesIndexApi } from "~/services/series";
 
 const sermonStore = useSermonStore();
+const toast = useToast();
 
 const statusOptions = [
   { label: "Draft", value: SermonStatus.draft },
@@ -153,8 +154,13 @@ const route = useRoute();
 const id = route.params.id;
 
 const submitHandler = async () => {
-  await sermonStore.updateSermon(formData.value, Number(id));
-  navigateTo(DASHBOARD_ROUTES.SERMONS);
+  try {
+    await sermonStore.updateSermon(formData.value, Number(id));
+    toast.add({ title: "Sermon updated.", color: "success", icon: "i-lucide-check-circle" });
+    navigateTo(DASHBOARD_ROUTES.SERMONS);
+  } catch (e) {
+    toast.add({ title: "Failed to update sermon.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+  }
 };
 onMounted(async () => {
   const [seriesResponse] = await Promise.all([

@@ -1,27 +1,110 @@
-<template>
-  <div>
-    {{ authStore.user?.id }}
-    <br />
-    {{ authStore.user?.image }}
-    <br />
-    {{ authStore.user?.name }}
-    <br />
-    {{ authStore.user?.email }}
-    <br />
-    {{ authStore.user?.role }}
-    <br />
-    {{ authStore.user?.created_at }}
-    <br />
-    {{ authStore.user?.updated_at }}
-    <br />
-    {{ authStore.user?.password }}
-  </div>
-</template>
-
 <script setup lang="ts">
-const authStore = useAuthStore();
+import MediaPicker from "~/components/dashboard/MediaPicker.vue";
+import type { UserUpdateData } from "~/types/userTypes";
+
 definePageMeta({
   layout: "dashboard",
   middleware: "dashboard",
 });
+
+const authStore = useAuthStore();
+const userStore = useUserStore();
+const toast = useToast();
+
+const form = reactive<UserUpdateData>({
+  name: authStore.user?.name ?? "",
+  email: authStore.user?.email ?? "",
+  avatar: authStore.user?.avatar ?? undefined,
+  password: "",
+});
+
+watch(() => authStore.user, (u) => {
+  if (!u) return;
+  form.name = u.name;
+  form.email = u.email;
+  form.avatar = u.avatar;
+});
+
+const saving = ref(false);
+
+const submit = async () => {
+  if (!authStore.user) return;
+  saving.value = true;
+  try {
+    const payload: UserUpdateData = {
+      name: form.name,
+      email: form.email,
+      avatar: form.avatar,
+    };
+    if (form.password) payload.password = form.password;
+    await userStore.updateUser(payload, authStore.user.id);
+    await authStore.getUser();
+    toast.add({ title: "Profile updated.", color: "success", icon: "i-lucide-check-circle" });
+    form.password = "";
+  } catch {
+    toast.add({ title: "Failed to update profile.", color: "error", icon: "i-lucide-x-circle" });
+  } finally {
+    saving.value = false;
+  }
+};
 </script>
+
+<template>
+  <div class="px-6 py-8">
+    <div class="mb-8">
+      <p class="text-sm text-muted mb-1">Settings</p>
+      <h1 class="text-2xl font-semibold text-highlighted">My Profile</h1>
+    </div>
+
+    <div class="max-w-xl space-y-6">
+      <UCard>
+        <template #header>
+          <p class="text-sm font-medium text-muted uppercase tracking-wider">Avatar</p>
+        </template>
+        <div class="flex items-center gap-5">
+          <UAvatar
+            :src="typeof form.avatar === 'string' ? form.avatar : undefined"
+            :alt="form.name"
+            size="xl"
+          />
+          <div class="flex-1">
+            <MediaPicker v-model="form.avatar" accept="image/*" mime-type="image" />
+            <p class="text-xs text-muted mt-2">JPG, PNG or WebP. Recommended 200×200.</p>
+          </div>
+        </div>
+      </UCard>
+
+      <UCard>
+        <template #header>
+          <p class="text-sm font-medium text-muted uppercase tracking-wider">Account Info</p>
+        </template>
+        <div class="space-y-4">
+          <UFormField label="Name">
+            <UInput v-model="form.name" placeholder="Your name" class="w-full" />
+          </UFormField>
+          <UFormField label="Email">
+            <UInput v-model="form.email" type="email" placeholder="your@email.com" class="w-full" />
+          </UFormField>
+          <UFormField label="Role">
+            <UInput :value="authStore.user?.role ?? ''" disabled class="w-full capitalize" />
+          </UFormField>
+        </div>
+      </UCard>
+
+      <UCard>
+        <template #header>
+          <p class="text-sm font-medium text-muted uppercase tracking-wider">Change Password</p>
+        </template>
+        <UFormField label="New Password" hint="Leave blank to keep current password">
+          <UInput v-model="form.password" type="password" placeholder="Min. 8 characters" class="w-full" />
+        </UFormField>
+      </UCard>
+
+      <div class="flex justify-end">
+        <UButton :loading="saving" icon="i-lucide-save" @click="submit">
+          Save Changes
+        </UButton>
+      </div>
+    </div>
+  </div>
+</template>

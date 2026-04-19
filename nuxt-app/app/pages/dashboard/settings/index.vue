@@ -1,12 +1,12 @@
-<template>
-  <div>this is setting patge</div>
-</template>
-
 <script setup lang="ts">
 definePageMeta({
   layout: "dashboard",
   middleware: "dashboard",
 });
+
+navigateTo("/dashboard/settings/profile", { replace: true });
 </script>
 
-<style scoped></style>
+<template>
+  <div />
+</template>

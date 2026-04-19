@@ -72,6 +72,7 @@ import { EventStatus, type EventStoreData } from "~/types/eventTypes";
 definePageMeta({ layout: "dashboard", middleware: "dashboard" });
 
 const eventStore = useEventStore();
+const toast = useToast();
 
 const statusOptions = [
   { label: "Upcoming", value: EventStatus.upcoming },
@@ -86,7 +87,12 @@ const formData = ref<EventStoreData>({
 });
 
 const submitHandler = async () => {
-  await eventStore.createEvent(formData.value);
-  navigateTo(DASHBOARD_ROUTES.EVENTS);
+  try {
+    await eventStore.createEvent(formData.value);
+    toast.add({ title: "Event created.", color: "success", icon: "i-lucide-check-circle" });
+    navigateTo(DASHBOARD_ROUTES.EVENTS);
+  } catch (e) {
+    toast.add({ title: "Failed to create event.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+  }
 };
 </script>

@@ -1,43 +1,14 @@
-<template>
-  <div>
-    <UDashboardToolbar
-      class="sticky top-0 z-10 dark:bg-slate-900 light:bg-white"
-    >
-      <UNavigationMenu :items="tabs" highlight class="flex-1" />
-    </UDashboardToolbar>
-    <UContainer class="rounded-2xl p-10">
-      <BlogEditor v-show="activeTab === 'editor'" v-model="form.content" />
-      <BlogGeneral v-show="activeTab === 'general'" v-model="form" />
-
-      <div class="space-x-2 space-y-5">
-        <UButton :loading="blogStore.loading" @click="handleSubmit">
-          Save
-        </UButton>
-
-        <UButton
-          label="Cancel"
-          color="neutral"
-          variant="subtle"
-          @click="hasChanges ? (isCancelModal = true) : cancelHandling()"
-        />
-        <UModal v-model:open="isCancelModal">
-          <template #content>
-            Are you sure you want to cancel?
-            <UButton @click="cancelHandling">Yes</UButton>
-            <UButton @click="isCancelModal = false">No</UButton>
-          </template>
-        </UModal>
-      </div>
-    </UContainer>
-  </div>
-</template>
-
 <script setup lang="ts">
 import type { NavigationMenuItem } from "@nuxt/ui";
 import BlogEditor from "~/components/dashboard/editors/BlogEditor.vue";
 import BlogGeneral from "~/components/dashboard/editors/BlogGeneral.vue";
 import { DASHBOARD_ROUTES } from "~/constants/routes";
 import { BlogStatus, type BlogStoreData } from "~/types/blogTypes";
+
+definePageMeta({
+  layout: "dashboard",
+  middleware: "dashboard",
+});
 
 const activeTab = useState("blogTab", () => "general");
 const form = ref<BlogStoreData>({
@@ -49,30 +20,21 @@ const form = ref<BlogStoreData>({
   content: "",
 });
 
-console.log(form.value);
-
 const blogStore = useBlogStore();
-const handleSubmit = async () => {
-  console.log("submitting:", JSON.stringify(form.value));
-  await blogStore.createBlog(form.value);
+const toast = useToast();
 
-  form.value = {
-    title: "",
-    excerpt: "",
-    thumbnail: undefined,
-    published_at: "",
-    content: "",
-  };
+const handleSubmit = async () => {
+  try {
+    await blogStore.createBlog(form.value);
+    toast.add({ title: "Blog post created.", color: "success", icon: "i-lucide-check-circle" });
+    navigateTo(DASHBOARD_ROUTES.BLOGS);
+  } catch (e) {
+    toast.add({ title: "Failed to create post.", description: getApiErrorMessage(e), color: "error", icon: "i-lucide-x-circle" });
+  }
 };
 
 const hasChanges = ref(false);
-watch(
-  form,
-  () => {
-    hasChanges.value = true;
-  },
-  { deep: true },
-);
+watch(form, () => { hasChanges.value = true; }, { deep: true });
 
 const isCancelModal = ref(false);
 
@@ -91,29 +53,60 @@ const tabs = computed<NavigationMenuItem[][]>(() => [
   [
     {
       label: "General",
-      icon: "i-lucide-users",
+      icon: "i-lucide-sliders-horizontal",
       active: activeTab.value === "general",
       onSelect: () => (activeTab.value = "general"),
     },
     {
       label: "Editor",
-      icon: "i-lucide-user",
+      icon: "i-lucide-pen-line",
       active: activeTab.value === "editor",
       onSelect: () => (activeTab.value = "editor"),
     },
   ],
-  [
-    {
-      label: "Help & Feedback",
-      icon: "i-lucide-help-circle",
-      to: "https://github.com/nuxt/ui/issues",
-      target: "_blank",
-    },
-  ],
 ]);
-
-definePageMeta({
-  layout: "dashboard",
-  middleware: "dashboard",
-});
 </script>
+
+<template>
+  <div>
+    <div class="px-6 pt-6 pb-4 border-b border-default flex items-center justify-between">
+      <div>
+        <p class="text-sm text-muted mb-1">Blogs</p>
+        <h1 class="text-2xl font-semibold text-highlighted">Create Post</h1>
+      </div>
+      <div class="flex gap-2">
+        <UButton
+          label="Cancel"
+          color="neutral"
+          variant="ghost"
+          @click="hasChanges ? (isCancelModal = true) : cancelHandling()"
+        />
+        <UButton :loading="blogStore.loading" icon="i-lucide-save" @click="handleSubmit">
+          Save
+        </UButton>
+      </div>
+    </div>
+
+    <UDashboardToolbar class="sticky top-0 z-10">
+      <UNavigationMenu :items="tabs[0]!" highlight orientation="horizontal" />
+    </UDashboardToolbar>
+
+    <UContainer class="py-8">
+      <BlogEditor v-show="activeTab === 'editor'" v-model="form.content" />
+      <BlogGeneral v-show="activeTab === 'general'" v-model="form" />
+    </UContainer>
+
+    <UModal v-model:open="isCancelModal">
+      <template #content>
+        <div class="p-6 space-y-4">
+          <p class="text-sm text-highlighted font-medium">Discard changes?</p>
+          <p class="text-sm text-muted">Your unsaved changes will be lost.</p>
+          <div class="flex justify-end gap-2">
+            <UButton color="neutral" variant="ghost" @click="isCancelModal = false">Keep editing</UButton>
+            <UButton color="error" variant="soft" @click="cancelHandling">Discard</UButton>
+          </div>
+        </div>
+      </template>
+    </UModal>
+  </div>
+</template>
