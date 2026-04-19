@@ -87,40 +87,84 @@ const listenLinks = [
   <div class="overflow-hidden">
     <!-- Hero -->
     <div
-      class="relative w-full min-h-[80vh] flex items-center justify-center bg-gray-900 overflow-hidden"
+      class="relative w-full min-h-[90vh] flex items-center justify-center bg-[#0c0c0c] overflow-hidden"
     >
       <img
         :src="crosswheat"
         alt=""
-        class="absolute inset-0 w-full h-full object-cover opacity-50"
+        class="absolute inset-0 w-full h-full object-cover opacity-40"
       />
-      <div class="relative z-10 text-center px-6 max-w-3xl">
+      <!-- Multi-layer overlay for depth -->
+      <div
+        class="absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/60"
+      />
+      <div
+        class="absolute inset-0 bg-linear-to-r from-black/20 via-transparent to-black/20"
+      />
+
+      <!-- Decorative gold cross top-right -->
+      <div class="absolute top-12 right-12 opacity-20 hidden lg:block">
+        <svg width="28" height="38" viewBox="0 0 28 38" fill="none">
+          <rect x="10" y="0" width="8" height="38" rx="1" fill="#c9a96e" />
+          <rect x="0" y="10" width="28" height="8" rx="1" fill="#c9a96e" />
+        </svg>
+      </div>
+
+      <div class="relative z-10 text-center px-6 max-w-4xl pt-16">
+        <!-- Overline -->
+        <div class="flex items-center justify-center gap-3 mb-6">
+          <div class="h-px w-10 bg-[#c9a96e] opacity-60" />
+          <p
+            class="text-[#c9a96e] text-[0.65rem] font-medium tracking-[0.25em] uppercase opacity-80"
+          >
+            Welcome to JSY Church
+          </p>
+          <div class="h-px w-10 bg-[#c9a96e] opacity-60" />
+        </div>
+
         <h1
-          class="text-5xl sm:text-7xl font-bold text-white tracking-tight leading-none mb-6"
+          class="text-white leading-none mb-6"
+          style="
+            font-family: &quot;Cormorant Garamond&quot;, serif;
+            font-size: clamp(3.5rem, 9vw, 7rem);
+            font-weight: 500;
+            letter-spacing: -0.01em;
+          "
         >
           {{ settings.home_hero_title || "Jesus Saves You" }}
         </h1>
+
         <p
-          class="text-lg sm:text-xl text-white/70 leading-relaxed mb-10 max-w-lg mx-auto"
+          class="text-white/60 text-base sm:text-lg leading-relaxed mb-10 max-w-lg mx-auto"
+          style="font-family: &quot;DM Sans&quot;, sans-serif; font-weight: 300"
         >
           {{
             settings.home_hero_description ||
             "A community built on faith, hope, and love. Join us every Sunday."
           }}
         </p>
+
         <div class="flex flex-wrap gap-3 justify-center">
           <NuxtLink
             to="/sermons"
-            class="px-6 py-3 bg-white text-gray-900 text-sm font-semibold hover:bg-gray-100 transition-colors"
+            class="inline-flex items-center gap-2 px-6 py-3 bg-white text-gray-900 text-sm font-medium rounded-full hover:bg-gray-100 transition-colors"
           >
+            <UIcon name="i-lucide-play" class="w-4 h-4" />
             Listen to Sermons
           </NuxtLink>
           <NuxtLink
-            to="/blogs"
-            class="px-6 py-3 border border-white text-white text-sm font-semibold hover:bg-white/10 transition-colors"
+            to="/about"
+            class="inline-flex items-center gap-2 px-6 py-3 border border-white/40 text-white text-sm font-medium rounded-full hover:bg-white/10 hover:border-white/60 transition-colors"
           >
-            Read Blog
+            Our Story
           </NuxtLink>
+        </div>
+
+        <!-- Scroll hint -->
+        <div
+          class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30"
+        >
+          <div class="w-px h-8 bg-white animate-pulse" />
         </div>
       </div>
     </div>
@@ -135,14 +179,43 @@ const listenLinks = [
     />
 
     <!-- Stats -->
-    <section class="bg-linear-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-      <UContainer>
-        <div class="grid grid-cols-3 gap-4 sm:gap-8">
-          <div v-for="stat in stats" :key="stat.label" class="text-center">
-            <p class="text-3xl sm:text-4xl font-bold text-amber-400">
+    <section class="relative bg-[#0c0c0c] py-12 sm:py-16 overflow-hidden">
+      <div
+        class="absolute inset-0 opacity-[0.03]"
+        style="
+          background-image: radial-gradient(
+            circle,
+            #ffffff 1px,
+            transparent 1px
+          );
+          background-size: 28px 28px;
+        "
+      />
+      <UContainer class="relative">
+        <div class="grid grid-cols-3 divide-x divide-white/10">
+          <div
+            v-for="stat in stats"
+            :key="stat.label"
+            class="text-center px-4 sm:px-8"
+          >
+            <p
+              class="text-[#c9a96e] mb-1.5"
+              style="
+                font-family: &quot;Cormorant Garamond&quot;, serif;
+                font-size: clamp(2rem, 5vw, 3rem);
+                font-weight: 500;
+                letter-spacing: -0.01em;
+              "
+            >
               {{ stat.number }}
             </p>
-            <p class="text-white/70 text-sm sm:text-base mt-2">
+            <p
+              class="text-white/45 text-xs sm:text-sm tracking-wide"
+              style="
+                font-family: &quot;DM Sans&quot;, sans-serif;
+                font-weight: 300;
+              "
+            >
               {{ stat.label }}
             </p>
           </div>
@@ -234,14 +307,22 @@ const listenLinks = [
     <!-- Latest Sermons (real data) -->
     <UContainer class="max-w-3xl py-16">
       <div
-        class="flex items-center justify-between pb-6 border-b border-gray-100 dark:border-gray-800 mb-2"
+        class="flex items-center justify-between pb-5 border-b border-gray-100 dark:border-gray-800 mb-2"
       >
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+        <h2
+          class="text-gray-900 dark:text-white"
+          style="
+            font-family: &quot;Cormorant Garamond&quot;, serif;
+            font-size: 1.6rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+          "
+        >
           Recent Sermons
         </h2>
         <NuxtLink
           to="/sermons"
-          class="text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          class="text-sm text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
         >
           All sermons →
         </NuxtLink>
@@ -308,14 +389,22 @@ const listenLinks = [
     <!-- Latest Blogs (real data) -->
     <UContainer class="max-w-3xl py-16">
       <div
-        class="flex items-center justify-between pb-6 border-b border-gray-100 dark:border-gray-800 mb-2"
+        class="flex items-center justify-between pb-5 border-b border-gray-100 dark:border-gray-800 mb-2"
       >
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+        <h2
+          class="text-gray-900 dark:text-white"
+          style="
+            font-family: &quot;Cormorant Garamond&quot;, serif;
+            font-size: 1.6rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+          "
+        >
           Latest Articles
         </h2>
         <NuxtLink
           to="/blogs"
-          class="text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          class="text-sm text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
         >
           All articles →
         </NuxtLink>

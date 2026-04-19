@@ -24,11 +24,28 @@ const ctaLinks: ButtonProps[] = [{ label: "Visit Us", to: "/contact" }];
 
 <template>
   <div class="overflow-hidden">
-    <UPageHero
-      title="About Us"
-      class="bg-cover bg-center bg-fixed min-h-[50%]"
-      :style="{ backgroundImage: `linear-gradient(rgba(255,255,255,0.2), rgba(0,0,0,0.5)), url(${churchBuilding})` }"
-    />
+    <div
+      class="relative min-h-[44vh] flex items-end bg-[#0c0c0c] bg-cover bg-center overflow-hidden"
+      :style="{ backgroundImage: `url(${churchBuilding})` }"
+    >
+      <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/30 to-black/80" />
+      <div class="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-8 pt-28 pb-10 sm:pb-12">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-px w-8 bg-[#c9a96e] opacity-60" />
+          <p class="text-[#c9a96e] text-[0.65rem] font-medium tracking-[0.25em] uppercase opacity-80">Who We Are</p>
+          <div class="h-px w-8 bg-[#c9a96e] opacity-60" />
+        </div>
+        <h1
+          class="text-white leading-none"
+          style="font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 8vw, 5rem); font-weight: 500; letter-spacing: -0.02em;"
+        >
+          About Us
+        </h1>
+        <p class="text-white/55 text-base leading-relaxed mt-3 max-w-lg" style="font-weight: 300;">
+          {{ settings.about_mission_text || 'A community rooted in faith, growing in love, reaching the world.' }}
+        </p>
+      </div>
+    </div>
 
     <UPageSection
       title="Our Mission"
@@ -36,12 +53,15 @@ const ctaLinks: ButtonProps[] = [{ label: "Visit Us", to: "/contact" }];
       :description="settings.about_mission_text || 'We exist to glorify God by making disciples of Jesus Christ.'"
     />
 
-    <section class="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-      <UContainer>
-        <div class="grid grid-cols-3 gap-4 sm:gap-8">
-          <div v-for="stat in stats" :key="stat.label" class="text-center">
-            <p class="text-3xl sm:text-4xl font-bold text-amber-400">{{ stat.number }}</p>
-            <p class="text-white/70 text-sm sm:text-base mt-2">{{ stat.label }}</p>
+    <section class="relative bg-[#0c0c0c] py-12 sm:py-16 overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 28px 28px;" />
+      <UContainer class="relative">
+        <div class="grid grid-cols-3 divide-x divide-white/10">
+          <div v-for="stat in stats" :key="stat.label" class="text-center px-4 sm:px-8">
+            <p class="text-[#c9a96e] mb-1.5" style="font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 500;">
+              {{ stat.number }}
+            </p>
+            <p class="text-white/45 text-xs sm:text-sm" style="font-weight: 300;">{{ stat.label }}</p>
           </div>
         </div>
       </UContainer>

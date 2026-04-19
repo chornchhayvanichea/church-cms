@@ -61,14 +61,14 @@ const embedUrl = computed(() => {
 
     <template v-else-if="publicSermon">
       <!-- Video -->
-      <div v-if="publicSermon.video" class="w-full bg-black">
+      <div v-if="publicSermon.video" class="w-full bg-black pt-16">
         <div class="max-w-4xl mx-auto aspect-video">
           <iframe v-if="embedUrl" :src="embedUrl" class="w-full h-full" allowfullscreen allow="autoplay; encrypted-media" />
           <video v-else :src="publicSermon.video" controls class="w-full h-full" :poster="publicSermon.thumbnail" />
         </div>
       </div>
       <!-- Thumbnail fallback -->
-      <div v-else-if="publicSermon.thumbnail" class="w-full bg-black max-h-[420px] overflow-hidden">
+      <div v-else-if="publicSermon.thumbnail" class="w-full bg-black max-h-[420px] overflow-hidden pt-16">
         <img :src="publicSermon.thumbnail" :alt="publicSermon.title" class="w-full max-h-[420px] object-cover opacity-90" />
       </div>
 

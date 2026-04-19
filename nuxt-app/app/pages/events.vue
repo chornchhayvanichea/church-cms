@@ -43,7 +43,7 @@ const formatTime = (t: string) =>
     <UPageHero
       :title="settings.events_hero_title || 'Events'"
       :description="settings.events_hero_description || 'Gatherings, services, and community events happening at our church.'"
-      class="bg-cover bg-center bg-fixed min-h-[40%]"
+      class="bg-cover bg-center bg-fixed min-h-[40%] pt-16"
       :style="{
         backgroundImage: `linear-gradient(rgba(255,255,255,0.1), rgba(0,0,0,0.55)), url(${eventsBg})`,
       }"

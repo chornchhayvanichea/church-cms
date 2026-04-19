@@ -42,14 +42,28 @@ const formatDate = (d: string) =>
 <template>
   <div>
     <!-- Hero -->
-    <UPageHero
-      :title="settings.sermons_hero_title || 'Sermons'"
-      :description="settings.sermons_hero_description || 'Listen to messages that encourage, challenge, and grow your faith.'"
-      class="bg-cover bg-center bg-fixed min-h-[40%]"
-      :style="{
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.1), rgba(0,0,0,0.55)), url(${sermonBg})`,
-      }"
-    />
+    <div
+      class="relative min-h-[44vh] flex items-end bg-[#0c0c0c] bg-cover bg-center overflow-hidden"
+      :style="{ backgroundImage: `url(${sermonBg})` }"
+    >
+      <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/30 to-black/80" />
+      <div class="relative z-10 w-full max-w-3xl mx-auto px-5 sm:px-8 pt-28 pb-10 sm:pb-12">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-px w-8 bg-[#c9a96e] opacity-60" />
+          <p class="text-[#c9a96e] text-[0.65rem] font-medium tracking-[0.25em] uppercase opacity-80">The Word</p>
+          <div class="h-px w-8 bg-[#c9a96e] opacity-60" />
+        </div>
+        <h1
+          class="text-white leading-none"
+          style="font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 8vw, 5rem); font-weight: 500; letter-spacing: -0.02em;"
+        >
+          {{ settings.sermons_hero_title || 'Sermons' }}
+        </h1>
+        <p class="text-white/55 text-base leading-relaxed mt-3 max-w-lg" style="font-weight: 300;">
+          {{ settings.sermons_hero_description || 'Listen to messages that encourage, challenge, and grow your faith.' }}
+        </p>
+      </div>
+    </div>
 
     <UContainer class="max-w-3xl py-10">
       <!-- Search + series filter -->

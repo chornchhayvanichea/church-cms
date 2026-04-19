@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import donateBg from "~/assets/images/crosswheat.jpg";
+
 useHead({ title: "Donate" });
 
 const { settings } = await usePublicSettings();
@@ -7,18 +9,29 @@ const { settings } = await usePublicSettings();
 <template>
   <div>
     <!-- Hero -->
-    <div class="bg-stone-50 dark:bg-stone-950 border-b border-stone-200 dark:border-stone-800">
-      <UContainer class="max-w-4xl py-16 sm:py-24 text-center">
-        <p class="text-xs font-bold uppercase tracking-[0.2em] text-amber-600 dark:text-amber-500 mb-3">
-          Support Our Mission
-        </p>
-        <h1 class="text-5xl sm:text-7xl font-bold tracking-tight text-gray-900 dark:text-white leading-none mb-5">
+    <div
+      class="relative min-h-[42vh] flex items-center justify-center bg-[#0c0c0c] bg-cover bg-center overflow-hidden"
+      :style="{ backgroundImage: `url(${donateBg})` }"
+    >
+      <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70" />
+      <div class="relative z-10 text-center px-6 pt-16 pb-12">
+        <div class="flex items-center justify-center gap-3 mb-5">
+          <div class="h-px w-8 bg-[#c9a96e] opacity-60" />
+          <p class="text-[#c9a96e] text-[0.65rem] font-medium tracking-[0.25em] uppercase opacity-80">
+            Support Our Mission
+          </p>
+          <div class="h-px w-8 bg-[#c9a96e] opacity-60" />
+        </div>
+        <h1
+          class="text-white leading-none mb-4"
+          style="font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 8vw, 5.5rem); font-weight: 500; letter-spacing: -0.02em;"
+        >
           Give
         </h1>
-        <p class="text-gray-500 dark:text-gray-400 text-lg sm:text-xl leading-relaxed max-w-xl mx-auto">
+        <p class="text-white/60 text-base sm:text-lg leading-relaxed max-w-lg mx-auto" style="font-weight: 300;">
           Your generosity helps us serve our community, share the gospel, and grow together in faith.
         </p>
-      </UContainer>
+      </div>
     </div>
 
     <UContainer class="max-w-5xl py-16 sm:py-20">
