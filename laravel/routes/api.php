@@ -12,8 +12,9 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('login', [AuthController::class, 'login']);
-Route::post('signup', [AuthController::class, 'signup']);
+Route::middleware(['throttle:5,1'])->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+});
 
 Route::prefix('public')->group(function () {
     Route::get('blogs', [BlogController::class, 'publicIndex']);
@@ -22,10 +23,10 @@ Route::prefix('public')->group(function () {
     Route::get('sermons/{sermon:slug}', [SermonController::class, 'publicShow']);
     Route::get('events', [EventController::class, 'publicIndex']);
     Route::get('settings', [SettingController::class, 'publicIndex']);
-    Route::post('contact', [ContactController::class, 'store']);
+    Route::middleware(['throttle:3,1'])->post('contact', [ContactController::class, 'store']);
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:120,1'])->group(function () {
     Route::apiResource('series', SeriesController::class);
     Route::put('series/{series}/sermons', [SeriesController::class, 'syncSermons']);
     Route::apiResource('sermons', SermonController::class);

@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Mews\Purifier\Facades\Purifier;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -64,6 +65,10 @@ class BlogController extends Controller
     {
         $validated = $request->validated();
 
+        if (isset($validated['content'])) {
+            $validated['content'] = Purifier::clean($validated['content']);
+        }
+
         $blog = Blog::create([
             ...$validated,
             'author_id' => Auth::id(),
@@ -94,6 +99,11 @@ class BlogController extends Controller
     public function update(BlogUpdateRequest $request, Blog $blog): BlogResource
     {
         $validated = $request->validated();
+
+        if (isset($validated['content'])) {
+            $validated['content'] = Purifier::clean($validated['content']);
+        }
+
         if ($request->hasFile('thumbnail')) {
             $blog->clearMediaCollection(self::BLOG_THUMBNAIL);
         } elseif ($request->boolean('remove_thumbnail')) {
