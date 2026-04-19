@@ -17,6 +17,8 @@ class SettingController extends Controller
 
     public function update(Request $request): JsonResponse
     {
+        abort_unless($request->user()->hasRole('admin'), 403, 'Unauthorized.');
+
         $data = $request->validate([
             'settings' => ['required', 'array'],
             'settings.*' => ['nullable', 'string', 'max:1000'],

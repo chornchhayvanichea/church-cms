@@ -9,7 +9,8 @@ const handleLogout = async () => {
     await navigateTo("/dashboard");
   }
 };
-const items: NavigationMenuItem[][] = [
+
+const items = computed<NavigationMenuItem[][]>(() => [
   [
     {
       label: "Home",
@@ -31,7 +32,6 @@ const items: NavigationMenuItem[][] = [
       icon: "i-lucide-book",
       to: DASHBOARD_ROUTES.BLOGS,
     },
-
     {
       label: "Media",
       icon: "i-heroicons-film",
@@ -40,23 +40,25 @@ const items: NavigationMenuItem[][] = [
     {
       label: "Series",
       icon: "i-lucide-layers",
-
       to: DASHBOARD_ROUTES.SERIES,
     },
-    {
-      label: "Users",
-      icon: "i-lucide-users",
-      to: DASHBOARD_ROUTES.USERS,
-    },
+    ...(authStore.isAdmin
+      ? [
+          {
+            label: "Users",
+            icon: "i-lucide-users",
+            to: DASHBOARD_ROUTES.USERS,
+          },
+        ]
+      : []),
     {
       label: "Settings",
       icon: "i-lucide-settings",
       defaultOpen: true,
       children: [
-        {
-          label: "Site Settings",
-          to: DASHBOARD_ROUTES.SETTINGS.SITE,
-        },
+        ...(authStore.isAdmin
+          ? [{ label: "Site Settings", to: DASHBOARD_ROUTES.SETTINGS.SITE }]
+          : []),
         {
           label: "User Profile",
           to: DASHBOARD_ROUTES.SETTINGS.PROFILE,
@@ -69,7 +71,7 @@ const items: NavigationMenuItem[][] = [
       onSelect: handleLogout,
     },
   ],
-];
+]);
 </script>
 
 <template>
@@ -79,12 +81,22 @@ const items: NavigationMenuItem[][] = [
     :ui="{ footer: 'border-t border-default' }"
   >
     <template #header="{ collapsed }">
-      <LogoComponent v-if="!collapsed" class="h-5 w-auto shrink-0" />
-      <UIcon
+      <div v-if="!collapsed" class="flex items-center gap-2.5">
+        <LogoComponent class="h-5 w-auto shrink-0" />
+        <span
+          class="text-sm font-semibold text-highlighted truncate"
+          style="font-family: 'Cormorant Garamond', serif; letter-spacing: 0.01em;"
+        >Grace Church</span>
+      </div>
+      <svg
         v-else
-        name="i-simple-icons-nuxtdotjs"
-        class="size-5 text-primary mx-auto"
-      />
+        class="size-5 mx-auto text-[#c9a96e]"
+        viewBox="0 0 36 48"
+        fill="none"
+      >
+        <rect x="13" y="0" width="10" height="48" rx="1.5" fill="currentColor" opacity="0.8" />
+        <rect x="0" y="14" width="36" height="10" rx="1.5" fill="currentColor" opacity="0.8" />
+      </svg>
     </template>
 
     <template #default="{ collapsed }">
@@ -107,7 +119,7 @@ const items: NavigationMenuItem[][] = [
       -->
       <UNavigationMenu
         :collapsed="collapsed"
-        :items="items[0]"
+        :items="items[0]!"
         orientation="vertical"
       />
     </template>

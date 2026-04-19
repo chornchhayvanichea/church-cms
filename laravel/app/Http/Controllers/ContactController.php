@@ -15,8 +15,8 @@ class ContactController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'name'    => ['required', 'string', 'max:255'],
-            'email'   => ['required', 'email', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
             'subject' => ['nullable', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:5000'],
         ]);
@@ -30,10 +30,10 @@ class ContactController extends Controller
     {
         return response()->json([
             'data' => [
-                'blogs'   => Blog::count(),
+                'blogs' => Blog::count(),
                 'sermons' => Sermon::count(),
-                'events'  => Event::count(),
-                'users'   => User::count(),
+                'events' => Event::count(),
+                'users' => User::count(),
             ],
         ]);
     }

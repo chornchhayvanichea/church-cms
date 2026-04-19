@@ -13,16 +13,15 @@ export const useAuthStore = defineStore("auth", () => {
   const loading = ref(false);
   const message = ref<string | null>(null);
 
-  const isLoggedIn = computed(() => {
-    return user.value != null;
-  });
+  const isLoggedIn = computed(() => user.value != null);
+
+  const isAdmin = computed(() => user.value?.role === 'admin');
 
   const getUser = async () => {
     loading.value = true;
     try {
       const response = await getUserApi();
       user.value = response.data.data;
-      console.log(user.value);
     } catch (e) {
       console.error(e);
     } finally {
@@ -31,12 +30,13 @@ export const useAuthStore = defineStore("auth", () => {
   };
   const login = async (data: LoginData) => {
     loading.value = true;
+    error.value = null;
     try {
       await getCSRFCookie();
       await loginApi(data);
       await getUser();
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      error.value = e?.response?.data?.message ?? "Invalid credentials. Please try again.";
     } finally {
       loading.value = false;
     }
@@ -52,6 +52,7 @@ export const useAuthStore = defineStore("auth", () => {
     loading,
     message,
     isLoggedIn,
+    isAdmin,
     getUser,
     login,
     logout,

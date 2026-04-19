@@ -63,10 +63,8 @@ class MediaController extends Controller
 
     public function destroy(int $id, Request $request): JsonResponse
     {
-        /*
-           * another way to bind model from 3rd party package using this
-           * Route::model('media', \Spatie\MediaLibrary\MediaCollections\Models\Media::class);
-           */
+        abort_unless($request->user()->hasRole('admin'), 403, 'Unauthorized.');
+
         $media = Media::findOrFail($id);
 
         if (! $request->boolean('force')) {

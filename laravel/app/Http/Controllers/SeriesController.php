@@ -71,7 +71,7 @@ class SeriesController extends Controller
 
         Sermon::where('series_id', $series->id)->update(['series_id' => null]);
 
-        if (!empty($request->sermon_ids)) {
+        if (! empty($request->sermon_ids)) {
             Sermon::whereIn('id', $request->sermon_ids)->update(['series_id' => $series->id]);
         }
 

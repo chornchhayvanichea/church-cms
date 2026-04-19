@@ -39,8 +39,11 @@ class UserController extends Controller
     public function store(UserStoreRequest $request): UserResource
     {
         $validated = $request->validated();
+        $role = $validated['role'];
+        unset($validated['role']);
 
         $user = User::create($validated);
+        $user->assignRole($role);
 
         if ($request->hasFile('avatar')) {
             $user->addMediaFromRequest('avatar')
@@ -53,6 +56,11 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, User $user): UserResource
     {
         $validated = $request->validated();
+
+        if (isset($validated['role'])) {
+            $user->syncRoles([$validated['role']]);
+            unset($validated['role']);
+        }
 
         if (empty($validated['password'])) {
             unset($validated['password']);
@@ -73,6 +81,7 @@ class UserController extends Controller
 
     public function destroy(User $user): JsonResponse
     {
+        abort_unless(auth()->user()->hasRole('admin'), 403, 'Unauthorized.');
         $user->clearMediaCollection(self::USER_AVATAR);
         $user->delete();
 
