@@ -1,0 +1,51 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build Nuxt
+        run: |
+          cd nuxt-app
+          npm install
+          npm run build
+
+      - name: Upload Nuxt build
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "nuxt-app/.output/"
+          target: "/var/www/church-cms/nuxt-app/"
+          strip_components: 2
+
+      - name: Deploy Laravel + restart Nuxt
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/church-cms/laravel
+            git pull
+            composer install --no-dev
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            chown -R www-data:www-data storage/ database/
+            chmod 664 database/database.sqlite
+
+            # restart nuxt
+            pm2 restart nuxt-app
