@@ -131,7 +131,7 @@ const listenLinks = [
             letter-spacing: -0.01em;
           "
         >
-          {{ settings.home_hero_title || "Jesus Saves You" }}
+          {{ settings.home_hero_title || "Test deployment" }}
         </h1>
 
         <p
