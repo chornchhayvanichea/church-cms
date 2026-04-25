@@ -15,7 +15,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   const isLoggedIn = computed(() => user.value != null);
 
-  const isAdmin = computed(() => user.value?.role === 'admin');
+  const isAdmin = computed(() => user.value?.role === "admin");
 
   const getUser = async () => {
     loading.value = true;
@@ -36,7 +36,8 @@ export const useAuthStore = defineStore("auth", () => {
       await loginApi(data);
       await getUser();
     } catch (e: any) {
-      error.value = e?.response?.data?.message ?? "Invalid credentials. Please try again.";
+      error.value =
+        e?.response?.data?.message ?? "Invalid credentials. Please try again.";
     } finally {
       loading.value = false;
     }

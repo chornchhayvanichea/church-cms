@@ -1,4 +1,7 @@
-export function getApiErrorMessage(e: unknown, fallback = "Something went wrong. Please try again."): string {
+export function getApiErrorMessage(
+  e: unknown,
+  fallback = "Something went wrong. Please try again.",
+): string {
   if (typeof e === "object" && e !== null) {
     const err = e as Record<string, any>;
     const msg = err?.response?.data?.message;

@@ -26,7 +26,8 @@ export const eventStoreApi = (data: EventStoreData) => {
   if (data.end_date) formData.append("end_date", data.end_date);
   if (data.end_time) formData.append("end_time", data.end_time);
   if (data.location) formData.append("location", data.location);
-  if (data.registration_link) formData.append("registration_link", data.registration_link);
+  if (data.registration_link)
+    formData.append("registration_link", data.registration_link);
   if (data.status) formData.append("status", data.status);
   appendFileOrUrl(formData, "image", data.image);
   return api.post<ApiResponse<Event>>(END_POINTS.EVENT.STORE, formData);
@@ -41,7 +42,8 @@ export const eventUpdateApi = (data: EventStoreData, id: number) => {
   if (data.end_date) formData.append("end_date", data.end_date);
   if (data.end_time) formData.append("end_time", data.end_time);
   if (data.location) formData.append("location", data.location);
-  if (data.registration_link) formData.append("registration_link", data.registration_link);
+  if (data.registration_link)
+    formData.append("registration_link", data.registration_link);
   if (data.status) formData.append("status", data.status);
   appendFileOrUrl(formData, "image", data.image);
   formData.append("_method", "PUT");
@@ -58,5 +60,7 @@ export interface PublicEventIndexParams {
 }
 
 export const publicEventIndexApi = (params: PublicEventIndexParams = {}) => {
-  return api.get<PaginateResponse<Event>>(END_POINTS.EVENT.PUBLIC_INDEX, { params });
+  return api.get<PaginateResponse<Event>>(END_POINTS.EVENT.PUBLIC_INDEX, {
+    params,
+  });
 };

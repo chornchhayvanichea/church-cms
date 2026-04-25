@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MediaController;
@@ -23,6 +24,7 @@ Route::prefix('public')->group(function () {
     Route::get('sermons/{sermon:slug}', [SermonController::class, 'publicShow']);
     Route::get('events', [EventController::class, 'publicIndex']);
     Route::get('settings', [SettingController::class, 'publicIndex']);
+    Route::get('search', [SearchController::class, 'index']);
     Route::middleware(['throttle:3,1'])->post('contact', [ContactController::class, 'store']);
 });
 

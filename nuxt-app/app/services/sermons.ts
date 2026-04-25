@@ -48,9 +48,9 @@ export const sermonShowApi = (id: number) => {
 export interface SermonIndexParams {
   page?: number;
   per_page?: number;
-  'filter[title]'?: string;
-  'filter[status]'?: string;
-  'filter[speaker]'?: string;
+  "filter[title]"?: string;
+  "filter[status]"?: string;
+  "filter[speaker]"?: string;
 }
 
 export const sermonIndexApi = (params: SermonIndexParams = {}) => {
@@ -63,12 +63,14 @@ export const sermonDestroyApi = (id: number) => {
 
 export interface PublicSermonIndexParams {
   page?: number;
-  'filter[title]'?: string;
-  'filter[series_id]'?: number;
+  "filter[title]"?: string;
+  "filter[series_id]"?: number;
 }
 
 export const publicSermonIndexApi = (params: PublicSermonIndexParams = {}) => {
-  return api.get<PaginateResponse<Sermon>>(END_POINTS.SERMON.PUBLIC_INDEX, { params });
+  return api.get<PaginateResponse<Sermon>>(END_POINTS.SERMON.PUBLIC_INDEX, {
+    params,
+  });
 };
 
 export const publicSermonShowApi = (slug: string) => {

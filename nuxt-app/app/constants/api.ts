@@ -1,4 +1,3 @@
-export const BASE = "http://localhost:8000";
 const API = "/api";
 export const END_POINTS = {
   USER: {
@@ -58,6 +57,9 @@ export const END_POINTS = {
   },
   PROFILE: {
     UPDATE: `${API}/profile`,
+  },
+  SEARCH: {
+    PUBLIC: `${API}/public/search`,
   },
   AUTH: {
     LOGIN: `${API}/login`,

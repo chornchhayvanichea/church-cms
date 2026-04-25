@@ -85,8 +85,13 @@ const items = computed<NavigationMenuItem[][]>(() => [
         <LogoComponent class="h-5 w-auto shrink-0" />
         <span
           class="text-sm font-semibold text-highlighted truncate"
-          style="font-family: 'Cormorant Garamond', serif; letter-spacing: 0.01em;"
-        >Grace Church</span>
+          style="
+            font-family: &quot;Cormorant Garamond&quot;, serif;
+            letter-spacing: 0.01em;
+          "
+        >
+          Jesus Saves You</span
+        >
       </div>
       <svg
         v-else
@@ -94,8 +99,24 @@ const items = computed<NavigationMenuItem[][]>(() => [
         viewBox="0 0 36 48"
         fill="none"
       >
-        <rect x="13" y="0" width="10" height="48" rx="1.5" fill="currentColor" opacity="0.8" />
-        <rect x="0" y="14" width="36" height="10" rx="1.5" fill="currentColor" opacity="0.8" />
+        <rect
+          x="13"
+          y="0"
+          width="10"
+          height="48"
+          rx="1.5"
+          fill="currentColor"
+          opacity="0.8"
+        />
+        <rect
+          x="0"
+          y="14"
+          width="36"
+          height="10"
+          rx="1.5"
+          fill="currentColor"
+          opacity="0.8"
+        />
       </svg>
     </template>
 
