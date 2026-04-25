@@ -22,14 +22,15 @@ jobs:
           npm run build
 
       - name: Upload Nuxt build
-        uses: appleboy/scp-action@v0.1.7
+        uses: burnett01/rsync-deployments@7.0.1
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "nuxt-app/.output/"
-          target: "/var/www/church-cms/nuxt-app/"
-          strip_components: 2
+          switches: -avz --delete
+          path: nuxt-app/.output/
+          remote_path: /var/www/church-cms/nuxt-app/.output/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
 
       - name: Deploy Laravel + restart Nuxt
         uses: appleboy/ssh-action@v1
