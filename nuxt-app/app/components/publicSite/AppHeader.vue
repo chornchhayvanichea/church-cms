@@ -7,7 +7,11 @@ const mobileOpen = ref(false);
 const searchOpen = ref(false);
 const searchQuery = ref("");
 const searchLoading = ref(false);
-const searchResults = ref<PublicSearchResults>({ sermons: [], blogs: [], events: [] });
+const searchResults = ref<PublicSearchResults>({
+  sermons: [],
+  blogs: [],
+  events: [],
+});
 const searchInput = ref<HTMLInputElement | null>(null);
 
 const navItems = [
@@ -30,7 +34,8 @@ const hasResults = computed(
 );
 
 const showEmpty = computed(
-  () => searchQuery.value.length >= 2 && !searchLoading.value && !hasResults.value,
+  () =>
+    searchQuery.value.length >= 2 && !searchLoading.value && !hasResults.value,
 );
 
 let searchTimer: ReturnType<typeof setTimeout>;
@@ -70,7 +75,9 @@ const navigateResult = (to: string) => {
 };
 
 onMounted(() => {
-  const onScroll = () => { scrolled.value = window.scrollY > 30; };
+  const onScroll = () => {
+    scrolled.value = window.scrollY > 30;
+  };
   window.addEventListener("scroll", onScroll, { passive: true });
   onUnmounted(() => window.removeEventListener("scroll", onScroll));
 
@@ -85,37 +92,45 @@ onMounted(() => {
   onUnmounted(() => window.removeEventListener("keydown", onKey));
 });
 
-watch(() => route.path, () => {
-  mobileOpen.value = false;
-  closeSearch();
-});
+watch(
+  () => route.path,
+  () => {
+    mobileOpen.value = false;
+    closeSearch();
+  },
+);
 </script>
 
 <template>
   <header
     class="fixed top-0 inset-x-0 z-50 transition-all duration-300"
-    :class="scrolled
-      ? 'bg-white/95 dark:bg-[#0c0c0c]/95 backdrop-blur-md border-b border-gray-100 dark:border-white/8'
-      : 'bg-transparent'"
+    :class="
+      scrolled
+        ? 'bg-white/95 dark:bg-[#0c0c0c]/95 backdrop-blur-md border-b border-gray-100 dark:border-white/8'
+        : 'bg-transparent'
+    "
   >
     <div class="max-w-7xl mx-auto px-5 sm:px-8">
       <div class="flex items-center justify-between h-16 sm:h-18">
-
         <!-- Logo + name -->
         <NuxtLink to="/" class="flex items-center gap-3 shrink-0">
           <div
             class="p-1.5 rounded-lg transition-colors"
-            :class="scrolled ? 'bg-[#0c0c0c] dark:bg-white' : 'bg-white/15 backdrop-blur-sm'"
+            :class="
+              scrolled
+                ? 'bg-[#0c0c0c] dark:bg-white'
+                : 'bg-white/15 backdrop-blur-sm'
+            "
           >
             <LogoComponent class="h-5 w-auto" />
           </div>
-          <span
-            class="text-lg font-medium leading-none transition-colors hidden sm:block"
-            :class="scrolled ? 'text-gray-900 dark:text-white' : 'text-white'"
-            style="font-family: 'Cormorant Garamond', serif; letter-spacing: 0.01em;"
-          >
-            Grace Church
-          </span>
+<span
+  class="hidden text-lg font-medium leading-none transition-colors sm:block"
+  :class="scrolled ? 'text-gray-900 dark:text-white' : 'text-white'"
+  style="font-family: 'Cormorant Garamond', serif; letter-spacing: 0.01em;"
+>
+  Grace Church
+</span>
         </NuxtLink>
 
         <!-- Desktop nav -->
@@ -127,8 +142,12 @@ watch(() => route.path, () => {
             class="relative px-3.5 py-1.5 text-sm font-medium tracking-wide transition-colors rounded-md"
             :class="[
               isActive(item.to)
-                ? scrolled ? 'text-gray-900 dark:text-white' : 'text-white'
-                : scrolled ? 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' : 'text-white/70 hover:text-white',
+                ? scrolled
+                  ? 'text-gray-900 dark:text-white'
+                  : 'text-white'
+                : scrolled
+                  ? 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  : 'text-white/70 hover:text-white',
             ]"
           >
             {{ item.label }}
@@ -145,7 +164,11 @@ watch(() => route.path, () => {
           <!-- Search button -->
           <button
             class="p-2 rounded-md transition-colors"
-            :class="scrolled ? 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' : 'text-white/70 hover:text-white'"
+            :class="
+              scrolled
+                ? 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                : 'text-white/70 hover:text-white'
+            "
             aria-label="Search"
             @click="openSearch"
           >
@@ -155,9 +178,11 @@ watch(() => route.path, () => {
           <NuxtLink
             to="/donate"
             class="hidden md:inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium rounded-full border transition-all"
-            :class="scrolled
-              ? 'border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900'
-              : 'border-white/70 text-white hover:bg-white/15'"
+            :class="
+              scrolled
+                ? 'border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900'
+                : 'border-white/70 text-white hover:bg-white/15'
+            "
           >
             Donate
           </NuxtLink>
@@ -165,10 +190,15 @@ watch(() => route.path, () => {
           <!-- Mobile hamburger -->
           <button
             class="md:hidden p-2 rounded-md transition-colors"
-            :class="scrolled ? 'text-gray-700 dark:text-gray-300' : 'text-white'"
+            :class="
+              scrolled ? 'text-gray-700 dark:text-gray-300' : 'text-white'
+            "
             @click="mobileOpen = !mobileOpen"
           >
-            <UIcon :name="mobileOpen ? 'i-lucide-x' : 'i-lucide-menu'" class="w-5 h-5" />
+            <UIcon
+              :name="mobileOpen ? 'i-lucide-x' : 'i-lucide-menu'"
+              class="w-5 h-5"
+            />
           </button>
         </div>
       </div>
@@ -193,9 +223,11 @@ watch(() => route.path, () => {
             :key="item.to"
             :to="item.to"
             class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors"
-            :class="isActive(item.to)
-              ? 'bg-gray-100 dark:bg-white/8 text-gray-900 dark:text-white'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5'"
+            :class="
+              isActive(item.to)
+                ? 'bg-gray-100 dark:bg-white/8 text-gray-900 dark:text-white'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5'
+            "
           >
             {{ item.label }}
           </NuxtLink>
@@ -228,7 +260,10 @@ watch(() => route.path, () => {
         @click.self="closeSearch"
       >
         <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="closeSearch" />
+        <div
+          class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          @click="closeSearch"
+        />
 
         <!-- Search card -->
         <Transition
@@ -237,9 +272,13 @@ watch(() => route.path, () => {
           enter-to-class="opacity-100 scale-100 translate-y-0"
           appear
         >
-          <div class="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden">
+          <div
+            class="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden"
+          >
             <!-- Input -->
-            <div class="flex items-center gap-3 px-4 py-4 border-b border-gray-100 dark:border-white/8">
+            <div
+              class="flex items-center gap-3 px-4 py-4 border-b border-gray-100 dark:border-white/8"
+            >
               <UIcon
                 v-if="!searchLoading"
                 name="i-lucide-search"
@@ -269,72 +308,158 @@ watch(() => route.path, () => {
             <div class="max-h-[55vh] overflow-y-auto">
               <!-- Sermons -->
               <div v-if="searchResults.sermons.length" class="p-2">
-                <p class="px-3 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Sermons</p>
+                <p
+                  class="px-3 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider"
+                >
+                  Sermons
+                </p>
                 <button
                   v-for="item in searchResults.sermons"
                   :key="item.slug"
                   class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-left"
                   @click="navigateResult(`/sermons/${item.slug}`)"
                 >
-                  <div class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center shrink-0">
-                    <UIcon name="i-lucide-mic" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                  <div
+                    class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center shrink-0"
+                  >
+                    <UIcon
+                      name="i-lucide-mic"
+                      class="w-4 h-4 text-amber-600 dark:text-amber-400"
+                    />
                   </div>
                   <div class="min-w-0">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ item.title }}</p>
-                    <p v-if="item.subtitle" class="text-xs text-gray-500 truncate">{{ item.subtitle }}</p>
+                    <p
+                      class="text-sm font-medium text-gray-900 dark:text-white truncate"
+                    >
+                      {{ item.title }}
+                    </p>
+                    <p
+                      v-if="item.subtitle"
+                      class="text-xs text-gray-500 truncate"
+                    >
+                      {{ item.subtitle }}
+                    </p>
                   </div>
                 </button>
               </div>
 
               <!-- Blogs -->
-              <div v-if="searchResults.blogs.length" class="p-2" :class="{ 'border-t border-gray-100 dark:border-white/8': searchResults.sermons.length }">
-                <p class="px-3 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Blog</p>
+              <div
+                v-if="searchResults.blogs.length"
+                class="p-2"
+                :class="{
+                  'border-t border-gray-100 dark:border-white/8':
+                    searchResults.sermons.length,
+                }"
+              >
+                <p
+                  class="px-3 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider"
+                >
+                  Blog
+                </p>
                 <button
                   v-for="item in searchResults.blogs"
                   :key="item.slug"
                   class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-left"
                   @click="navigateResult(`/blogs/${item.slug}`)"
                 >
-                  <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center shrink-0">
-                    <UIcon name="i-lucide-book" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <div
+                    class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center shrink-0"
+                  >
+                    <UIcon
+                      name="i-lucide-book"
+                      class="w-4 h-4 text-blue-600 dark:text-blue-400"
+                    />
                   </div>
                   <div class="min-w-0">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ item.title }}</p>
-                    <p v-if="item.subtitle" class="text-xs text-gray-500 truncate">{{ item.subtitle }}</p>
+                    <p
+                      class="text-sm font-medium text-gray-900 dark:text-white truncate"
+                    >
+                      {{ item.title }}
+                    </p>
+                    <p
+                      v-if="item.subtitle"
+                      class="text-xs text-gray-500 truncate"
+                    >
+                      {{ item.subtitle }}
+                    </p>
                   </div>
                 </button>
               </div>
 
               <!-- Events -->
-              <div v-if="searchResults.events.length" class="p-2" :class="{ 'border-t border-gray-100 dark:border-white/8': searchResults.sermons.length || searchResults.blogs.length }">
-                <p class="px-3 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Events</p>
+              <div
+                v-if="searchResults.events.length"
+                class="p-2"
+                :class="{
+                  'border-t border-gray-100 dark:border-white/8':
+                    searchResults.sermons.length || searchResults.blogs.length,
+                }"
+              >
+                <p
+                  class="px-3 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider"
+                >
+                  Events
+                </p>
                 <button
                   v-for="(item, i) in searchResults.events"
                   :key="i"
                   class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-left"
                   @click="navigateResult('/events')"
                 >
-                  <div class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center shrink-0">
-                    <UIcon name="i-lucide-calendar-days" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  <div
+                    class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center shrink-0"
+                  >
+                    <UIcon
+                      name="i-lucide-calendar-days"
+                      class="w-4 h-4 text-emerald-600 dark:text-emerald-400"
+                    />
                   </div>
                   <div class="min-w-0">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ item.title }}</p>
-                    <p v-if="item.subtitle" class="text-xs text-gray-500 truncate">{{ item.subtitle }}</p>
+                    <p
+                      class="text-sm font-medium text-gray-900 dark:text-white truncate"
+                    >
+                      {{ item.title }}
+                    </p>
+                    <p
+                      v-if="item.subtitle"
+                      class="text-xs text-gray-500 truncate"
+                    >
+                      {{ item.subtitle }}
+                    </p>
                   </div>
                 </button>
               </div>
 
               <!-- Empty state -->
-              <div v-if="showEmpty" class="flex flex-col items-center gap-2 py-12 text-gray-400">
+              <div
+                v-if="showEmpty"
+                class="flex flex-col items-center gap-2 py-12 text-gray-400"
+              >
                 <UIcon name="i-lucide-search-x" class="w-8 h-8" />
-                <p class="text-sm">No results for <span class="font-medium text-gray-600 dark:text-gray-300">"{{ searchQuery }}"</span></p>
+                <p class="text-sm">
+                  No results for
+                  <span class="font-medium text-gray-600 dark:text-gray-300"
+                    >"{{ searchQuery }}"</span
+                  >
+                </p>
               </div>
 
               <!-- Initial hint -->
-              <div v-if="!searchQuery" class="flex flex-col items-center gap-2 py-10 text-gray-400">
+              <div
+                v-if="!searchQuery"
+                class="flex flex-col items-center gap-2 py-10 text-gray-400"
+              >
                 <UIcon name="i-lucide-search" class="w-7 h-7" />
                 <p class="text-sm">Type to search sermons, blogs, and events</p>
-                <p class="text-xs">Press <kbd class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/10 text-gray-500 dark:text-gray-400 font-mono">⌘K</kbd> to open anytime</p>
+                <p class="text-xs">
+                  Press
+                  <kbd
+                    class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/10 text-gray-500 dark:text-gray-400 font-mono"
+                    >⌘K</kbd
+                  >
+                  to open anytime
+                </p>
               </div>
             </div>
           </div>
