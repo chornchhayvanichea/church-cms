@@ -8,8 +8,7 @@ export const END_POINTS = {
     UPDATE: (id: number | string) => `${API}/users/${id}`,
     DESTROY: (id: number | string) => `${API}/users/${id}`,
   },
-  MEDIA: {
-    INDEX: `${API}/media`,
+  MEDIA: { INDEX: `${API}/media`,
     STORE: `${API}/media`,
     DESTROY: (id: number | string) => `${API}/media/${id}`,
   },

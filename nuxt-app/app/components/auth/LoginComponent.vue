@@ -27,11 +27,19 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
     <div class="mb-8">
       <h2
         class="text-gray-900 dark:text-white font-medium mb-1.5"
-        style="font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; letter-spacing: -0.01em; line-height: 1.1;"
+        style="
+          font-family: &quot;Cormorant Garamond&quot;, serif;
+          font-size: 2.4rem;
+          letter-spacing: -0.01em;
+          line-height: 1.1;
+        "
       >
         Welcome back
       </h2>
-      <p class="text-gray-400 text-sm" style="font-family: 'DM Sans', sans-serif;">
+      <p
+        class="text-gray-400 text-sm"
+        style="font-family: &quot;DM Sans&quot;, sans-serif"
+      >
         Sign in to access your dashboard
       </p>
     </div>
@@ -76,7 +84,10 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
           block
           color="neutral"
           :loading="store.loading"
-          style="font-family: 'DM Sans', sans-serif; letter-spacing: 0.04em;"
+          style="
+            font-family: &quot;DM Sans&quot;, sans-serif;
+            letter-spacing: 0.04em;
+          "
         >
           Sign In
         </UButton>
