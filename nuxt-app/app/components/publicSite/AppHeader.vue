@@ -129,7 +129,7 @@ watch(
   :class="scrolled ? 'text-gray-900 dark:text-white' : 'text-white'"
   style="font-family: 'Cormorant Garamond', serif; letter-spacing: 0.01em;"
 >
-  Grace Church
+Jesus Saves You
 </span>
         </NuxtLink>
 
