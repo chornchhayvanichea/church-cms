@@ -38,7 +38,7 @@ const quickLinks = [
               class="text-base font-medium text-white"
               style="font-family: 'Cormorant Garamond', serif; letter-spacing: 0.01em;"
             >
-              {{ settings.site_name || 'Grace Church' }}
+              {{ settings.site_name || 'Jesus Saves You' }}
             </span>
           </div>
           <p class="text-sm text-white/45 leading-relaxed">
@@ -124,7 +124,7 @@ const quickLinks = [
       <!-- Bottom bar -->
       <div class="pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <p class="text-[11px] text-white/25 tracking-wide">
-          © {{ new Date().getFullYear() }} {{ settings.site_name || 'Grace Church' }}. All rights reserved.
+          © {{ new Date().getFullYear() }} {{ settings.site_name || 'Jesus Saves You' }}. All rights reserved.
         </p>
         <p class="text-[11px] text-white/15 italic" style="font-family: 'Cormorant Garamond', serif;">
           "For God so loved the world..." — John 3:16
