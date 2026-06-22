@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Blog;
-use App\Models\Event;
-use App\Models\Sermon;
+use App\Models\Blog; use App\Models\Event; use App\Models\Sermon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

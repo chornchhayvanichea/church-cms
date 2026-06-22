@@ -24,6 +24,7 @@ class AuthController extends Controller
                 'message' => 'credentials provided invalid.',
             ]);
         }
+
         $request->session()->regenerate();
 
         return response()->json([
